@@ -22,6 +22,6 @@ public class User {
     private String userFile;
 
     @Column(nullable = false)
-    @ColumnDefault("U")
+    @ColumnDefault("'U'")
     private String userRole;
 }
