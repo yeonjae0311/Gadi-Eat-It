@@ -32,6 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-### Code ###
+### code ###
 **/src/main/resources/application-db.properties
-
