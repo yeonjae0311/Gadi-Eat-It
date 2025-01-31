@@ -1,8 +1,12 @@
 package com.basic.GADI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
+import java.util.Objects;
 
 @Entity
+@Getter
 public class Favorites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,4 +19,5 @@ public class Favorites {
     @ManyToOne
     @JoinColumn(name = "resId")
     private Restaurants restaurants;
+
 }
