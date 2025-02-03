@@ -1,12 +1,11 @@
 package com.basic.GADI.controller;
 
+import com.basic.GADI.config.JwtUtil;
+import com.basic.GADI.dto.request.LoginRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
-import com.basic.GADI.dto.response.RegisterResponseDto;
+import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.service.UserService;
 import jakarta.validation.Valid;
-import com.basic.GADI.dto.request.LoginDto;
-import com.basic.GADI.dto.response.TokenResponseDto;
-import com.basic.GADI.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +20,15 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    private JwtService jwtService;
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login (@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenResponseDto> login (@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
+    }
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
-        RegisterResponseDto register = userService.register(registerRequestDto);
-        return ResponseEntity.ok().body(register);
-        String jwt = jwtService.createAccessToken(loginDto);
-
-        return ResponseEntity.status(HttpStatus.OK).header(jwt).build();
+    @PostMapping(value = "/register", produces = "application/json")
+    public ResponseEntity<TokenResponseDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
     }
 }
