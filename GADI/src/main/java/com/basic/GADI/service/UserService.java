@@ -5,19 +5,11 @@ import com.basic.GADI.dto.response.RegisterResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.repository.UserRepository;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +19,21 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Value("{spring.mail.username}")
     private static String senderEmail;
 
 
     @Transactional
-    public RegisterResponseDto register(RegisterRequestDto registerRequestDto)  {
+    public TokenResponseDto register(RegisterRequestDto registerRequestDto)  {
         if (userRepository.existsByUserEmail(registerRequestDto.getUserEmail())) {
             throw new BusinessException("이미 존재하는 아이디입니다.", HttpStatus.NOT_FOUND);
         }
@@ -44,8 +45,51 @@ public class UserService {
                 .build();
 
         userRepository.save(registerUser);
+        String accessToken = jwtUtil.createAccessToken(registerUser);
+        String refreshToken = jwtUtil.createRefreshToken(registerUser);
 
-        return new RegisterResponseDto(registerRequestDto.getUserEmail(), registerRequestDto.getUserName());
+        refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .user(registerUser)
+                        .token(refreshToken)
+                        .build()
+        );
+
+        return TokenResponseDto.builder()
+                .AccessToken(accessToken)
+                .RefreshToken(refreshToken)
+                .build();
+    }
+
+    @Transactional
+    public TokenResponseDto login(LoginRequestDto loginRequestDto) {
+        User user = userRepository.findByUserEmail(loginRequestDto.getUserEmail())
+                .orElseThrow(() -> new BusinessException("존재하지 않는 아이디입니다.", HttpStatus.NOT_FOUND));
+
+        if (!new BCryptPasswordEncoder().matches(loginRequestDto.getUserPw(), user.getUserPw())) {
+            throw new BusinessException("비밀번호가 일치하지 않습니다.");
+        }
+
+        RefreshToken existingRefreshToken = refreshTokenRepository.findByUser_UserId(user.getUserId())
+                .orElseThrow(() -> new BusinessException("토큰이 존재하지 않습니다."));
+
+        String accessToken = "";
+        String refreshToken = existingRefreshToken.getRefreshToken();
+
+        if(jwtUtil.isValidRefreshToken(refreshToken)) {
+            accessToken = jwtUtil.createAccessToken(user);
+            return TokenResponseDto.builder()
+                    .AccessToken(accessToken)
+                    .RefreshToken(refreshToken)
+                    .build();
+        } else {
+            refreshToken = jwtUtil.createRefreshToken(user);
+            existingRefreshToken.updateToken(refreshToken);
+        }
+        return TokenResponseDto.builder()
+                .AccessToken(accessToken)
+                .RefreshToken(refreshToken)
+                .build();
     }
 
     public String createAuthCode() {

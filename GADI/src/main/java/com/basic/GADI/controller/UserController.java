@@ -19,18 +19,16 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    private JwtService jwtService;
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login (@RequestBody LoginDto loginDto) {
-        String jwt = jwtService.createAccessToken(loginDto);
-        return ResponseEntity.status(HttpStatus.OK).header(jwt).build();
+    public ResponseEntity<TokenResponseDto> login (@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
-        RegisterResponseDto register = userService.register(registerRequestDto);
-        return ResponseEntity.ok().body(register);
+    @PostMapping(value = "/register", produces = "application/json")
+    public ResponseEntity<TokenResponseDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
     }
 
     @GetMapping("/email/auth/{email}")

@@ -3,7 +3,7 @@ package com.basic.GADI.dto.request;
 import lombok.Getter;
 
 @Getter
-public class LoginDto {
+public class LoginRequestDto {
 
     private String userEmail;
     private String userPw;
