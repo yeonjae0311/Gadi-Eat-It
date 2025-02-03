@@ -9,15 +9,20 @@ import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -139,9 +144,4 @@ public class UserService {
             return false;
         }
     }
-
-
-
-
-
 }
