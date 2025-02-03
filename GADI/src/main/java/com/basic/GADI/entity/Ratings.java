@@ -19,5 +19,4 @@ public class Ratings {
     @JoinColumn(name = "resId")
     private Restaurants restaurants;
 
-
 }

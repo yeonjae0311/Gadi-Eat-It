@@ -15,4 +15,5 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
 
     @Nonnull
     Optional<Restaurants> findById(@Nonnull Long resId);
+
 }
