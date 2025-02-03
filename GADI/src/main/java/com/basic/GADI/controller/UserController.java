@@ -1,13 +1,12 @@
 package com.basic.GADI.controller;
 
+import com.basic.GADI.config.JwtUtil;
+import com.basic.GADI.dto.request.LoginRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
-import com.basic.GADI.dto.response.RegisterResponseDto;
+import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import com.basic.GADI.dto.request.LoginDto;
-import com.basic.GADI.dto.response.TokenResponseDto;
-import com.basic.GADI.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

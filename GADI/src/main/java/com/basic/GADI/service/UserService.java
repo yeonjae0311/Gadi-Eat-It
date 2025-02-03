@@ -1,13 +1,21 @@
 package com.basic.GADI.service;
 
+import com.basic.GADI.config.JwtUtil;
+import com.basic.GADI.dto.request.LoginRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
-import com.basic.GADI.dto.response.RegisterResponseDto;
+import com.basic.GADI.dto.response.TokenResponseDto;
+import com.basic.GADI.entity.RefreshToken;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
+import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +32,6 @@ public class UserService {
 
     @Autowired
     private JwtUtil jwtUtil;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Value("{spring.mail.username}")
     private static String senderEmail;
