@@ -11,6 +11,7 @@ import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,9 +110,10 @@ public class UserService {
         for (int i = 0; i < 6; i++) {
             int number = random.nextInt(2);
 
-            switch (number) {
-                case 0: key.append((char) (random.nextInt(26) + 65));
-                case 1: key.append(random.nextInt(10));
+            if(random.nextBoolean()) {
+                key.append((char)(random.nextInt(26) + 65));
+            } else {
+                key.append(random.nextInt(10));
             }
         }
         return key.toString();
@@ -133,12 +135,13 @@ public class UserService {
     }
 
 
-    public boolean sendAuthMail(String sendEmail) throws MessagingException {
+    public boolean sendAuthMail(String sendEmail, HttpSession session) throws MessagingException {
         String authCode = createAuthCode();
-
         MimeMessage createMail = createAuthMail(sendEmail, authCode);
         try {
             javaMailSender.send(createMail);
+            session.setAttribute(sendEmail, authCode);
+            session.setMaxInactiveInterval(180);
             return true;
         } catch (MailException e) {
             return false;
