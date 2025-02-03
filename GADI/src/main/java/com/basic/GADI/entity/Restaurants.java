@@ -24,6 +24,6 @@ public class Restaurants {
     @Column
     private String resPhoto;
 
-    @ColumnDefault("'Y'")
+    @ColumnDefault("'N'")
     private String resDelete;
 }

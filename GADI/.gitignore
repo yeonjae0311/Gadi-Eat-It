@@ -34,3 +34,4 @@ build/
 
 ### code ###
 **/src/main/resources/application-db.properties
+**/src/main/resources/application-emailauth.properties
