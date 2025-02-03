@@ -1,9 +1,19 @@
 package com.basic.GADI.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@DynamicInsert
 public class User {
 
     @Id
@@ -24,4 +34,5 @@ public class User {
     @Column(nullable = false)
     @ColumnDefault("'U'")
     private String userRole;
+
 }
