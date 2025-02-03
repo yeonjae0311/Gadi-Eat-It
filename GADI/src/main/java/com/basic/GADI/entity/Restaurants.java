@@ -1,8 +1,10 @@
 package com.basic.GADI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
+@Getter
 @Entity
 public class Restaurants {
     @Id
