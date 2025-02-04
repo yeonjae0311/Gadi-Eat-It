@@ -4,6 +4,7 @@ import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
+import com.basic.GADI.repository.RatingsRepository;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,9 @@ public class AdminService {
 
     @Autowired
     ResRepository resRepository;
+
+    @Autowired
+    RatingsRepository ratingsRepository;
 
     @Transactional
     public List<User> findUserList() {
