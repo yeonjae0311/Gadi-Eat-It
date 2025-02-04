@@ -5,8 +5,6 @@ import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +26,14 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.findUserList());
     }
 
-    @GetMapping("/res_list")
+    /*@GetMapping("/res_list")
     public Page<Restaurants> resList(Pageable pageable) {
         return adminService.findResList(pageable);
+    }*/
+
+    @GetMapping("/res_list")
+    public List<Restaurants> resList() {
+        return adminService.findResList();
     }
 
     @GetMapping("/res_detail")

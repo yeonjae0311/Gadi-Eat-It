@@ -2,8 +2,6 @@ package com.basic.GADI.repository;
 
 import com.basic.GADI.entity.Restaurants;
 import jakarta.annotation.Nonnull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,9 +17,13 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
     @Nonnull
     Optional<Restaurants> findById(@Nonnull Long resId);
 
+    /*@EntityGraph(attributePaths = "ratings")
+    @Nonnull
+    Page<Restaurants> findAll(@Nonnull Pageable pageable);*/
+
     @EntityGraph(attributePaths = "ratings")
     @Nonnull
-    Page<Restaurants> findAll(@Nonnull Pageable pageable);
+    List<Restaurants> findAll();
 
     @Query("SELECT r FROM Restaurants r JOIN r.favorites f WHERE f.user.userId = :userId")
     List<Restaurants> findFavoriteRestaurantsByUserId(@Param("userId") Long userId);

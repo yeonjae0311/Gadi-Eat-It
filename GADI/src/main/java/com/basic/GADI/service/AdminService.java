@@ -32,9 +32,14 @@ public class AdminService {
         return userRepository.findAll();
     }
 
-    @Transactional
+    /*@Transactional
     public Page<Restaurants> findResList(Pageable pageable) {
         return resRepository.findAll(pageable);
+    }*/
+
+    @Transactional
+    public List<Restaurants> findResList() {
+        return resRepository.findAll();
     }
 
     @Transactional
