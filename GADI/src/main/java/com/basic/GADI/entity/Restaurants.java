@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.List;
+
 @Getter
 @Entity
 public class Restaurants {
@@ -28,4 +30,8 @@ public class Restaurants {
 
     @ColumnDefault("'N'")
     private String resDelete;
+
+    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Ratings> ratings;
+
 }
