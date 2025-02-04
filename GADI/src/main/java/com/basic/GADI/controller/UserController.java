@@ -2,7 +2,7 @@ package com.basic.GADI.controller;
 
 import com.basic.GADI.config.JwtUtil;
 import com.basic.GADI.dto.request.LoginRequestDto;
-import com.basic.GADI.dto.request.PasswordResetDto;
+import com.basic.GADI.dto.request.PasswordResetRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.entity.User;
@@ -54,8 +54,8 @@ public class UserController {
     }
 
     @PostMapping("/email/password_link")
-    public ResponseEntity<String> requestResetPasswordLink(@RequestBody PasswordResetDto passwordResetDto) throws MessagingException {
-        String sendEmail = passwordResetDto.getUserEmail();
+    public ResponseEntity<String> requestResetPasswordLink(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto) throws MessagingException {
+        String sendEmail = passwordResetRequestDto.getUserEmail();
         Optional<User> user = userService.findByEmail(sendEmail);
 
         if (user.isPresent()) {
@@ -65,5 +65,18 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("가입되지 않은 이메일입니다.");
         }
+    }
+
+    @PostMapping("/reset/password")
+    public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
+        String token = passwordResetRequestDto.getToken();
+        String newPassword = passwordResetRequestDto.getUserPw();
+
+        if (!userService.isValid(token)) {
+            return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
+        }
+
+        userService.updateUserPw(passwordResetRequestDto.getUserEmail(), newPassword);
+        return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }
