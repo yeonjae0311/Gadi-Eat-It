@@ -10,6 +10,7 @@ import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -47,6 +48,9 @@ public class AuthService {
 
     @Value("{spring.mail.username}")
     private static String senderEmail;
+
+    @Value("${jwt.secretKey}")
+    private String secretKey;
 
 
     @Transactional
@@ -189,13 +193,34 @@ public class AuthService {
     }
 
     private String createLinkToken(String sendEmail, Long userId, Duration tokenTime) {
+
         return Jwts.builder()
                 .claim("sendEmail", sendEmail)
                 .claim("userId", userId)
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plus(tokenTime)))
+                .signWith(JwtUtil.getSecretKey(secretKey), SignatureAlgorithm.HS256)
                 .compact();
     }
 
 
+    public boolean isValid(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(JwtUtil.getSecretKey(secretKey)).build().parseClaimsJws(token);
+            return true;
+        } catch (Exception exception) {
+             return false;
+        }
+    }
+
+    public void updateUserPw(String userEmail, String newPassword) {
+        Optional<User> user = userRepository.findByUserEmail(userEmail);
+        if (user.isPresent()) {
+            User updateUser = user.get();
+            updateUser.setUserPw(passwordEncoder.encode(newPassword));
+            userRepository.save(updateUser);
+        } else {
+            throw new BusinessException("등록되지 않은 사용자 입니다.",  HttpStatus.NOT_FOUND);
+        }
+    }
 }
