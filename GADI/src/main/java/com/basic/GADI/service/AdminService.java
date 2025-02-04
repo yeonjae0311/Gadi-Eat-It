@@ -30,7 +30,7 @@ public class AdminService {
 
     @Transactional
     public Page<Restaurants> findResList(Pageable pageable) {
-        return resRepository.findAllWithRatings(pageable);
+        return resRepository.findAll(pageable);
     }
 
     @Transactional

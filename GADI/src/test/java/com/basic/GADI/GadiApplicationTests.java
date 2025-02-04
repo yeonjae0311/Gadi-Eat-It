@@ -1,12 +1,10 @@
 package com.basic.GADI;
 
-import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.repository.ResRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -66,8 +64,8 @@ class GadiApplicationTests {
 			}
 		};
 
-		Page<Restaurants> page = resRepository.findAllWithRatings(pageable);
-		System.out.println("페이지=" + page.getContent());
+		//Page<Restaurants> page = resRepository.findAllWithRatings();
+		//System.out.println("페이지=" + page.getContent());
 
 
 	}
