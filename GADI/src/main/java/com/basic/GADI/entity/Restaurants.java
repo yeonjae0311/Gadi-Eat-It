@@ -31,7 +31,10 @@ public class Restaurants {
     @ColumnDefault("'N'")
     private String resDelete;
 
-    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Ratings> ratings;
+
+    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorites> favorites;
 
 }
