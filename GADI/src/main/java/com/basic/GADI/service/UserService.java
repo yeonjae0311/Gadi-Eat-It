@@ -9,7 +9,9 @@ import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
+import io.jsonwebtoken.Jwts;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -119,6 +125,7 @@ public class UserService {
         return key.toString();
     }
 
+
     public MimeMessage createAuthMail(String mail, String authCode) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
@@ -147,4 +154,48 @@ public class UserService {
             return false;
         }
     }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByUserEmail(email);
+    }
+
+    public String sendPasswordMail(String sendEmail, Long userId) throws MessagingException {
+        String link = createResetPasswordLink(sendEmail, userId);
+        MimeMessage createMail = createResetPasswordMail(link, sendEmail);
+        javaMailSender.send(createMail);
+        return link;
+    }
+
+    private MimeMessage createResetPasswordMail(String link, String sendEmail) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        mimeMessage.setFrom(senderEmail);
+        mimeMessage.setRecipients(MimeMessage.RecipientType.TO, String.valueOf(new InternetAddress(sendEmail)));
+        mimeMessage.setSubject("[Gadi-Eat-It] 비밀번호 재설정 링크입니다.");
+        String body = "";
+        body += "<h3>안녕하세요. Gadi Eat IT! 입니다.</h3> ";
+        body += "<h3>비밀번호 재설정 링크입니다.</h3> ";
+        body += "<h3><span>" + link + "</span></h3>";
+        body += "<h3>감사합니다.</h3>";
+        mimeMessage.setText(body, "UTF-8", "html");
+
+        return mimeMessage;
+
+    }
+
+    private String createResetPasswordLink(String sendEmail, Long userId) {
+        Duration tokenTime = Duration.ofMinutes(5);
+        String linkToken = createLinkToken(sendEmail, userId, tokenTime);
+        return "http://localhost:8080/api/user/resetPassword?token=" + linkToken + "&email=" + sendEmail;
+    }
+
+    private String createLinkToken(String sendEmail, Long userId, Duration tokenTime) {
+        return Jwts.builder()
+                .claim("sendEmail", sendEmail)
+                .claim("userId", userId)
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(tokenTime)))
+                .compact();
+    }
+
+
 }

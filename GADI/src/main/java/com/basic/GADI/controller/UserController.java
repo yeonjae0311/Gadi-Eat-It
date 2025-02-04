@@ -2,8 +2,10 @@ package com.basic.GADI.controller;
 
 import com.basic.GADI.config.JwtUtil;
 import com.basic.GADI.dto.request.LoginRequestDto;
+import com.basic.GADI.dto.request.PasswordResetDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
+import com.basic.GADI.entity.User;
 import com.basic.GADI.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -49,4 +53,17 @@ public class UserController {
         }
     }
 
+    @PostMapping("/email/password_link")
+    public ResponseEntity<String> requestResetPasswordLink(@RequestBody PasswordResetDto passwordResetDto) throws MessagingException {
+        String sendEmail = passwordResetDto.getUserEmail();
+        Optional<User> user = userService.findByEmail(sendEmail);
+
+        if (user.isPresent()) {
+            Long userId = user.get().getUserId();
+            String tokenLink = userService.sendPasswordMail(sendEmail, userId);
+            return ResponseEntity.ok(tokenLink);
+        } else {
+            return ResponseEntity.badRequest().body("가입되지 않은 이메일입니다.");
+        }
+    }
 }
