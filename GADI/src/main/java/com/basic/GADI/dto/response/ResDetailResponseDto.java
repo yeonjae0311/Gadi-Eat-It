@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -20,11 +21,11 @@ public class ResDetailResponseDto {
     private String resPhoto;
     private String resPhone;
     private String resSector;
-    private Set<Ratings> ratings;
+    private List<Ratings> ratings;
 
     @Builder
     public ResDetailResponseDto(Long resId, String resName, String resAddress, String resPhoto,
-                                String resPhone, String resSector, Set<Ratings> ratings) {
+                                String resPhone, String resSector, List<Ratings> ratings) {
         this.resId = resId;
         this.resName = resName;
         this.resAddress = resAddress;
@@ -34,16 +35,16 @@ public class ResDetailResponseDto {
         this.ratings = ratings;
     }
 
-    public ResDetailResponseDto fromEntity(Restaurants restaurants) {
-        return ResDetailResponseDto.builder()
-                .resId(restaurants.getResId())
-                .resName(restaurants.getResName())
-                .resAddress(restaurants.getResAddress())
-                .resPhone(restaurants.getResPhone())
-                .resPhoto(restaurants.getResPhoto())
-                .resSector(restaurants.getResSector())
-                .ratings(restaurants.getRatings())
-                .build();
+    public ResDetailResponseDto(Restaurants restaurants) {
+        this.resId = restaurants.getResId();
+        this.resName = restaurants.getResName();
+        this.resAddress = restaurants.getResAddress();
+        this.resPhoto = restaurants.getResPhoto();
+        this.resPhone = restaurants.getResPhone();
+        this.resSector = restaurants.getResSector();
+        this.ratings = restaurants.getRatings().stream()
+                .map(Ratings::new)
+                .collect(Collectors.toList());
     }
 
 }

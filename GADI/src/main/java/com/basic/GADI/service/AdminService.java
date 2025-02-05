@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -36,14 +37,17 @@ public class AdminService {
     }*/
 
     @Transactional
-    public List<Restaurants> findResList() {
-        return resRepository.findAllWithFavoritesAndRatings();
+    public List<ResDetailResponseDto> findResList() {
+        List<Restaurants> restaurantsList =  resRepository.findAllWithFavoritesAndRatings();
+        return restaurantsList.stream()
+                .map(ResDetailResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public ResDetailResponseDto findResDetail(Long resId) {
         Restaurants resDetail =  resRepository.findById(resId)
                 .orElseThrow(()-> new BusinessException("해당하는 음식점을 찾을 수 없습니다."));
-        return new ResDetailResponseDto().fromEntity(resDetail);
+        return new ResDetailResponseDto(resDetail);
     }
 }

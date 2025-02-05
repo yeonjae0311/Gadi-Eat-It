@@ -1,7 +1,6 @@
 package com.basic.GADI.controller;
 
 import com.basic.GADI.dto.response.ResDetailResponseDto;
-import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class AdminController {
     }*/
 
     @GetMapping("/res_list")
-    public List<Restaurants> resList() {
+    public List<ResDetailResponseDto> resList() {
         return adminService.findResList();
     }
 
