@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,11 +20,11 @@ public class ResDetailResponseDto {
     private String resPhoto;
     private String resPhone;
     private String resSector;
-    private List<Ratings> ratings;
+    private Set<Ratings> ratings;
 
     @Builder
     public ResDetailResponseDto(Long resId, String resName, String resAddress, String resPhoto,
-                                String resPhone, String resSector, List<Ratings> ratings) {
+                                String resPhone, String resSector, Set<Ratings> ratings) {
         this.resId = resId;
         this.resName = resName;
         this.resAddress = resAddress;

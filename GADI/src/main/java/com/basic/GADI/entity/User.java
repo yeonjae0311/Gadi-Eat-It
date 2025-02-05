@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -34,5 +36,8 @@ public class User {
     @Column(nullable = false)
     @ColumnDefault("'U'")
     private String userRole;
+
+    @OneToMany(mappedBy = "user")
+    private List<Favorites> favorites;
 
 }
