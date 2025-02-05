@@ -36,7 +36,7 @@
         saveData.userEmail = this.user_email
         saveData.userPw = this.user_pw
         axios
-          .post('http://localhost:8080/api/user/login', saveData) // 로그인 API URL로 ID, PW를 보냄
+          .post('http://localhost:8080/api/auth/login', saveData) // 로그인 API URL로 ID, PW를 보냄
           .then((res) => {
             console.log(res.data)
             const token = res.data.accessToken

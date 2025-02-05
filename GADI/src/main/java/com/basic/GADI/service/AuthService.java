@@ -213,6 +213,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public void updateUserPw(String userEmail, String newPassword) {
         Optional<User> user = userRepository.findByUserEmail(userEmail);
         if (user.isPresent()) {

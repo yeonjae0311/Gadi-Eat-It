@@ -2,6 +2,7 @@
 package com.basic.GADI.controller;
 
 import com.basic.GADI.dto.request.LoginRequestDto;
+import com.basic.GADI.dto.request.PasswordLinkRequestDto;
 import com.basic.GADI.dto.request.PasswordResetRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -34,13 +35,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(authService.register(registerRequestDto));
     }
 
-    @GetMapping("/email/auth/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<String> requestEmailAuth(@PathVariable("email") String email, HttpSession session) throws MessagingException {
         boolean isSend = authService.sendAuthMail(email, session);
         return ResponseEntity.ok().body(isSend ? "인증번호가 전송되었습니다." : "인증번호 전송에 실패하였습니다.");
     }
 
-    @PostMapping("/email/auth")
+    @PostMapping("/email")
     public ResponseEntity<String> verifyEmailAuth(@RequestParam String email,
                                                   @RequestParam String inputAuthCode, HttpSession session) {
         String authCode = (String)session.getAttribute(email);
@@ -53,8 +54,8 @@ public class AuthController {
     }
 
     @PostMapping("/email/password_link")
-    public ResponseEntity<String> requestResetPasswordLink(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto) throws MessagingException {
-        String sendEmail = passwordResetRequestDto.getUserEmail();
+    public ResponseEntity<String> requestResetPasswordLink(@RequestBody @Valid PasswordLinkRequestDto passwordLinkRequestDto) throws MessagingException {
+        String sendEmail = passwordLinkRequestDto.getUserEmail();
         Optional<User> user = authService.findByEmail(sendEmail);
 
         if (user.isPresent()) {
