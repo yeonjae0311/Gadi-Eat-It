@@ -21,9 +21,10 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
     @Nonnull
     Page<Restaurants> findAll(@Nonnull Pageable pageable);*/
 
-    @EntityGraph(attributePaths = "ratings")
+    @EntityGraph(value = "Restaurants.FavoritesAndRatings")
+    @Query("SELECT r FROM Restaurants r")
     @Nonnull
-    List<Restaurants> findAll();
+    List<Restaurants> findAllWithFavoritesAndRatings();
 
     @Query("SELECT r FROM Restaurants r JOIN r.favorites f WHERE f.user.userId = :userId")
     List<Restaurants> findFavoriteRestaurantsByUserId(@Param("userId") Long userId);

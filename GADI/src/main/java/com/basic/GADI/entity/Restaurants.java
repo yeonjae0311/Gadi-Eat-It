@@ -4,10 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
+@NamedEntityGraph(name = "Restaurants.FavoritesAndRatings", attributeNodes = {
+        @NamedAttributeNode("favorites"),
+        @NamedAttributeNode("ratings")})
 public class Restaurants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +34,10 @@ public class Restaurants {
     @ColumnDefault("'N'")
     private String resDelete;
 
-    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Ratings> ratings;
+    @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Ratings> ratings;
 
     @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Favorites> favorites;
+    private Set<Favorites> favorites;
 
 }
