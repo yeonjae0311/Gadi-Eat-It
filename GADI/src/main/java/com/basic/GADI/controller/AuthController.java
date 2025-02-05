@@ -44,9 +44,11 @@ public class AuthController {
     @PostMapping("/email")
     public ResponseEntity<String> verifyEmailAuth(@RequestParam String email,
                                                   @RequestParam String inputAuthCode, HttpSession session) {
-        String authCode = (String)session.getAttribute(email);
-        if (authCode != null && authCode.equals(inputAuthCode)) {
-            session.removeAttribute(email);
+        String authCode = (String)session.getAttribute("authCode");
+        String sendEmail = (String)session.getAttribute("sendEmail");
+        if (authCode != null && authCode.equals(inputAuthCode) && email.equals(sendEmail)) {
+            session.removeAttribute("authCode");
+            session.removeAttribute("sendEmail");
             return ResponseEntity.ok().body("인증이 완료되었습니다.");
         } else {
             return ResponseEntity.badRequest().body("인증에 실패하였습니다.다시 인증해주세요.");
@@ -67,7 +69,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/reset/password")
+    @PostMapping("/password/reset")
     public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
         String token = passwordResetRequestDto.getToken();
         String newPassword = passwordResetRequestDto.getUserPw();
@@ -75,8 +77,7 @@ public class AuthController {
         if (!authService.isValid(token)) {
             return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
         }
-
-        authService.updateUserPw(passwordResetRequestDto.getUserEmail(), newPassword);
+        authService.resetUserPw(passwordResetRequestDto.getUserEmail(), newPassword);
         return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }

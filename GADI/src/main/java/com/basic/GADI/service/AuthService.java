@@ -59,11 +59,9 @@ public class AuthService {
             throw new BusinessException("이미 존재하는 아이디입니다.", HttpStatus.NOT_FOUND);
         }
 
-        User registerUser = User.builder()
-                .userEmail(registerRequestDto.getUserEmail())
-                .userName(registerRequestDto.getUserName())
-                .userPw(passwordEncoder.encode(registerRequestDto.getUserPw()))
-                .build();
+        String encodedPw = passwordEncoder.encode(registerRequestDto.getUserPw());
+
+        User registerUser = registerRequestDto.toRegisterRequestDto(encodedPw);
 
         userRepository.save(registerUser);
         String accessToken = jwtUtil.createAccessToken(registerUser);
@@ -151,7 +149,8 @@ public class AuthService {
         MimeMessage createMail = createAuthMail(sendEmail, authCode);
         try {
             javaMailSender.send(createMail);
-            session.setAttribute(sendEmail, authCode);
+            session.setAttribute("sendEmail", sendEmail);
+            session.setAttribute("authCode", authCode);
             session.setMaxInactiveInterval(180);
             return true;
         } catch (MailException e) {
@@ -214,11 +213,11 @@ public class AuthService {
     }
 
     @Transactional
-    public void updateUserPw(String userEmail, String newPassword) {
+    public void resetUserPw(String userEmail, String newPassword) {
         Optional<User> user = userRepository.findByUserEmail(userEmail);
         if (user.isPresent()) {
             User updateUser = user.get();
-            updateUser.setUserPw(passwordEncoder.encode(newPassword));
+            updateUser.resetUserPw(passwordEncoder.encode(newPassword));
             userRepository.save(updateUser);
         } else {
             throw new BusinessException("등록되지 않은 사용자 입니다.",  HttpStatus.NOT_FOUND);

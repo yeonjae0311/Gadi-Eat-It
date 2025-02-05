@@ -25,13 +25,17 @@ public class User {
     @Column(nullable = false)
     private String userName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String userEmail;
 
     @Column(nullable = false)
     private String userPw;
 
     private String userFile;
+
+    private String userPhone;
+
+    private String userBirth;
 
     @Column(nullable = false)
     @ColumnDefault("'U'")
@@ -40,4 +44,16 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Favorites> favorites;
 
+
+    public void updateMyInfo(String userName, String userFile,
+                             String userPhone, String userBirth) {
+        this.userName = userName;
+        this.userFile = userFile;
+        this.userPhone = userPhone;
+        this.userBirth = userBirth;
+    }
+
+    public void resetUserPw(String encodedPw) {
+        this.userPw = encodedPw;
+    }
 }
