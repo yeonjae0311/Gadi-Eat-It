@@ -25,8 +25,7 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
     Page<Restaurants> findAllRestaurants(Pageable pageable);
 
     @EntityGraph(attributePaths = {"favorites", "ratings"})
-    @Query("SELECT r FROM Restaurants r WHERE r.resId IN :restaurantIds")
-    List<Restaurants> findAllWithFavoritesAndRatings(@Param("restaurantIds") List<Long> restaurantIds);
+    List<Restaurants> findByResIdIn(List<Long> restaurantIds);
 
   /*  @Query("SELECT r FROM Restaurants r JOIN r.favorites f WHERE f.user.userId = :userId")
     List<Restaurants> findFavoriteRestaurantsByUserId(@Param("userId") Long userId);*/
