@@ -1,9 +1,11 @@
 package com.basic.GADI.controller;
 
+import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +33,8 @@ public class AdminController {
     }*/
 
     @GetMapping("/res_list")
-    public List<ResDetailResponseDto> resList() {
-        return adminService.findResList();
+    public PageResponseDto<ResDetailResponseDto> resList(Pageable pageable) {
+        return adminService.findResList(pageable);
     }
 
     @GetMapping("/res_detail")
