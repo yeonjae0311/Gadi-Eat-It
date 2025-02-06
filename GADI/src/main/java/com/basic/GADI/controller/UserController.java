@@ -7,10 +7,10 @@ import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -23,8 +23,8 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/favorites")
-    public ResponseEntity<List<Restaurants>> favoriteRestaurantsList(@RequestParam Long userId) {
-        List<Restaurants> favoriteRestaurants = resRepository.findEntityGraphByFavoritesUserUserId(userId);
+    public ResponseEntity<Page<Restaurants>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {
+        Page<Restaurants> favoriteRestaurants = resRepository.findEntityGraphByFavoritesUserUserId(userId, pageable);
         return ResponseEntity.ok(favoriteRestaurants);
     }
 

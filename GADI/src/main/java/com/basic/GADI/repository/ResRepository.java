@@ -32,5 +32,5 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
     List<Restaurants> findFavoriteRestaurantsByUserId(@Param("userId") Long userId);*/
 
     @EntityGraph(attributePaths = {"favorites"})
-    List<Restaurants> findEntityGraphByFavoritesUserUserId(@Param("userId") Long userId);
+    Page<Restaurants> findEntityGraphByFavoritesUserUserId(@Param("userId") Long userId, Pageable pageable);
 }
