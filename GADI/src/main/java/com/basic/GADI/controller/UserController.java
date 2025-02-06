@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/favorites")
     public ResponseEntity<List<Restaurants>> favoriteRestaurantsList(@RequestParam Long userId) {
-        List<Restaurants> favoriteRestaurants = resRepository.findFavoriteRestaurantsByUserId(userId);
+        List<Restaurants> favoriteRestaurants = resRepository.findEntityGraphByFavoritesUserUserId(userId);
         return ResponseEntity.ok(favoriteRestaurants);
     }
 
