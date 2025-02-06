@@ -8,6 +8,7 @@ import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.repository.RatingsRepository;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -47,7 +49,7 @@ public class AdminService {
             list.add(restaurantsId.getResId());
         }
 
-        List<Restaurants> restaurantsWithDetails = resRepository.findByResIdIn(list);
+        List<Restaurants> restaurantsWithDetails = resRepository.findByResDeleteAndResIdIn("N", list);
 
         List<ResDetailResponseDto> resList = new ArrayList<>();
 
@@ -62,8 +64,16 @@ public class AdminService {
 
     @Transactional
     public ResDetailResponseDto findResDetail(Long resId) {
-        Restaurants resDetail =  resRepository.findEntityGraphByResId(resId)
+        Restaurants resDetail =  resRepository.findEntityGraphByResDeleteAndResId("N", resId)
                 .orElseThrow(()-> new BusinessException("해당하는 음식점을 찾을 수 없습니다."));
         return new ResDetailResponseDto(resDetail);
+    }
+
+    @Transactional
+    public void deleteRes(Long resId) {
+        Optional<Restaurants> resOp = resRepository.findByResId(resId);
+        Restaurants res = resOp.orElseThrow(() -> new EntityNotFoundException("해당하는 음식점을 찾을 수 없습니다."));
+        res.setResDelete("Y");
+        resRepository.save(res);
     }
 }
