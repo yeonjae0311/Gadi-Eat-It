@@ -47,7 +47,7 @@ public class AdminService {
             list.add(restaurantsId.getResId());
         }
 
-        List<Restaurants> restaurantsWithDetails = resRepository.findAllWithFavoritesAndRatings(list);
+        List<Restaurants> restaurantsWithDetails = resRepository.findByResIdIn(list);
 
         List<ResDetailResponseDto> resList = new ArrayList<>();
 
