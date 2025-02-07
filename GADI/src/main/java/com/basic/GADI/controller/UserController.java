@@ -2,12 +2,12 @@ package com.basic.GADI.controller;
 
 import com.basic.GADI.dto.request.MyInfoRequestDto;
 import com.basic.GADI.dto.response.MyInfoResponseDto;
-import com.basic.GADI.entity.Restaurants;
+import com.basic.GADI.dto.response.PageResponseDto;
+import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +23,9 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/favorites")
-    public ResponseEntity<Page<Restaurants>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {
-        Page<Restaurants> favoriteRestaurants = resRepository.findEntityGraphByFavoritesUserUserId(userId, pageable);
-        return ResponseEntity.ok(favoriteRestaurants);
+    public ResponseEntity<PageResponseDto<ResDetailResponseDto>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {
+        PageResponseDto<ResDetailResponseDto> favoriteRestaurants = userService.favoriteRestaurantsList(userId, pageable);
+        return ResponseEntity.ok().body(favoriteRestaurants);
     }
 
     @GetMapping("/my_info")
