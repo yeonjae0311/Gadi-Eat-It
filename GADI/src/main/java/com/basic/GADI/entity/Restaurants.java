@@ -40,4 +40,7 @@ public class Restaurants {
     @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Favorites> favorites;
 
+    public void setResDelete(String resDelete) {
+        this.resDelete = resDelete;
+    }
 }

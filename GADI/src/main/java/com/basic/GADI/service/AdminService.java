@@ -47,7 +47,7 @@ public class AdminService {
             list.add(restaurantsId.getResId());
         }
 
-        List<Restaurants> restaurantsWithDetails = resRepository.findByResIdIn(list);
+        List<Restaurants> restaurantsWithDetails = resRepository.findByResDeleteAndResIdIn("N", list);
 
         List<ResDetailResponseDto> resList = new ArrayList<>();
 
@@ -62,8 +62,16 @@ public class AdminService {
 
     @Transactional
     public ResDetailResponseDto findResDetail(Long resId) {
-        Restaurants resDetail =  resRepository.findByResId(resId)
+        Restaurants resDetail =  resRepository.findEntityGraphByResDeleteAndResId("N", resId)
                 .orElseThrow(()-> new BusinessException("해당하는 음식점을 찾을 수 없습니다."));
         return new ResDetailResponseDto(resDetail);
+    }
+
+    @Transactional
+    public void deleteRes(Long resId) {
+        Optional<Restaurants> resOp = resRepository.findByResId(resId);
+        Restaurants res = resOp.orElseThrow(() -> new EntityNotFoundException("해당하는 음식점을 찾을 수 없습니다."));
+        res.setResDelete("Y");
+        resRepository.save(res);
     }
 }
