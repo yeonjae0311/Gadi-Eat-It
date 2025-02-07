@@ -32,10 +32,9 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
   /*  @Query("SELECT r FROM Restaurants r JOIN r.favorites f WHERE f.user.userId = :userId")
     List<Restaurants> findFavoriteRestaurantsByUserId(@Param("userId") Long userId);*/
 
-    // 유저별 즐겨찾기 조회
-    @EntityGraph(attributePaths = {"favorites"})
-    Page<Restaurants> findByFavoritesUserUserId(Long userId, Pageable pageable);
+    // 유저별 즐겨찾기 레스토랑 조회
+    Page<Restaurants> findByResIdIn(List<Long> myFavoriteResIds, Pageable pageable);
 
-    // 레스토랑 단건 조회(레스토랑 entity만 포함)
+    // 레스토랑 단건 조회(레스토랑 entity 만 포함)
     Optional<Restaurants> findByResId(Long resId);
 }
