@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/favorites")
     public ResponseEntity<PageResponseDto<ResDetailResponseDto>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {
-        PageResponseDto<ResDetailResponseDto> favoriteRestaurants = userService.favoriteRestaurantsList(userId, pageable);
+        PageResponseDto<ResDetailResponseDto> favoriteRestaurants = userService.myFavoriteRestaurantsList(userId, pageable);
         return ResponseEntity.ok().body(favoriteRestaurants);
     }
 

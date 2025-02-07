@@ -4,6 +4,7 @@ import com.basic.GADI.dto.request.MyInfoRequestDto;
 import com.basic.GADI.dto.response.MyInfoResponseDto;
 import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
+import com.basic.GADI.entity.Favorites;
 import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
@@ -19,9 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +59,7 @@ public class UserService {
         }
     }
 
-    public PageResponseDto<ResDetailResponseDto> favoriteRestaurantsList(Long userId, Pageable pageable) {
+   /* public PageResponseDto<ResDetailResponseDto> favoriteRestaurantsList(Long userId, Pageable pageable) {
 
         Page<Restaurants> myFavoriteResList = resRepository.findByFavoritesUserUserId(userId, pageable);
 
@@ -71,5 +70,25 @@ public class UserService {
         Page<ResDetailResponseDto> page = new PageImpl<>(resList, pageable, myFavoriteResList.getTotalElements());
 
         return new PageResponseDto<>(page);
+    }*/
+
+    public PageResponseDto<ResDetailResponseDto> myFavoriteRestaurantsList (Long userId, Pageable pageable) {
+        Page<Favorites> myFavoriteList = favoriteRepository.findByUserUserId(userId, pageable);
+        List<Long> myFavoriteResIds = new ArrayList<>();
+        for (Favorites favorite : myFavoriteList) {
+            myFavoriteResIds.add(favorite.getRestaurants().getResId());
+        }
+        Page<Restaurants> myRestaurants = resRepository.findByResIdIn(myFavoriteResIds, pageable);
+
+        List<ResDetailResponseDto>  myRestaurantList = new ArrayList<>();
+        for (Restaurants restaurant : myRestaurants.getContent()) {
+            myRestaurantList.add(new ResDetailResponseDto(restaurant));
+        }
+
+        Page<ResDetailResponseDto> page = new PageImpl<>(myRestaurantList, pageable, myRestaurants.getTotalElements());
+
+        return new PageResponseDto<>(page);
+
+
     }
 }
