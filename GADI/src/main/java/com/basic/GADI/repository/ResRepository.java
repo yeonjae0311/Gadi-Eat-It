@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
     Optional<Restaurants> findById(@Nonnull Long resId);*/
 
     @EntityGraph(attributePaths = {"ratings"})
-    Optional<Restaurants> findEntityGraphByResDeleteAndResId(String resDelete, Long resId);
+    Optional<Restaurants> findByResDeleteAndResId(String resDelete, Long resId);
 
     @Query("SELECT r FROM Restaurants r")
     Page<Restaurants> findAllRestaurants(Pageable pageable);
