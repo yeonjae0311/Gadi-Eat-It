@@ -7,7 +7,6 @@ import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
-import com.basic.GADI.repository.FavoriteRepository;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -33,9 +32,6 @@ public class UserService {
     @Autowired
     ResRepository resRepository;
 
-    @Autowired
-    FavoriteRepository favoriteRepository;
-
     public MyInfoResponseDto findMyInfo(String userEmail) {
         Optional<User> findOneUser = userRepository.findByUserEmail(userEmail);
         if (findOneUser.isEmpty()) {
@@ -60,6 +56,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public PageResponseDto<ResDetailResponseDto> favoriteRestaurantsList(Long userId, Pageable pageable) {
 
         Page<Restaurants> myFavoriteResList = resRepository.findByFavoritesUserUserId(userId, pageable);

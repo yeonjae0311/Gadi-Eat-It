@@ -1,6 +1,7 @@
 package com.basic.GADI.repository;
 
 import com.basic.GADI.entity.Restaurants;
+import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -13,10 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface ResRepository extends JpaRepository<Restaurants, Long> {
-   /* @Query("SELECT DISTINCT r FROM Restaurants r LEFT JOIN FETCH r.ratings WHERE r.resId = :resId")
-    @Nonnull
-    Optional<Restaurants> findById(@Nonnull Long resId);*/
-
     // 레스토랑 단건 조회(별점 포함)
     @EntityGraph(attributePaths = {"ratings"})
     Optional<Restaurants> findByResDeleteAndResId(String resDelete, Long resId);
@@ -28,6 +25,9 @@ public interface ResRepository extends JpaRepository<Restaurants, Long> {
     // 레스토랑 전체 리스트 조회 2 (레스토랑 아이디로 즐겨찾기, 별점 조회)
     @EntityGraph(attributePaths = {"favorites", "ratings"})
     List<Restaurants> findByResDeleteAndResIdIn(String resDelete, List<Long> restaurantIds);
+
+    @Nonnull
+    List<Restaurants> findAll();
 
   /*  @Query("SELECT r FROM Restaurants r JOIN r.favorites f WHERE f.user.userId = :userId")
     List<Restaurants> findFavoriteRestaurantsByUserId(@Param("userId") Long userId);*/

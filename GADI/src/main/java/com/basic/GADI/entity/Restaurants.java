@@ -34,6 +34,12 @@ public class Restaurants {
     @ColumnDefault("'N'")
     private String resDelete;
 
+    @Column(columnDefinition = "double")
+    private double resLatitude;
+
+    @Column(columnDefinition = "double")
+    private double resLongitude;
+
     @OneToMany(mappedBy = "restaurants", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ratings> ratings;
 
