@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import TestView from '@/views/TestView.vue'
 import MapView from '@/views/MapView.vue'
 import AboutView from '../views/AboutView.vue'
+import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,12 @@ const router = createRouter({
       name: 'map',
       component: MapView,
     },
+    {
+      path : '/update',
+      name : 'update',
+      component: UpdateMyInfoView,
+
+    }
   ],
 })
 

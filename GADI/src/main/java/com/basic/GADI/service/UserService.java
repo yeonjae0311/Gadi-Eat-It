@@ -47,6 +47,7 @@ public class UserService {
     private String fileUploadPath;
 
     public MyInfoResponseDto findMyInfo(String userEmail) {
+
         Optional<User> findOneUser = userRepository.findByUserEmail(userEmail);
         if (findOneUser.isEmpty()) {
             throw new BusinessException("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
