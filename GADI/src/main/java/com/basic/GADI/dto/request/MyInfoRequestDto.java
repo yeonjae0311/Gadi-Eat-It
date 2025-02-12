@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +15,7 @@ public class MyInfoRequestDto {
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String userName;
 
-    private String userFile;
+    private MultipartFile file;
 
     @Pattern(regexp = "^010-[0-9]{4}-[0-9]{4}$", message = "전화번호 형식은 010-1234-5678 입니다.")
     private String userPhone;
