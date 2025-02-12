@@ -31,7 +31,7 @@ public class RegisterRequestDto {
 
 
     // Dto 에서 Entity 로 변환
-    public User toRegisterRequestDto(String encodedPw) {
+    public User toEntity(String encodedPw) {
         return User.builder()
                 .userEmail(userEmail)
                 .userName(userName)

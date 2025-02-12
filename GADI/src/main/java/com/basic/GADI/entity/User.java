@@ -46,7 +46,7 @@ public class User {
 
 
     public void updateMyInfo(String userName, String userFile,
-                             String userPhone, String userBirth) {
+                             String userPhone) {
         this.userName = userName;
         this.userFile = userFile;
         this.userPhone = userPhone;

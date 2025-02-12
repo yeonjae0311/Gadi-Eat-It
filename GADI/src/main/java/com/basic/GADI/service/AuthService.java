@@ -61,7 +61,7 @@ public class AuthService {
 
         String encodedPw = passwordEncoder.encode(registerRequestDto.getUserPw());
 
-        User registerUser = registerRequestDto.toRegisterRequestDto(encodedPw);
+        User registerUser = registerRequestDto.toEntity(encodedPw);
 
         userRepository.save(registerUser);
         String accessToken = jwtUtil.createAccessToken(registerUser);
