@@ -8,6 +8,7 @@ import com.basic.GADI.entity.Favorites;
 import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.exception.BusinessException;
+import com.basic.GADI.repository.FavoriteRepository;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,11 @@ public class UserService {
 
     @Autowired
     ResRepository resRepository;
+
+    @Autowired
+    FavoriteRepository favoriteRepository;
+
+
 
     public MyInfoResponseDto findMyInfo(String userEmail) {
         Optional<User> findOneUser = userRepository.findByUserEmail(userEmail);
