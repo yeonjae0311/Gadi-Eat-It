@@ -6,6 +6,7 @@ import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/my_info")
-    public ResponseEntity<MyInfoResponseDto> showMyInfo(@RequestParam String userEmail) {
+    public ResponseEntity<MyInfoResponseDto> showMyInfo(HttpServletRequest request) {
+        String userEmail = (String) request.getAttribute("userEmail");
         return ResponseEntity.ok(userService.findMyInfo(userEmail));
     }
 

@@ -54,7 +54,7 @@ public class JwtUtil {
 
     //PayLoad의 "sub": "user@aa.com", subject에 매핑된 Email 주소 추출하기
     public String extractUserEmail(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractClaim(token, claims -> claims.get("userEmail", String.class));
     }
 
     public Date extractExpiration(String token) {
