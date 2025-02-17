@@ -17,20 +17,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        System.out.println("hihi 방가웡");
         String authHeader = request.getHeader("Authorization");
         String token = null;
-        String userEmail = null;
+        String userId = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            userEmail = jwtUtil.extractUserEmail(token);
+            userId = jwtUtil.extractUserId(token);
         }
 
         try {
             // JWT 검증 및 파싱
             jwtUtil.validateToken(token);
             // 사용자 정보를 request에 추가 (optional)
-            request.setAttribute("userEmail", userEmail);
+            request.setAttribute("userId", userId);
         } catch (Exception e) {
             response.getWriter().write("Invalid or expired token");
         }
