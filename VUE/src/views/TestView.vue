@@ -26,6 +26,7 @@
           </p>
         </form>
       </div>
+      <button>토큰확인</button>
     </div>
   </main>
 </template>

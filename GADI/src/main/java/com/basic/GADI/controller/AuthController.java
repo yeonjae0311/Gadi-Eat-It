@@ -33,8 +33,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", produces = "application/json")
-    public ResponseEntity.BodyBuilder register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
-        return ResponseEntity.status(HttpStatus.OK);
+    public ResponseEntity<RegisterRequestDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
+        return ResponseEntity.status(HttpStatus.OK).body(registerRequestDto);
     }
 
     @GetMapping("/{email}")
