@@ -13,7 +13,6 @@ import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,14 +33,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    ResRepository resRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    FavoriteRepository favoriteRepository;
+    private final ResRepository resRepository;
+
+    private final FavoriteRepository favoriteRepository;
 
     @Value("${file.upload.path}")
     private String fileUploadPath;

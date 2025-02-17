@@ -4,17 +4,17 @@ import com.basic.GADI.dto.response.MarkerListResponseDto;
 import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.repository.ResRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MainService {
 
-    @Autowired
-    ResRepository resRepository;
+    private final ResRepository resRepository;
 
     @Transactional
     public List<MarkerListResponseDto> selectMarkerList() {
