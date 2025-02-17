@@ -45,11 +45,9 @@ public class UserService {
 
     public MyInfoResponseDto findMyInfo(String userEmail) {
 
-        Optional<User> findOneUser = userRepository.findByUserEmail(userEmail);
-        if (findOneUser.isEmpty()) {
-            throw new BusinessException("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-        }
-        return MyInfoResponseDto.fromUser(findOneUser.get());
+        User findOneUser = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(()->new BusinessException("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+        return MyInfoResponseDto.fromUser(findOneUser);
     }
 
     @Transactional
@@ -87,7 +85,6 @@ public class UserService {
             } catch (IOException e) {
                 throw new BusinessException("이미지 저장 실패 !", HttpStatus.NOT_FOUND);
             }
-
             user.setUserFile(filePath.toString());
 
         } else {

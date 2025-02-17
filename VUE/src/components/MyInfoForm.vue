@@ -30,9 +30,12 @@
                 </div>
             </div>
         </div>
-        <button class="update" @click="toggleUpdate">
-            {{ isUpdateMode ? 'show' : 'upate' }}
-        </button>
+        <div class="form-btn">
+            <button class="updateForm" @click="toggleUpdate">
+                {{ isUpdateMode ? '취소' : '수정하기' }}
+            </button>
+            <button class="update" v-if="isUpdateMode">수정 완료</button>
+        </div>    
     </div>
 </template>
 
@@ -44,105 +47,25 @@ import { onMounted, ref } from 'vue';
 const store = useMyInfoStore()
 const { myInfos } = storeToRefs(store)
 
-// 수정 모드 여부 (false : 읽기 모드, true : 수정 모드드)
+// 수정 모드 여부 (false : 읽기 모드, true : 수정 모드)
 const isUpdateMode = ref(false)
-
-
-onMounted(() => {
-    store.loadMyInfos()
-})
 
 const toggleUpdate = () => {
     isUpdateMode.value = !isUpdateMode.value
 }
 
+onMounted(() => {
+    store.loadMyInfos()
+})
+
+
+
+
+
+
+
 </script>
 
 <style scoped>
-.myInfoForm {
-    width: 70%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-}
-
-.myInfoForm div {
-    margin-bottom: 10px;
-}
-
-.myInfoForm label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.myInfoForm p,
-.myInfoForm input {
-    font-size: 16px;
-    padding: 8px;
-    width: 100%;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-}
-
-.myInfoForm p {
-    background-color: #f7f7f7;
-}
-
-.form-contents {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.profile-img {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-info {
-    padding: 20px;
-    width: 70%;
-}
-
-.profileImg {
-    width: 300px;
-    height: 300px;
-}
-
-.upload {
-    width: 50%;
-    padding: 10px;
-    background-color: #aef7d2;
-    color: rgb(5, 0, 0);
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
- .update {
-    width: 100%;
-    padding: 10px;
-    background-color: #81e6b3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-
-.update:hover {
-    background-color: #83e688;
-}
+@import '@/assets/myinfoform.css';
 </style>
