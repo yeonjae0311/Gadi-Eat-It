@@ -30,8 +30,8 @@ public class UserController {
 
     @GetMapping("/my_info")
     public ResponseEntity<MyInfoResponseDto> showMyInfo(HttpServletRequest request) {
-        String userEmail = (String) request.getAttribute("userEmail");
-        return ResponseEntity.ok(userService.findMyInfo(userEmail));
+        long userId = (Long) request.getAttribute("userId");
+        return ResponseEntity.ok(userService.findMyInfo(userId));
     }
 
     @PatchMapping("/my_info/update")

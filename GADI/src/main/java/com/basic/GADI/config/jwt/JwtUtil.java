@@ -31,7 +31,7 @@ public class JwtUtil {
 
     public String createRefreshToken(User user) {
         return Jwts.builder()
-                .claim("userEmail", user.getUserEmail())
+                .claim("userId", user.getUserId())
                 .expiration(new Date(System.currentTimeMillis() + refreshExpiration * 1000 * 60 * 60 * 2L))
                 .signWith(Keys.hmacShaKeyFor(signatureKey.getBytes(StandardCharsets.UTF_8)))
                 .compact();
@@ -53,8 +53,8 @@ public class JwtUtil {
     }
 
     //PayLoad의 "sub": "user@aa.com", subject에 매핑된 Email 주소 추출하기
-    public String extractUserEmail(String token) {
-        return extractClaim(token, claims -> claims.get("userEmail", String.class));
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", String.class));
     }
 
     public Date extractExpiration(String token) {
@@ -68,7 +68,7 @@ public class JwtUtil {
     //JWT 토큰 검증
     public Boolean validateToken(String token, User user) {
         //토큰에 포함된 email 주소 추출
-        final String username = extractUserEmail(token);
+        final String username = extractUserId(token);
         //UserDetails 포함된 email 주소와 토큰에 포함된 email 주소 비교
         return (username.equals(user.getUserEmail()) && !isTokenExpired(token));
     }
