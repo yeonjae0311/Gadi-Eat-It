@@ -29,9 +29,6 @@ public class RegisterRequestDto {
     @Pattern(regexp = "^(19\\d{2}|20\\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$", message = "생년월일 형식은 YYYY-MM-DD 입니다.")
     private String userBirth;
 
-    private String userFile;
-
-
     // Dto 에서 Entity 로 변환
     public User toEntity(String encodedPw) {
         return User.builder()
@@ -40,7 +37,6 @@ public class RegisterRequestDto {
                 .userPw(encodedPw)
                 .userPhone(userPhone)
                 .userBirth(userBirth)
-                .userFile("/upload/default_profile.png")
                 .build();
     }
 }
