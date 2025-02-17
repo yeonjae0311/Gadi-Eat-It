@@ -66,6 +66,9 @@ const toggleUpdate = () => {
 onMounted(() => {
   store.loadMyInfos()
 })
+
+
+
 </script>
 
 <style scoped>

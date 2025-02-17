@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,40 +50,42 @@ public class UserService {
     }
 
     @Transactional
-    public void updateMyInfo(String userEmail, MyInfoRequestDto requestDto) {
+    public void updateMyInfo(String userEmail, MyInfoRequestDto requestDto, MultipartFile file) {
         User user = userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
+
         user.updateMyInfo(
                 requestDto.getUserName(),
                 requestDto.getUserPhone(),
                 requestDto.getUserBirth()
         );
 
-        // 원본 파일 확장자 유지하기 위한 코드
-        String originalFileName = requestDto.getFile().getOriginalFilename(); // 원본 파일명
-        String extension = (originalFileName != null && originalFileName.contains(".")) ? originalFileName.substring(originalFileName.lastIndexOf(".")) : ""; // 확장자 추출
+        if (file != null && !file.isEmpty()) {
+            // 원본 파일 확장자 유지하기 위한 코드
+            String originalFileName = requestDto.getFile().getOriginalFilename(); // 원본 파일명
+            String extension = (originalFileName != null && originalFileName.contains(".")) ? originalFileName.substring(originalFileName.lastIndexOf(".")) : ""; // 확장자 추출
 
-        // 업로드 폴더 확인 및 생성
-        Path uploadFolder = Paths.get(fileUploadPath);
-        if (!Files.exists(uploadFolder)) {
-            try {
-                Files.createDirectories(uploadFolder);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            // 업로드 폴더 확인 및 생성
+            Path uploadFolder = Paths.get(fileUploadPath);
+            if (!Files.exists(uploadFolder)) {
+                try {
+                    Files.createDirectories(uploadFolder);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
+            // 파일 경로 설정
+            UUID uuid = UUID.randomUUID();
+            Path filePath = uploadFolder.resolve(uuid + extension);
+
+            // 파일 저장
+            try {
+                Files.write(filePath, file.getBytes());
+            } catch (IOException e) {
+                throw new BusinessException("이미지 저장 실패 !", HttpStatus.NOT_FOUND);
+            }
+            user.setUserFile(filePath.toString());
         }
-
-        // 파일 경로 설정
-        UUID uuid = UUID.randomUUID();
-        Path filePath = uploadFolder.resolve(uuid + extension);
-
-        // 파일 저장
-        try {
-            Files.write(filePath, requestDto.getFile().getBytes());
-        } catch (IOException e) {
-            throw new BusinessException("이미지 저장 실패 !", HttpStatus.NOT_FOUND);
-        }
-        user.setUserFile(filePath.toString());
-
     }
 
    /* public PageResponseDto<ResDetailResponseDto> favoriteRestaurantsList(Long userId, Pageable pageable) {

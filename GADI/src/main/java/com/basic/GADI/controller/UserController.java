@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -34,8 +35,10 @@ public class UserController {
     }
 
     @PatchMapping("/my_info/update")
-    public ResponseEntity<String> updateMyInfo(@RequestParam String userEmail, @RequestBody @Valid MyInfoRequestDto requestDto) {
-        userService.updateMyInfo(userEmail, requestDto);
+    public ResponseEntity<String> updateMyInfo(@RequestParam String userEmail,
+                                               @RequestBody @Valid MyInfoRequestDto requestDto,
+                                               @RequestPart(value = "file", required = false)MultipartFile file) {
+        userService.updateMyInfo(userEmail, requestDto, file);
         return ResponseEntity.ok().body("내 정보가 수정되었습니다.");
     }
 
