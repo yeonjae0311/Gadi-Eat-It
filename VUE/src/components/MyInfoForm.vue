@@ -1,36 +1,38 @@
 <template>
     <div class="myInfoForm">
-        <div>
-            <h2>MyInfo</h2>
+        <div class="form-title">
+            <h2>MyInfo</h2> 
         </div>
-        <div>
-            <label>아이디</label> 
-            <p>{{ myInfos.userEmail }}</p>
+        <div class="form-contents">
+            <div class="profile-img">
+                <img class="profileImg" :src="`http://localhost:8080${myInfos.userFile}`" alt="프로필 이미지">
+                <button v-if="isUpdateMode" class="upload" type="submit">프로필 사진 업로드</button>
+            </div>
+            <div class="profile-info">
+                <div>
+                    <label>아이디</label> 
+                    <p>{{ myInfos.userEmail }}</p>
+                </div>
+                <div>
+                    <label>이름</label>
+                    <input v-if="isUpdateMode" v-model="myInfos.userName" type="text">
+                    <p v-else>{{ myInfos.userName }}</p>
+                </div>
+                <div>
+                    <label>생년월일</label>
+                    <input v-if="isUpdateMode" v-model="myInfos.userBirth" type="text">
+                    <p v-else>{{ myInfos.userBirth }}</p>
+                </div>
+                <div>
+                    <label>전화번호</label>
+                    <input v-if="isUpdateMode" v-model="myInfos.userPhone" type="text">
+                    <p v-else>{{ myInfos.userPhone }}</p>
+                </div>
+            </div>
         </div>
-        <div>
-            <label>이름</label>
-            <input v-if="isUpdateMode" v-model="myInfos.userName" type="text">
-            <p v-else>{{ myInfos.userName }}</p>
-        </div>
-        <div>
-            <label>생년월일</label>
-            <input v-if="isUpdateMode" v-model="myInfos.userBirth" type="text">
-            <p v-else>{{ myInfos.userBirth }}</p>
-        </div>
-        <div>
-            <label>전화번호</label>
-            <input v-if="isUpdateMode" v-model="myInfos.userPhone" type="text">
-            <p v-else>{{ myInfos.userPhone }}</p>
-        </div>
-        <div>
-            <label>프로필 이미지</label>
-            <input v-if="isUpdateMode" v-model="myInfos.userFIle" type="text">
-            <p v-else>{{ myInfos.userFIle }}</p>
-        </div>
-        <button @click="toggleUpdate">
+        <button class="update" @click="toggleUpdate">
             {{ isUpdateMode ? 'show' : 'upate' }}
         </button>
-        
     </div>
 </template>
 
@@ -57,8 +59,8 @@ const toggleUpdate = () => {
 </script>
 
 <style scoped>
-.myInfoForm {
-    max-width: 500px;
+.myInfoForm { 
+    width: 70%;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -91,8 +93,44 @@ const toggleUpdate = () => {
     background-color: #f7f7f7;
 }
 
-.myInfoForm button {
-    width: 30%;
+.form-contents {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+} 
+
+.profile-img {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-info {
+    padding: 20px;
+    width: 70%;
+}
+
+.profileImg {
+    width: 300px;
+    height: 300px;
+}
+
+.upload {
+    width: 50%; 
+    padding: 10px;
+    background-color: #aef7d2;
+    color: rgb(5, 0, 0);
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+ .update {
+    width: 100%; 
     padding: 10px;
     background-color: #81e6b3;
     color: white;
@@ -103,7 +141,8 @@ const toggleUpdate = () => {
     margin-top: 20px;
 }
 
-.myInfoForm button:hover {
+
+.update:hover {
     background-color: #83e688;
 }
 </style>
