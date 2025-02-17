@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findMyInfo(userEmail));
     }
 
-    @PostMapping("/my_info/update")
+    @PatchMapping("/my_info/update")
     public ResponseEntity<String> updateMyInfo(@RequestParam String userEmail, @RequestBody @Valid MyInfoRequestDto requestDto) {
         userService.updateMyInfo(userEmail, requestDto);
         return ResponseEntity.ok().body("내 정보가 수정되었습니다.");
