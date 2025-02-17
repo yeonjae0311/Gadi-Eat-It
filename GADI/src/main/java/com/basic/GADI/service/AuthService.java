@@ -74,6 +74,9 @@ public class AuthService {
         String accessToken = "";
         String refreshToken = "";
 
+        accessToken =  jwtUtil.createAccessToken(user);
+        refreshToken = jwtUtil.createRefreshToken(user);
+
         return TokenResponseDto.builder()
                 .AccessToken(accessToken)
                 .RefreshToken(refreshToken)

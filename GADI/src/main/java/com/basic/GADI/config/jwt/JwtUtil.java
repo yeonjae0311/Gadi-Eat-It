@@ -53,7 +53,7 @@ public class JwtUtil {
     }
 
     //PayLoad의 "sub": "user@aa.com", subject에 매핑된 Email 주소 추출하기
-    public String extractUsername(String token) {
+    public String extractUserEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -68,7 +68,7 @@ public class JwtUtil {
     //JWT 토큰 검증
     public Boolean validateToken(String token, User user) {
         //토큰에 포함된 email 주소 추출
-        final String username = extractUsername(token);
+        final String username = extractUserEmail(token);
         //UserDetails 포함된 email 주소와 토큰에 포함된 email 주소 비교
         return (username.equals(user.getUserEmail()) && !isTokenExpired(token));
     }

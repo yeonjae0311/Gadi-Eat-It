@@ -21,4 +21,5 @@ public class MainController {
     public ResponseEntity<List<MarkerListResponseDto>> markerList () {
         return ResponseEntity.ok(mainService.selectMarkerList());
     }
+
 }
