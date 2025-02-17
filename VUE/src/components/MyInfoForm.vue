@@ -5,7 +5,8 @@
         </div>
         <div class="form-contents">
             <div class="profile-img">
-                <img class="profileImg" :src="`http://localhost:8080${myInfos.userFile}`" alt="프로필 이미지">
+                <img class="profileImg" :src="myInfos.userFile ? `http://localhost:8080${myInfos.userFile}` : '/images/default_profile.png'" alt="프로필 이미지">
+
                 <button v-if="isUpdateMode" class="upload" type="submit">프로필 사진 업로드</button>
             </div>
             <div class="profile-info">
