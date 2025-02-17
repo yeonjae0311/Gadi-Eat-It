@@ -10,7 +10,6 @@ import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -27,8 +26,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
