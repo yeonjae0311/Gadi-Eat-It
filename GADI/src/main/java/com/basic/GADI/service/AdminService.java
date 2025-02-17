@@ -10,7 +10,7 @@ import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,16 +21,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ResRepository resRepository;
-
-    @Autowired
-    RatingsRepository ratingsRepository;
+    private final UserRepository userRepository;
+    private final ResRepository resRepository;
+    private final RatingsRepository ratingsRepository;
 
     @Transactional
     public List<User> findUserList() {
