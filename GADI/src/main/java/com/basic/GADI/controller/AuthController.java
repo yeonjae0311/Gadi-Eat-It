@@ -1,6 +1,7 @@
 
 package com.basic.GADI.controller;
 
+import com.basic.GADI.config.jwt.JwtUtil;
 import com.basic.GADI.dto.request.LoginRequestDto;
 import com.basic.GADI.dto.request.PasswordLinkRequestDto;
 import com.basic.GADI.dto.request.PasswordResetRequestDto;
@@ -8,6 +9,7 @@ import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AuthService;
+import io.jsonwebtoken.Jwt;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -24,6 +26,9 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> login (@RequestBody LoginRequestDto loginRequestDto) {
@@ -74,7 +79,7 @@ public class AuthController {
         String token = passwordResetRequestDto.getToken();
         String newPassword = passwordResetRequestDto.getUserPw();
 
-        if (!authService.isValid(token)) {
+        if (!jwtUtil.validateToken(token)) {
             return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
         }
         authService.resetUserPw(passwordResetRequestDto.getUserEmail(), newPassword);

@@ -1,7 +1,7 @@
 <template>
     <div class="myInfoForm">
         <div class="form-title">
-            <h2>MyInfo</h2> 
+            <h2>MyInfo</h2>
         </div>
         <div class="form-contents">
             <div class="profile-img">
@@ -10,7 +10,7 @@
             </div>
             <div class="profile-info">
                 <div>
-                    <label>아이디</label> 
+                    <label>아이디</label>
                     <p>{{ myInfos.userEmail }}</p>
                 </div>
                 <div>
@@ -42,13 +42,13 @@ import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 
 const store = useMyInfoStore()
-const { myInfos } = storeToRefs(store)  
+const { myInfos } = storeToRefs(store)
 
 // 수정 모드 여부 (false : 읽기 모드, true : 수정 모드드)
-const isUpdateMode = ref(false) 
+const isUpdateMode = ref(false)
 
 
-onMounted(() => {  
+onMounted(() => {
     store.loadMyInfos()
 })
 
@@ -59,7 +59,7 @@ const toggleUpdate = () => {
 </script>
 
 <style scoped>
-.myInfoForm { 
+.myInfoForm {
     width: 70%;
     margin: 0 auto;
     padding: 20px;
@@ -97,7 +97,7 @@ const toggleUpdate = () => {
     display: flex;
     flex-direction: row;
     align-items: center;
-} 
+}
 
 .profile-img {
     padding: 20px;
@@ -118,7 +118,7 @@ const toggleUpdate = () => {
 }
 
 .upload {
-    width: 50%; 
+    width: 50%;
     padding: 10px;
     background-color: #aef7d2;
     color: rgb(5, 0, 0);
@@ -130,7 +130,7 @@ const toggleUpdate = () => {
 }
 
  .update {
-    width: 100%; 
+    width: 100%;
     padding: 10px;
     background-color: #81e6b3;
     color: white;

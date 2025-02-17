@@ -1,6 +1,6 @@
 package com.basic.GADI.service;
 
-import com.basic.GADI.config.JwtUtil;
+import com.basic.GADI.config.jwt.JwtUtil;
 import com.basic.GADI.dto.request.LoginRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
@@ -11,6 +11,7 @@ import com.basic.GADI.repository.RefreshTokenRepository;
 import com.basic.GADI.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -25,6 +26,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -45,8 +48,7 @@ public class AuthService {
     private static String senderEmail;
 
     @Value("${jwt.secretKey}")
-    private String secretKey;
-
+    private String signatureKey;
 
     @Transactional
     public TokenResponseDto register(RegisterRequestDto registerRequestDto)  {
@@ -90,7 +92,7 @@ public class AuthService {
         String accessToken = "";
         String refreshToken = existingRefreshToken.getRefreshToken();
 
-        if(jwtUtil.isValidRefreshToken(refreshToken)) {
+        if(jwtUtil.validateToken(refreshToken)) {
             accessToken = jwtUtil.createAccessToken(user);
             return TokenResponseDto.builder()
                     .AccessToken(accessToken)
@@ -191,20 +193,10 @@ public class AuthService {
         return Jwts.builder()
                 .claim("sendEmail", sendEmail)
                 .claim("userId", userId)
-                .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(tokenTime)))
-                .signWith(JwtUtil.getSecretKey(secretKey), SignatureAlgorithm.HS256)
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plus(tokenTime)))
+                .signWith(Keys.hmacShaKeyFor(signatureKey.getBytes()))
                 .compact();
-    }
-
-
-    public boolean isValid(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(JwtUtil.getSecretKey(secretKey)).build().parseClaimsJws(token);
-            return true;
-        } catch (Exception exception) {
-             return false;
-        }
     }
 
     @Transactional

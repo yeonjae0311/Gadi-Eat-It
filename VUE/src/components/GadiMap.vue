@@ -97,7 +97,6 @@ const updateMarkers = () => {
   })
 
   markerCluster.setMarkers([...markers.value.values()])
-  console.log('📍 현재 화면에 보이는 마커 개수:', markers.value.size)
 }
 </script>
 
