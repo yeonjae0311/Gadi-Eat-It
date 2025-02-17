@@ -9,11 +9,10 @@ import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AuthService;
-import io.jsonwebtoken.Jwt;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +21,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    JwtUtil jwtUtil;
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> login (@RequestBody LoginRequestDto loginRequestDto) {
@@ -36,8 +33,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", produces = "application/json")
-    public ResponseEntity<TokenResponseDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
-        return ResponseEntity.status(HttpStatus.OK).body(authService.register(registerRequestDto));
+    public ResponseEntity.BodyBuilder register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
+        return ResponseEntity.status(HttpStatus.OK);
     }
 
     @GetMapping("/{email}")

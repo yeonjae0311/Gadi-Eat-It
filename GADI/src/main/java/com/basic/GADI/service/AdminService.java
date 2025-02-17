@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,8 +66,7 @@ public class AdminService {
 
     @Transactional
     public void deleteRes(Long resId) {
-        Optional<Restaurants> resOp = resRepository.findByResId(resId);
-        Restaurants res = resOp.orElseThrow(() -> new EntityNotFoundException("해당하는 음식점을 찾을 수 없습니다."));
+        Restaurants res = resRepository.findByResId(resId).orElseThrow(() -> new EntityNotFoundException("해당하는 음식점을 찾을 수 없습니다."));
         res.setResDelete("Y");
         resRepository.save(res);
     }

@@ -7,20 +7,18 @@ import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    ResRepository resRepository;
-
-    @Autowired
-    UserService userService;
+    private final ResRepository resRepository;
+    private final UserService userService;
 
     @GetMapping("/favorites")
     public ResponseEntity<PageResponseDto<ResDetailResponseDto>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {

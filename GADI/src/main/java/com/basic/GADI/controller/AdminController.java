@@ -4,7 +4,7 @@ import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    AdminService adminService;
+    private final AdminService adminService;
 
     @GetMapping("/user_list")
     public ResponseEntity<List<User>> userList () {
