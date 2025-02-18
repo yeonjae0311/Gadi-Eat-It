@@ -5,9 +5,26 @@
     </div>
     <div class="form-contents">
       <div class="profile-img">
-        <img class="profileImg" :src= "previewImg || ( myInfos.userFile? `http://localhost:8080${myInfos.userFile}` : '/images/default_profile.png')" alt="프로필 이미지"/>
-        <button v-if="isUpdateMode" class="upload" type="submit" @click="triggerFileUpload">프로필 사진 업로드</button>
-        <input type="file" ref="fileInput" style="display: none;" @change="handleFileUpload" accept="image/*"/>
+        <img
+          class="profileImg"
+          :src="
+            previewImg ||
+            (myInfos.userFile
+              ? `http://localhost:8080${myInfos.userFile}`
+              : '/images/default_profile.png')
+          "
+          alt="프로필 이미지"
+        />
+        <button v-if="isUpdateMode" class="upload" type="submit" @click="triggerFileUpload">
+          프로필 사진 업로드
+        </button>
+        <input
+          type="file"
+          ref="fileInput"
+          style="display: none"
+          @change="handleFileUpload"
+          accept="image/*"
+        />
       </div>
       <div class="profile-info">
         <div>
@@ -44,8 +61,7 @@
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import http from '@/common/http-common'  
-
+import http from '@/common/http-common'
 
 const store = useMyInfoStore()
 const { myInfos } = storeToRefs(store)
@@ -61,16 +77,14 @@ const previewImg = ref(null)
 const selectedImg = ref(null)
 const fileInput = ref(null)
 
-
-
 const triggerFileUpload = () => {
-  fileInput.value.click() 
+  fileInput.value.click()
 }
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
-    selectedImg.value = file   
+    selectedImg.value = file
 
     // 선택한 파일 미리보기로 보여주기
     const reader = new FileReader()
@@ -79,37 +93,37 @@ const handleFileUpload = (event) => {
     }
     reader.readAsDataURL(file)
   }
-} 
-
+}
 
 onMounted(() => {
-  store.loadMyInfos()  
+  console.log(myInfos)
+  store.loadMyInfos()
 })
 
-
-
 // 내 정보 수정
-const updateMyInfo = async () => { 
+const updateMyInfo = async () => {
   // 내 정보 수정 요청하기 위한 데이터 구성 (수정한 정보, 현재 사용자 정보, 프로필 이미지(있을 경우))
-  const formData = new FormData();
-  formData.append("myInfos", new Blob([JSON.stringify(myInfos.value)], {type: "application/json"}));    
+  const formData = new FormData()
+  formData.append(
+    'myInfos',
+    new Blob([JSON.stringify(myInfos.value)], { type: 'application/json' })
+  )
   if (selectedImg.value) {
-      formData.append("file", selectedImg.value);  
-    }
+    formData.append('file', selectedImg.value)
+  }
 
-  try {  
+  try {
     const res = await http.patch('/user/my_info/update', formData, {
       headers: {
-        Authorization:'Bearer '+ sessionStorage.getItem('access_token'),
-        "Content-Type": 'multipart/form-data'
+        Authorization: 'Bearer ' + sessionStorage.getItem('access_token'),
+        'Content-Type': 'multipart/form-data'
       }
     })
-    console.log(res.data)  
+    console.log(res.data)
   } catch (error) {
-    console.error("내정보 수정 실패 ! ", error)
+    console.error('내정보 수정 실패 ! ', error)
   }
-}  
-
+}
 </script>
 
 <style scoped>
