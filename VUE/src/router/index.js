@@ -3,6 +3,7 @@ import TestView from '@/views/TestView.vue'
 import MapView from '@/views/MapView.vue'
 import AboutView from '../views/AboutView.vue'
 import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
+import { useMyInfoStore } from '@/stores/useMyInfoStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,8 @@ router.beforeEach((to, from, next) => {
     alert('로그인이 필요한 페이지입니다.')
     next('/test')
   } else {
+    const store = useMyInfoStore()
+    store.loadMyInfos()
     next()
   }
 })

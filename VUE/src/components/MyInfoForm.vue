@@ -96,7 +96,6 @@ const handleFileUpload = (event) => {
 }
 
 onMounted(() => {
-  console.log(myInfos)
   store.loadMyInfos()
 })
 

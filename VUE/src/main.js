@@ -7,5 +7,6 @@ import axios from 'axios'
 import { createPinia } from 'pinia'
 
 const app = createApp(App)
+const pinia = createPinia()
 app.config.globalProperties.$axios = axios //전역변수로 설정 컴포넌트에서 this.$axios 호출할 수 있음
-app.use(router).use(createPinia()).mount('#app')
+app.use(router).use(pinia).mount('#app')
