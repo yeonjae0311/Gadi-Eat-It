@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,7 +47,7 @@ public class AuthService {
     private String signatureKey;
 
     @Transactional
-    public ResponseEntity.BodyBuilder register(RegisterRequestDto registerRequestDto)  {
+    public void register(RegisterRequestDto registerRequestDto)  {
         if (userRepository.existsByUserEmail(registerRequestDto.getUserEmail())) {
             throw new BusinessException("이미 존재하는 아이디입니다.", HttpStatus.NOT_FOUND);
         }
@@ -57,8 +56,6 @@ public class AuthService {
         User registerUser = registerRequestDto.toEntity(encodedPw);
 
         userRepository.save(registerUser);
-
-        return ResponseEntity.ok();
     }
 
     @Transactional
