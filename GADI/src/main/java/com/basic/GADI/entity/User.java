@@ -38,7 +38,7 @@ public class User {
     private String userBirth;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
 
     @OneToMany(mappedBy = "user")
     private List<Favorites> favorites;
