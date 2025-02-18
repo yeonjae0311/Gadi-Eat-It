@@ -44,7 +44,7 @@
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
 import { onBeforeMount, onMounted, ref } from 'vue'
-import http from '@/common/http-common'  
+import http from '@/common/http-common'
 
 
 const store = useMyInfoStore()
@@ -64,13 +64,13 @@ const fileInput = ref(null)
 
 
 const triggerFileUpload = () => {
-  fileInput.value.click() 
+  fileInput.value.click()
 }
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
-    selectedImg.value = file   
+    selectedImg.value = file
 
     // 선택한 파일 미리보기로 보여주기
     const reader = new FileReader()
@@ -79,36 +79,36 @@ const handleFileUpload = (event) => {
     }
     reader.readAsDataURL(file)
   }
-} 
+}
 
 
 onBeforeMount(() => {
-  store.loadMyInfos()  
+  store.loadMyInfos()
 })
 
 
 
 // 내 정보 수정
-const updateMyInfo = async () => { 
+const updateMyInfo = async () => {
   // 내 정보 수정 요청하기 위한 데이터 구성 (수정한 정보, 현재 사용자 정보, 프로필 이미지(있을 경우))
   const formData = new FormData();
-  formData.append("myInfos", new Blob([JSON.stringify(myInfos.value)], {type: "application/json"}));    
+  formData.append("myInfos", new Blob([JSON.stringify(myInfos.value)], {type: "application/json"}));
   if (selectedImg.value) {
-      formData.append("file", selectedImg.value);  
+      formData.append("file", selectedImg.value);
     }
 
-  try {  
+  try {
     const res = await http.patch('/user/my_info/update', formData, {
       headers: {
         Authorization:'Bearer '+ sessionStorage.getItem('access_token'),
         "Content-Type": 'multipart/form-data'
       }
     })
-    console.log(res.data)  
+    console.log(res.data)
   } catch (error) {
     console.error("내정보 수정 실패 ! ", error)
   }
-}  
+}
 
 </script>
 
