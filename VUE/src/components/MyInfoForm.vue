@@ -43,7 +43,7 @@
 <script setup>
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import http from '@/common/http-common'
 
 
@@ -82,7 +82,7 @@ const handleFileUpload = (event) => {
 }
 
 
-onBeforeMount(() => {
+onMounted(() => {
   store.loadMyInfos()
 })
 
