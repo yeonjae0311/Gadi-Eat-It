@@ -5,7 +5,7 @@
     </div>
     <div class="form-contents">
       <div class="profile-img">
-        <img class="profileImg" :src= "previewImg || ( myInfos.userFile? `http://localhost:8080/upload/${myInfos.userFile}` : '/images/default_profile.png')" alt="프로필 이미지"/>
+        <img class="profileImg" :src= "previewImg || ( myInfos.userFile ? `http://localhost:8080/upload/${myInfos.userFile}` : '/images/default_profile.png')" alt="프로필 이미지"/>
         <button v-if="isUpdateMode" class="upload" type="submit" @click="triggerFileUpload">프로필 사진 업로드</button>
         <input type="file" ref="fileInput" style="display: none;" @change="handleFileUpload" accept="image/*"/>
       </div>
@@ -43,7 +43,7 @@
 <script setup>
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
 import http from '@/common/http-common'  
 
 
@@ -82,7 +82,7 @@ const handleFileUpload = (event) => {
 } 
 
 
-onMounted(() => {
+onBeforeMount(() => {
   store.loadMyInfos()  
 })
 
