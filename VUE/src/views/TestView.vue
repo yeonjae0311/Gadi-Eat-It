@@ -26,37 +26,25 @@
           </p>
         </form>
       </div>
-      <button>토큰확인</button>
+      <button @click="token()">토큰확인</button>
     </div>
   </main>
 </template>
 
-<script>
-import axios from 'axios'
-export default {
-  data() {
-    return {
-      userEmail: null,
-      userPw: null
-    }
-  },
-  mounted() {},
-  methods: {
-    loginSubmit() {
-      const saveData = {}
-      saveData.userEmail = this.user_email
-      saveData.userPw = this.user_pw
-      axios
-        .post('http://localhost:8080/api/auth/login', saveData) // 로그인 API URL로 ID, PW를 보냄
-        .then((res) => {
-          console.log(res.data)
-          const token = res.data.accessToken
-          sessionStorage.setItem('access_token', token) // 토큰을 저장함
-          const refreshtoken = res.data.refreshToken
-          sessionStorage.setItem('refresh_token', refreshtoken) // 토큰을 저장함
-        })
-    }
-  }
+<script setup>
+import { useAuthStore } from '@/stores/useAuthStore'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+
+const store = useAuthStore()
+const { token } = storeToRefs(store)
+
+const user_email = ref('')
+const user_pw = ref('')
+
+function loginSubmit() {
+  const loginInfo = { userEmail: user_email.value, userPw: user_pw.value }
+  store.login(loginInfo)
 }
 </script>
 

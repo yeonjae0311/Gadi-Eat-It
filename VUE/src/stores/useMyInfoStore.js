@@ -11,8 +11,8 @@ export const useMyInfoStore = defineStore('', {
         async loadMyInfos() {
             try {
                 const res = await http.get('/user/my_info', { headers:{Authorization:'Bearer '+ sessionStorage.getItem('access_token')}})
-                const data = await res.data 
-                this.myInfos = data 
+                const data = await res.data
+                this.myInfos = data
                 console.log(this.myInfos);
             } catch (error) {
                 if(axios.isAxiosError(error)) {
