@@ -3,18 +3,15 @@ import http from '@/common/http-common'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 
-export const useAuthStore = defineStore('', {
+export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: {},
     user: {}
   }),
   actions: {
-    async login(loginInfo) {
+    async login(payload) {
       try {
-        const res = await http.post('/auth/login', {
-          userEmail: loginInfo.userEmail,
-          userPw: loginInfo.userPw
-        })
+        const res = await http.post('/auth/login', payload)
         const data = await res.data
         this.token = { access_token: data.accessToken, refresh_token: data.refreshToken }
         this.user.userId = jwtDecode(this.token.access_token).userId
