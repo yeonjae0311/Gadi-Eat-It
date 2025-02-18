@@ -1,11 +1,11 @@
 package com.basic.GADI.entity;
 
+import com.basic.GADI.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.util.List;
@@ -37,9 +37,8 @@ public class User {
 
     private String userBirth;
 
-    @Column(nullable = false)
-    @ColumnDefault("'U'")
-    private String userRole;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Favorites> favorites;

@@ -33,8 +33,9 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", produces = "application/json")
-    public ResponseEntity<RegisterRequestDto> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
-        return ResponseEntity.status(HttpStatus.OK).body(registerRequestDto);
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterRequestDto registerRequestDto)  {
+        authService.register(registerRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body("회원가입이 완료되었습니다.");
     }
 
     @GetMapping("/{email}")
