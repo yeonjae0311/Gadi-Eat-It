@@ -12,7 +12,6 @@
               v-model="user_email"
             /><br />
           </p>
-          {{ user_email }}
           <p>
             <input
               name="password"
@@ -22,7 +21,6 @@
               type="password"
             />
           </p>
-          {{ user_pw }}
           <p>
             <button @click="loginSubmit()" class="form-btn my-shadow">로그인</button>
           </p>
