@@ -23,6 +23,7 @@ public class JwtUtil {
     public String createAccessToken(User user) {
         return Jwts.builder()
                 .claim("userId", user.getUserId())
+                .claim("role", user.getRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 2L))
                 .signWith(Keys.hmacShaKeyFor(signatureKey.getBytes(StandardCharsets.UTF_8)))
@@ -32,6 +33,7 @@ public class JwtUtil {
     public String createRefreshToken(User user) {
         return Jwts.builder()
                 .claim("userId", user.getUserId())
+                .claim("role", user.getRole())
                 .expiration(new Date(System.currentTimeMillis() + refreshExpiration * 1000 * 60 * 60 * 2L))
                 .signWith(Keys.hmacShaKeyFor(signatureKey.getBytes(StandardCharsets.UTF_8)))
                 .compact();

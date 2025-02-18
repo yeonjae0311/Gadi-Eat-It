@@ -38,7 +38,14 @@ public class User {
     private String userBirth;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    private Role role;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.role == null) {
+            this.role = Role.USER;  // 기본값 설정
+        }
+    }
 
     @OneToMany(mappedBy = "user")
     private List<Favorites> favorites;
