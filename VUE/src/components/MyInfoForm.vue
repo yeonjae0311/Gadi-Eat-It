@@ -46,6 +46,10 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import http from '@/common/http-common'
 
+onMounted(() => {
+ store.loadMyInfos()
+})
+
 
 const store = useMyInfoStore()
 const { myInfos } = storeToRefs(store)
@@ -82,9 +86,7 @@ const handleFileUpload = (event) => {
 }
 
 
-onMounted(() => {
-  store.loadMyInfos()
-})
+
 
 
 
