@@ -50,8 +50,8 @@ public class UserService {
     }
 
     @Transactional
-    public void updateMyInfo(String userEmail, MyInfoRequestDto requestDto, MultipartFile file) {
-        User user = userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
+    public void updateMyInfo(Long userId, MyInfoRequestDto requestDto, MultipartFile file) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
 
         user.updateMyInfo(
                 requestDto.getUserName(),

@@ -52,7 +52,6 @@ public class AuthService {
         if (userRepository.existsByUserEmail(registerRequestDto.getUserEmail())) {
             throw new BusinessException("이미 존재하는 아이디입니다.", HttpStatus.NOT_FOUND);
         }
-
         String encodedPw = passwordEncoder.encode(registerRequestDto.getUserPw());
 
         User registerUser = registerRequestDto.toEntity(encodedPw);

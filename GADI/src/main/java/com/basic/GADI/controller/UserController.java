@@ -30,18 +30,16 @@ public class UserController {
 
     @GetMapping("/my_info")
     public ResponseEntity<MyInfoResponseDto> showMyInfo(HttpServletRequest request) {
-        long userId = (Long) request.getAttribute("userId");
+        Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.ok(userService.findMyInfo(userId));
     }
 
     @PatchMapping("/my_info/update")
-    public ResponseEntity<String> updateMyInfo(@RequestParam String userEmail,
+    public ResponseEntity<String> updateMyInfo(HttpServletRequest request,
                                                @RequestBody @Valid MyInfoRequestDto requestDto,
                                                @RequestPart(value = "file", required = false)MultipartFile file) {
-        userService.updateMyInfo(userEmail, requestDto, file);
+        Long userId = (Long) request.getAttribute("userId");
+        userService.updateMyInfo(userId, requestDto, file);
         return ResponseEntity.ok().body("내 정보가 수정되었습니다.");
     }
-
-
-
 }

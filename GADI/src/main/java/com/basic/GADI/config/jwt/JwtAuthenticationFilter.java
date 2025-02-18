@@ -20,7 +20,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("hihi 방가웡");
         String authHeader = request.getHeader("Authorization");
         String token = null;
-        String userId = null;
+        Long userId = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
