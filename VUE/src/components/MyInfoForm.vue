@@ -10,7 +10,7 @@
           :src="
             previewImg ||
             (myInfos.userFile
-              ? `http://localhost:8080${myInfos.userFile}`
+              ? `http://localhost:8080/upload/${myInfos.userFile}`
               : '/images/default_profile.png')
           "
           alt="프로필 이미지"
