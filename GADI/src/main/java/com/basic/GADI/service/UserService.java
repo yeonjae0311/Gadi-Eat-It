@@ -76,7 +76,7 @@ public class UserService {
 
             // 파일 경로 설정
             UUID uuid = UUID.randomUUID();
-            Path filePath = Path.of(uuid + extension);
+            Path filePath = uploadFolder.resolve(uuid + extension);
 
             // 파일 저장
             try {
@@ -84,7 +84,7 @@ public class UserService {
             } catch (IOException e) {
                 throw new BusinessException("이미지 저장 실패 !", HttpStatus.NOT_FOUND);
             }
-            user.setUserFile(filePath.toString());
+            user.setUserFile(String.valueOf(Path.of(uuid + extension)));
         }
     }
 
