@@ -61,7 +61,7 @@ public class UserService {
 
         if (file != null && !file.isEmpty()) {
             // 원본 파일 확장자 유지하기 위한 코드
-            String originalFileName = requestDto.getFile().getOriginalFilename(); // 원본 파일명
+            String originalFileName = file.getOriginalFilename(); // 원본 파일명
             String extension = (originalFileName != null && originalFileName.contains(".")) ? originalFileName.substring(originalFileName.lastIndexOf(".")) : ""; // 확장자 추출
 
             // 업로드 폴더 확인 및 생성
@@ -76,7 +76,7 @@ public class UserService {
 
             // 파일 경로 설정
             UUID uuid = UUID.randomUUID();
-            Path filePath = uploadFolder.resolve(uuid + extension);
+            Path filePath = Path.of(uuid + extension);
 
             // 파일 저장
             try {

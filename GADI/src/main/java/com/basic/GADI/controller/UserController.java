@@ -36,8 +36,11 @@ public class UserController {
 
     @PatchMapping("/my_info/update")
     public ResponseEntity<String> updateMyInfo(HttpServletRequest request,
-                                               @RequestBody @Valid MyInfoRequestDto requestDto,
-                                               @RequestPart(value = "file", required = false)MultipartFile file) {
+                                               @RequestPart(value = "myInfos", required = false) @Valid MyInfoRequestDto requestDto,
+                                               @RequestPart(value = "file", required = false) MultipartFile file) {
+        System.out.println(request);
+        System.out.println(requestDto);
+        System.out.println(file);
         Long userId = (Long) request.getAttribute("userId");
         userService.updateMyInfo(userId, requestDto, file);
         return ResponseEntity.ok().body("내 정보가 수정되었습니다.");
