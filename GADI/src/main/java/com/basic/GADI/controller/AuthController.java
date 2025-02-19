@@ -28,7 +28,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login (@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<TokenResponseDto> login (@RequestBody @Valid LoginRequestDto loginRequestDto) {
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequestDto));
     }
 

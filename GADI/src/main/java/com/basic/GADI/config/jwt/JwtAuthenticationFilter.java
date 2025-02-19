@@ -29,10 +29,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         Long userId = null;
+        String role = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             userId = jwtUtil.extractUserId(token);
+            role = jwtUtil.extractRole(token);
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json; charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("토큰이 필요합니다.");
+            return;
         }
 
         try {
@@ -40,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwtUtil.validateToken(token);
             // 사용자 정보를 request에 추가 (optional)
             request.setAttribute("userId", userId);
+            request.setAttribute("role", role);
         } catch (Exception e) {
             response.getWriter().write("Invalid or expired token");
         }

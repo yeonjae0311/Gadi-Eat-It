@@ -21,22 +21,21 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-//        String role = jwtUtil.extractRole(token);
-//        request.setAttribute("userRole", role); // 이후 컨트롤러에서 사용 가능
-//        if(role.equals("ADMIN")) {
-//            sendUnauthorizedResponse(response);
-//            return false;
-//        }
+        String role = (String) request.getAttribute("role");
+        if(role.equals("USER")) {
+            sendUnauthorizedResponse(response);
+            return false;
+        }
         return true;
     }
 
     private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json;charset=UTF-8");
 
         Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("status", 401);
-        errorResponse.put("message", "인증되지 않은 사용자입니다.");
+        errorResponse.put("status", 403);
+        errorResponse.put("message", "권한이 없는 사용자입니다.");
 
         // JSON 응답을 클라이언트에 보냄
         ObjectMapper objectMapper = new ObjectMapper();
