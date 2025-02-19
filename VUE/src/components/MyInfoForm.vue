@@ -9,8 +9,8 @@
           class="profileImg"
           :src="
             previewImg ||
-            (myInfos.userFile
-              ? `http://localhost:8080/upload/${myInfos.userFile}`
+            (myInfos?.userFile
+              ? `http://localhost:8080/upload/${myInfos?.userFile}`
               : '/images/default_profile.png')
           "
           alt="프로필 이미지"
@@ -29,22 +29,22 @@
       <div class="profile-info">
         <div>
           <label>아이디</label>
-          <p>{{ myInfos.userEmail }}</p>
+          <p>{{ myInfos?.userEmail }}</p>
         </div>
         <div>
           <label>이름</label>
           <input v-if="isUpdateMode" v-model="myInfos.userName" type="text" />
-          <p v-else>{{ myInfos.userName }}</p>
+          <p v-else>{{ myInfos?.userName }}</p>
         </div>
         <div>
           <label>생년월일</label>
           <input v-if="isUpdateMode" v-model="myInfos.userBirth" type="text" />
-          <p v-else>{{ myInfos.userBirth }}</p>
+          <p v-else>{{ myInfos?.userBirth }}</p>
         </div>
         <div>
           <label>전화번호</label>
           <input v-if="isUpdateMode" v-model="myInfos.userPhone" type="text" />
-          <p v-else>{{ myInfos.userPhone }}</p>
+          <p v-else>{{ myInfos?.userPhone }}</p>
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@
 <script setup>
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import http from '@/common/http-common'
 
 const store = useMyInfoStore()
