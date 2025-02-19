@@ -4,7 +4,6 @@ import com.basic.GADI.common.interceptor.AuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,11 +17,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins(DEVELOP_FRONT_ADDRESS)
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-            .exposedHeaders("Authorization", "Content-Type")
-            .allowedHeaders("*")
-            .allowCredentials(true);
+                .allowedOrigins(DEVELOP_FRONT_ADDRESS)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                .exposedHeaders("Authorization", "Content-Type", "Location")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
     @Override
@@ -31,10 +30,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:C:/GadiEatIt/upload/");
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/admin/**")  // 특정 경로만 보호
-                .excludePathPatterns("/api/main/**"); // 예외 경로 추가 가능
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(authInterceptor)
+//                .addPathPatterns("/api/admin/**")  // 특정 경로만 보호
+//                .excludePathPatterns("/api/main/**"); // 예외 경로 추가 가능
+//    }
 }

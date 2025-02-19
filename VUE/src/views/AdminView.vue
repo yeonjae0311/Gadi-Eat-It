@@ -1,13 +1,12 @@
 <template>
   <div class="layout">
     <AdminSideBar />
-    <AdminUserList />
+    <RouterView />
   </div>
 </template>
 
 <script setup>
 import AdminSideBar from '@/components/AdminSideBar.vue'
-import AdminUserList from '@/components/AdminUserList.vue'
 </script>
 
 <style scoped>

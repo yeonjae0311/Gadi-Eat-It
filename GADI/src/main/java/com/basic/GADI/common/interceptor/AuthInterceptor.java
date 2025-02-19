@@ -31,7 +31,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setContentType("application/json;charset=UTF-8");
 
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("status", 403);
