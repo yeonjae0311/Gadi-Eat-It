@@ -34,16 +34,18 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!sessionStorage.getItem('access_token') // 토큰이 있으면 로그인 된 상태
-
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
-    alert('로그인이 필요한 페이지입니다.')
-    next('/test')
-  } else {
-    const store = useMyInfoStore()
-    store.loadMyInfos()
-    next()
+  if (to.path === '/update') {
+    if (to.meta.requiresAuth && !isAuthenticated) {
+      // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
+      alert('로그인이 필요한 페이지입니다.')
+      next('/test')
+    } else {
+      const store = useMyInfoStore()
+      store.loadMyInfos()
+      next()
+    }
   }
+  next()
 })
 
 export default router

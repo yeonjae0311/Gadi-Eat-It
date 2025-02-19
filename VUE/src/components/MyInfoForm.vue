@@ -60,7 +60,7 @@
 <script setup>
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
 import http from '@/common/http-common'
 
 const store = useMyInfoStore()
