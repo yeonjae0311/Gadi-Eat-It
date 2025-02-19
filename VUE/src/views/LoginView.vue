@@ -31,7 +31,7 @@ import { nextTick, ref } from 'vue'
 
 const store = useAuthStore()
 
-const user_email = ref('')
+const user_email = ref()
 const user_pw = ref('')
 
 const loginSubmit = async () => {

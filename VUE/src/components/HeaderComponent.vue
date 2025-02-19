@@ -21,6 +21,8 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const store = useAuthStore()
 
+store.loadLoginState()
+
 const logout = () => {
   store.logout()
   alert('로그아웃되었습니다.')

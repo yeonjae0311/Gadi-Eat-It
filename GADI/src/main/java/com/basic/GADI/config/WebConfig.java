@@ -34,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/user/**")  // 특정 경로만 보호
+                .addPathPatterns("/api/admin/**")  // 특정 경로만 보호
                 .excludePathPatterns("/api/main/**"); // 예외 경로 추가 가능
     }
 }

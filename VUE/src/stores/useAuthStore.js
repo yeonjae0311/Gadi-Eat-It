@@ -33,6 +33,12 @@ export const useAuthStore = defineStore('auth', {
         }
       }
     },
+    loadLoginState() {
+      const login = sessionStorage.getItem('login')
+      if (login) {
+        this.loginState = login === 'true' // 로그인 상태 설정
+      }
+    },
     logout() {
       sessionStorage.clear()
       this.state = {}
@@ -41,8 +47,6 @@ export const useAuthStore = defineStore('auth', {
   },
   getters: {
     isLogIn: (state) => {
-      const login = sessionStorage.getItem('login')
-      state.loginState = login
       return state.loginState
     }
   }

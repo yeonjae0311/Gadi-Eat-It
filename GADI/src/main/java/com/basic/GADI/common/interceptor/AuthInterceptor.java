@@ -21,12 +21,11 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-//        String role = jwtUtil.extractRole(token);
-//        request.setAttribute("userRole", role); // 이후 컨트롤러에서 사용 가능
-//        if(role.equals("ADMIN")) {
-//            sendUnauthorizedResponse(response);
-//            return false;
-//        }
+        String role = (String) request.getAttribute("role");
+        if(role.equals("USER")) {
+            sendUnauthorizedResponse(response);
+            return false;
+        }
         return true;
     }
 
