@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', {
         this.token = { access_token: data.accessToken, refresh_token: data.refreshToken }
         this.user.userId = jwtDecode(this.token.access_token).userId
         this.user.role = jwtDecode(this.token.access_token).role
+        sessionStorage.setItem('role', this.user.role)
         const accesstoken = res.data.accessToken
         sessionStorage.setItem('access_token', accesstoken) // 토큰을 저장함
         const refreshtoken = res.data.refreshToken
@@ -40,6 +41,8 @@ export const useAuthStore = defineStore('auth', {
   },
   getters: {
     isLogIn: (state) => {
+      const login = sessionStorage.getItem('login')
+      state.loginState = login
       return state.loginState
     }
   }

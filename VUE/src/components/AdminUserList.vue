@@ -1,6 +1,6 @@
 <template>
-  <div class="admin-container">
-    <h2 class="title">회원 목록</h2>
+  <main class="content">
+    <h1 class="page-title">회원 목록</h1>
     <table class="user-table">
       <thead>
         <tr>
@@ -19,7 +19,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -47,29 +47,45 @@ onMounted(getUserList)
 </script>
 
 <style scoped>
-.container {
-  max-width: 800px;
-  margin: auto;
-  text-align: center;
+.content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  margin-left: 250px;
 }
 
-.title {
-  margin: 20px 0;
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #2d3748;
+  margin-bottom: 20px;
 }
 
 .user-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .user-table th,
 .user-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .user-table th {
-  background-color: #f4f4f4;
+  background-color: #81e6b3;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.user-table tr:hover {
+  background-color: #e2f7f3;
+}
+
+.user-table td {
+  font-size: 0.95rem;
+  color: #4a5568;
 }
 </style>

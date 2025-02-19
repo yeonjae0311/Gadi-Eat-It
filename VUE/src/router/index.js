@@ -4,7 +4,6 @@ import AboutView from '../views/AboutView.vue'
 import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
-import { useAuthStore } from '@/stores/useAuthStore'
 import LoginView from '@/views/LoginView.vue'
 
 const router = createRouter({
@@ -29,7 +28,7 @@ const router = createRouter({
       path: '/update',
       name: 'update',
       component: UpdateMyInfoView,
-      meta: { requiresAuth: true }
+      meta: { requiresLogin: true }
     },
     {
       path: '/register',
@@ -40,9 +39,10 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: AdminView,
+      meta: { requiresLogin: true },
       beforeEnter: (to, from, next) => {
-        const authStore = useAuthStore()
-        if (authStore.user?.role === 'ADMIN') {
+        const role = sessionStorage.getItem('role')
+        if (role === 'ADMIN') {
           next() // 관리자면 통과
         } else {
           alert('접근 권한이 없습니다.')
@@ -51,6 +51,15 @@ const router = createRouter({
       }
     }
   ]
+})
+router.beforeEach((to, from, next) => {
+  const isLogIn = sessionStorage.getItem('login')
+  if (to.meta.requiresLogin && !isLogIn) {
+    alert('로그인이 필요합니다.')
+    next({ path: '/login' })
+  } else {
+    next()
+  }
 })
 
 export default router
