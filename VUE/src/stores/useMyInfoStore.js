@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 import http from '@/common/http-common'
 import axios from 'axios'
-
-export const useMyInfoStore = defineStore('info', {
+export const useMyInfoStore = defineStore('', {
   state: () => ({
     myInfos: {}
   }),
@@ -17,7 +16,7 @@ export const useMyInfoStore = defineStore('info', {
         console.log(this.myInfos)
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.log(error?.response.status + ':' + error.response.data.message)
+          console.log(error?.response.status + ':' + error.message)
         } else {
           console.error('내 정보 조회 실패 !', error)
         }
