@@ -1,7 +1,8 @@
 <template>
   <div class="myInfoForm">
     <div class="form-title">
-      <h2>MyInfo</h2>
+      <h2 v-if="isUpdateMode">MyInfo update !</h2>
+      <h2 v-else>MyInfo</h2>
     </div>
     <div class="form-contents">
       <div class="profile-img">
