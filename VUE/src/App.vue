@@ -4,7 +4,6 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-
     <div class="wrapper">
       <nav>
         <RouterLink to="/">About</RouterLink>
@@ -12,6 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/map">Map</RouterLink>
         <RouterLink to="/update">update</RouterLink>
         <RouterLink to="/register">register</RouterLink>
+        <RouterLink to="/admin">admin</RouterLink>
       </nav>
     </div>
   </header>
