@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TestView from '@/views/TestView.vue'
 import MapView from '@/views/MapView.vue'
 import AboutView from '../views/AboutView.vue'
 import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import { useAuthStore } from '@/stores/useAuthStore'
+import LoginView from '@/views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,9 +16,9 @@ const router = createRouter({
       component: AboutView
     },
     {
-      path: '/test',
-      name: 'test',
-      component: TestView
+      path: '/login',
+      name: 'login',
+      component: LoginView
     },
     {
       path: '/map',
