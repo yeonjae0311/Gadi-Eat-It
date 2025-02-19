@@ -3,7 +3,6 @@ import TestView from '@/views/TestView.vue'
 import MapView from '@/views/MapView.vue'
 import AboutView from '../views/AboutView.vue'
 import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
-import { useMyInfoStore } from '@/stores/useMyInfoStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

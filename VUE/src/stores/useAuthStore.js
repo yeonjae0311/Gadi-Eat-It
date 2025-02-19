@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
         alert('로그인 성공')
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.log(error?.response.status + ':' + error.message)
+          console.log(error?.response.status + ':' + error.response.data.message)
         } else {
           console.error(error)
         }

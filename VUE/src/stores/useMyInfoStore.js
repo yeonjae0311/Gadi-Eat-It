@@ -17,7 +17,7 @@ export const useMyInfoStore = defineStore('info', {
         console.log(this.myInfos)
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.log(error?.response.status + ':' + error.message)
+          console.log(error?.response.status + ':' + error.response.data.message)
         } else {
           console.error('내 정보 조회 실패 !', error)
         }
