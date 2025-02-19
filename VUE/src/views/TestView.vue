@@ -1,43 +1,40 @@
 <template>
-  <main>
-    <div>
-      <h2>Please Log In</h2>
-      <div id="loginForm">
-        <form @submit.prevent="fnLogin">
-          <p>
-            <input
-              class="w3-input"
-              name="uid"
-              placeholder="Enter your ID"
-              v-model="user_email"
-            /><br />
-          </p>
-          <p>
-            <input
-              name="password"
-              class="w3-input"
-              placeholder="Enter your password"
-              v-model="user_pw"
-              type="password"
-            />
-          </p>
-          <p>
-            <button @click="loginSubmit()" class="form-btn my-shadow">로그인</button>
-          </p>
-        </form>
-      </div>
-      <button @click="token()">토큰확인</button>
-    </div>
-  </main>
+  <div class="login-container">
+    <h2>Please Log In</h2>
+    <div id="loginForm">
+      <form @submit.prevent="fnLogin">
+        <p>
+          <input
+            class="input-field"
+            name="uid"
+            placeholder="Enter your ID"
+            v-model="user_email"
+          />
+        </p>
+        <p>
+          <input
+            name="password"
+            class="input-field"
+            placeholder="Enter your password"
+            v-model="user_pw"
+            type="password"
+          />
+        </p> 
+          <button @click="loginSubmit()" class="login-btn">로그인</button>
+          <div class="btns">
+            <button  class="register-btn">회원가입</button>
+            <button  class="resetPw-btn">비밀번호 재설정</button>
+          </div>  
+      </form>
+    </div> 
+  </div>
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/useAuthStore'
-import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/useAuthStore' 
 import { ref } from 'vue'
 
-const store = useAuthStore()
-const { token } = storeToRefs(store)
+const store = useAuthStore() 
 
 const user_email = ref('')
 const user_pw = ref('')
@@ -48,9 +45,8 @@ function loginSubmit() {
 }
 </script>
 
-<style>
-#loginForm {
-  width: 500px;
-  margin: auto;
-}
+
+
+<style scoped>
+@import '@/assets/loginview.css';
 </style>

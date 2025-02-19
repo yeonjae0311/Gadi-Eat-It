@@ -3,7 +3,7 @@ import TestView from '@/views/TestView.vue'
 import MapView from '@/views/MapView.vue'
 import AboutView from '../views/AboutView.vue'
 import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
-import { useMyInfoStore } from '@/stores/useMyInfoStore'
+import RegisterView from '@/views/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +28,11 @@ const router = createRouter({
       name: 'update',
       component: UpdateMyInfoView,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView
     }
   ]
 })

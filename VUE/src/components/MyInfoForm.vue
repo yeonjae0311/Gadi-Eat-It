@@ -1,5 +1,5 @@
 <template>
-  <div class="myInfoForm">
+  <div class="myInfo-form">
     <div class="form-title">
       <h2 v-if="isUpdateMode">MyInfo update !</h2>
       <h2 v-else>MyInfo</h2>
@@ -7,7 +7,7 @@
     <div class="form-contents">
       <div class="profile-img">
         <img
-          class="profileImg"
+          class="img"
           :src="
             previewImg ||
             (myInfos?.userFile
@@ -16,7 +16,7 @@
           "
           alt="프로필 이미지"
         />
-        <button v-if="isUpdateMode" class="upload" type="submit" @click="triggerFileUpload">
+        <button v-if="isUpdateMode" class="upload-btn" type="submit" @click="triggerFileUpload">
           프로필 사진 업로드
         </button>
         <input
@@ -33,27 +33,27 @@
           <p>{{ myInfos?.userEmail }}</p>
         </div>
         <div>
-          <label>이름</label>
-          <input v-if="isUpdateMode" v-model="myInfos.userName" type="text" />
+          <label for="name">이름</label>
+          <input v-if="isUpdateMode" v-model="myInfos.userName" type="text" id="name"/>
           <p v-else>{{ myInfos?.userName }}</p>
         </div>
         <div>
-          <label>생년월일</label>
-          <input v-if="isUpdateMode" v-model="myInfos.userBirth" type="text" />
+          <label for="birth">생년월일</label>
+          <input v-if="isUpdateMode" v-model="myInfos.userBirth" type="text" id="birth"/>
           <p v-else>{{ myInfos?.userBirth }}</p>
         </div>
         <div>
-          <label>전화번호</label>
-          <input v-if="isUpdateMode" v-model="myInfos.userPhone" type="text" />
+          <label for="phone">전화번호</label>
+          <input v-if="isUpdateMode" v-model="myInfos.userPhone" type="text" id="phone"/>
           <p v-else>{{ myInfos?.userPhone }}</p>
         </div>
       </div>
     </div>
     <div class="form-btn">
-      <button class="updateForm" @click="toggleUpdate">
+      <button class="toggle-btn" @click="toggleUpdate">
         {{ isUpdateMode ? '취소' : '수정하기' }}
       </button>
-      <button class="update" v-if="isUpdateMode" @click="updateMyInfo">수정 완료</button>
+      <button class="update-btn" v-if="isUpdateMode" @click="updateMyInfo">수정 완료</button>
     </div>
   </div>
 </template>
