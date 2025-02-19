@@ -123,13 +123,13 @@ const register = async() => {
       userBirth: user_birth.value,
       userPhone: user_phone.value,
     };  
-    
+
     if (validateAllFields()) { 
         try {
             const res = await http.post('/auth/register', userInfo)
             if (res.status === 200) {
                 alert('회원가입 성공!');
-                router.push('/test');
+                router.push('/login');
             }
         } catch (error) {
             console.error('회원가입 실패 ! ', error)

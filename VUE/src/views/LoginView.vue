@@ -17,7 +17,7 @@
         </p>
         <button @click="loginSubmit()" class="login-btn">로그인</button>
         <div class="btns">
-          <button class="register-btn">회원가입</button>
+          <button class="register-btn" @click="goRegisterView">회원가입</button>
           <button class="resetPw-btn">비밀번호 재설정</button>
         </div>
       </form>
@@ -28,8 +28,10 @@
 <script setup>
 import { useAuthStore } from '@/stores/useAuthStore'
 import { nextTick, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const store = useAuthStore()
+const router = useRouter();
 
 const user_email = ref()
 const user_pw = ref('')
@@ -39,6 +41,10 @@ const loginSubmit = async () => {
   await store.login(loginInfo)
 
   await nextTick
+}
+
+const goRegisterView = () => {
+  router.push('/register');
 }
 </script>
 
