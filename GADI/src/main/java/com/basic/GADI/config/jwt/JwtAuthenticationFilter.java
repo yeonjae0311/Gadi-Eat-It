@@ -35,6 +35,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             userId = jwtUtil.extractUserId(token);
             role = jwtUtil.extractRole(token);
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json; charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("토큰이 필요합니다.");
+            return;
         }
 
         try {

@@ -30,12 +30,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json;charset=UTF-8");
 
         Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("status", 401);
-        errorResponse.put("message", "인증되지 않은 사용자입니다.");
+        errorResponse.put("status", 403);
+        errorResponse.put("message", "권한이 없는 사용자입니다.");
 
         // JSON 응답을 클라이언트에 보냄
         ObjectMapper objectMapper = new ObjectMapper();
