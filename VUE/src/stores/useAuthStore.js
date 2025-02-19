@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', {
         sessionStorage.setItem('access_token', accesstoken) // 토큰을 저장함
         const refreshtoken = res.data.refreshToken
         sessionStorage.setItem('refresh_token', refreshtoken) // 토큰을 저장함
+        alert('로그인 성공')
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error?.response.status + ':' + error.message)

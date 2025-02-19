@@ -5,29 +5,46 @@
     </div>
     <div class="form-contents">
       <div class="profile-img">
-        <img class="profileImg" :src= "previewImg || ( myInfos.userFile ? `http://localhost:8080/upload/${myInfos.userFile}` : '/images/default_profile.png')" alt="프로필 이미지"/>
-        <button v-if="isUpdateMode" class="upload" type="submit" @click="triggerFileUpload">프로필 사진 업로드</button>
-        <input type="file" ref="fileInput" style="display: none;" @change="handleFileUpload" accept="image/*"/>
+        <img
+          class="profileImg"
+          :src="
+            previewImg ||
+            (myInfos?.userFile
+              ? `http://localhost:8080/upload/${myInfos?.userFile}`
+              : '/images/default_profile.png')
+          "
+          alt="프로필 이미지"
+        />
+        <button v-if="isUpdateMode" class="upload" type="submit" @click="triggerFileUpload">
+          프로필 사진 업로드
+        </button>
+        <input
+          type="file"
+          ref="fileInput"
+          style="display: none"
+          @change="handleFileUpload"
+          accept="image/*"
+        />
       </div>
       <div class="profile-info">
         <div>
           <label>아이디</label>
-          <p>{{ myInfos.userEmail }}</p>
+          <p>{{ myInfos?.userEmail }}</p>
         </div>
         <div>
           <label>이름</label>
           <input v-if="isUpdateMode" v-model="myInfos.userName" type="text" />
-          <p v-else>{{ myInfos.userName }}</p>
+          <p v-else>{{ myInfos?.userName }}</p>
         </div>
         <div>
           <label>생년월일</label>
           <input v-if="isUpdateMode" v-model="myInfos.userBirth" type="text" />
-          <p v-else>{{ myInfos.userBirth }}</p>
+          <p v-else>{{ myInfos?.userBirth }}</p>
         </div>
         <div>
           <label>전화번호</label>
           <input v-if="isUpdateMode" v-model="myInfos.userPhone" type="text" />
-          <p v-else>{{ myInfos.userPhone }}</p>
+          <p v-else>{{ myInfos?.userPhone }}</p>
         </div>
       </div>
     </div>
@@ -46,11 +63,6 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import http from '@/common/http-common'
 
-onMounted(() => {
- store.loadMyInfos()
-})
-
-
 const store = useMyInfoStore()
 const { myInfos } = storeToRefs(store)
 
@@ -64,8 +76,6 @@ const toggleUpdate = () => {
 const previewImg = ref(null)
 const selectedImg = ref(null)
 const fileInput = ref(null)
-
-
 
 const triggerFileUpload = () => {
   fileInput.value.click()
@@ -85,33 +95,34 @@ const handleFileUpload = (event) => {
   }
 }
 
-
-
-
-
+onMounted(() => {
+  store.loadMyInfos()
+})
 
 // 내 정보 수정
 const updateMyInfo = async () => {
   // 내 정보 수정 요청하기 위한 데이터 구성 (수정한 정보, 현재 사용자 정보, 프로필 이미지(있을 경우))
-  const formData = new FormData();
-  formData.append("myInfos", new Blob([JSON.stringify(myInfos.value)], {type: "application/json"}));
+  const formData = new FormData()
+  formData.append(
+    'myInfos',
+    new Blob([JSON.stringify(myInfos.value)], { type: 'application/json' })
+  )
   if (selectedImg.value) {
-      formData.append("file", selectedImg.value);
-    }
+    formData.append('file', selectedImg.value)
+  }
 
   try {
     const res = await http.patch('/user/my_info/update', formData, {
       headers: {
-        Authorization:'Bearer '+ sessionStorage.getItem('access_token'),
-        "Content-Type": 'multipart/form-data'
+        Authorization: 'Bearer ' + sessionStorage.getItem('access_token'),
+        'Content-Type': 'multipart/form-data'
       }
     })
     console.log(res.data)
   } catch (error) {
-    console.error("내정보 수정 실패 ! ", error)
+    console.error('내정보 수정 실패 ! ', error)
   }
 }
-
 </script>
 
 <style scoped>
