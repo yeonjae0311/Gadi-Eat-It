@@ -127,5 +127,5 @@ const updateMyInfo = async () => {
 </script>
 
 <style scoped>
-@import '@/assets/myinfoform.css';
+  @import '@/assets/myinfoform.css';
 </style>

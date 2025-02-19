@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 public class RegisterRequestDto {
 
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
-    @Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$", message = "아이디는 이메일 형식입니다.")
+    @Pattern(regexp = "^[a-z0-9](\\.?[a-z0-9_-])*@[a-z0-9-]+(\\.[a-z]{2,})+$", message = "아이디는 이메일 형식입니다.")
     private String userEmail;
 
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String userName;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-    @Pattern(regexp = "^[A-Za-z0-9]{6,12}$", message = "비밀번호는 숫자, 문자 포함의 6~12자리입니다.")
+    @Pattern(regexp = "^[A-Za-z0-9]{6,12}$", message = "비밀번호는 숫자, 영문자 포함의 6~12자리입니다.")
     private String userPw;
 
     @Pattern(regexp = "^010-[0-9]{4}-[0-9]{4}$", message = "전화번호 형식은 010-1234-5678 입니다.")
