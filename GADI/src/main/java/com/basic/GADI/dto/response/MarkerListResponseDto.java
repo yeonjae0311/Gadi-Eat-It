@@ -13,6 +13,7 @@ public class MarkerListResponseDto {
     private Long resId;
     private String resName;
     private String resAddress;
+    private String resPhone;
     private double latitude;
     private double longitude;
 
@@ -20,6 +21,7 @@ public class MarkerListResponseDto {
         this.resId = restaurants.getResId();
         this.resName = restaurants.getResName();
         this.resAddress = restaurants.getResAddress();
+        this.resPhone = restaurants.getResPhone();
         this.latitude = restaurants.getResLatitude();
         this.longitude = restaurants.getResLongitude();
     }
