@@ -4,12 +4,22 @@
       <h3>관리자 메뉴</h3>
     </div>
     <ul class="sidebar-menu">
-      <li><a href="/users">회원 목록</a></li>
-      <li><a href="/settings">설정</a></li>
-      <li><a href="/reports">보고서</a></li>
+      <li @click="goTo('user_list')">회원 목록</li>
+      <li @click="goTo('res_list')">식당 목록</li>
+      <li>보고서</li>
     </ul>
   </aside>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goTo = (menu) => {
+  router.push(`/admin/${menu}`)
+}
+</script>
 
 <style scoped>
 .sidebar {
@@ -36,16 +46,14 @@
 
 .sidebar-menu li {
   margin: 20px 0;
-}
-
-.sidebar-menu a {
   color: white;
   text-decoration: none;
   font-size: 1.1rem;
   transition: color 0.3s;
 }
 
-.sidebar-menu a:hover {
+.sidebar-menu li:hover {
   color: #2d3748;
+  cursor: pointer;
 }
 </style>

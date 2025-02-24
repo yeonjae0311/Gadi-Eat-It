@@ -5,6 +5,8 @@ import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import LoginView from '@/views/LoginView.vue'
+import AdminUserList from '@/components/AdminUserList.vue'
+import AdminResList from '@/components/AdminResList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,7 +50,17 @@ const router = createRouter({
           alert('접근 권한이 없습니다.')
           next('/') // 홈으로 이동
         }
-      }
+      },
+      children: [
+        {
+          path: 'user_list',
+          component: AdminUserList
+        },
+        {
+          path: 'res_list',
+          component: AdminResList
+        }
+      ]
     }
   ]
 })

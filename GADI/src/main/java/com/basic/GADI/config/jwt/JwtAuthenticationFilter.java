@@ -19,7 +19,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         String requestURI = request.getRequestURI();
         if (excludedUrls != null && excludedUrls.contains(requestURI)) {
             filterChain.doFilter(request, response);
@@ -37,8 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             role = jwtUtil.extractRole(token);
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
+            System.out.println(456);
             response.getWriter().write("토큰이 필요합니다.");
             return;
         }
