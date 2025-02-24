@@ -20,7 +20,13 @@
             <div class="check-field" :style="{ color: validationResults.user_name ? 'green' : 'red' }">{{ validationMessages.user_name }}</div>
             <div>
                 <label for="pw">비밀번호</label>
-                <input class="input-field" id="pw" v-model="user_pw" placeholder="비밀번호는 숫자, 영문자 포함의 6~12자리입니다." maxlength="12" @keyup="validateField('user_pw', user_pw)" />
+                <div class="input-container">
+                    <input :type="isPwVisible? 'text' : 'password'" class="input-field" id="pw" v-model="user_pw" placeholder="비밀번호는 숫자, 영문자 포함의 6~12자리입니다." maxlength="12" @keyup="validateField('user_pw', user_pw)" />
+                    <div class="show-pw" @click="togglePw">
+                        <img src="/images/eyes.png">
+                    </div>
+                </div>
+                
             </div>
             <div class="check-field" :style="{ color: validationResults.user_pw ? 'green' : 'red' }">{{ validationMessages.user_pw }}</div>
             <div>
@@ -74,7 +80,7 @@ const validationMessages = ref({
 const validationRules = ref({
     user_email: /^[a-z0-9](\.?[a-z0-9_-])*@[a-z0-9-]+(\.[a-z]{2,})+$/,
     user_name: /^[a-zA-Z가-힣]+$/,
-    user_pw: /^[A-Za-z0-9]{6,12}$/,
+    user_pw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
     user_birth: /^(19[0-9]{2}|20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/,
     user_phone: /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/
 });
@@ -137,7 +143,12 @@ const register = async() => {
     } else {
         alert('모든 항목을 올바르게 입력해주세요.');
     }
-};
+}; 
+
+const isPwVisible = ref(false)
+const togglePw = () => {
+    isPwVisible.value = !isPwVisible.value
+}
 
 </script>
 

@@ -20,7 +20,7 @@ public class RegisterRequestDto {
     private String userName;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-    @Pattern(regexp = "^[A-Za-z0-9]{6,12}$", message = "비밀번호는 숫자, 영문자 포함의 6~12자리입니다.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,12}$", message = "비밀번호는 숫자, 영문자 포함의 6~12자리입니다.")
     private String userPw;
 
     @Pattern(regexp = "^010-[0-9]{4}-[0-9]{4}$", message = "전화번호 형식은 010-1234-5678 입니다.")
