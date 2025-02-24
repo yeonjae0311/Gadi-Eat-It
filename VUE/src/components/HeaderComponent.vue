@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">About</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/map">Map</RouterLink>
-        <RouterLink to="/update">update</RouterLink>
-        <RouterLink to="/register">register</RouterLink>
-        <RouterLink to="/admin">admin</RouterLink>
-      </nav>
-    </div>
-    <button v-if="store.isLogIn" @click="logout">Logout</button>
+  <div class="header-container">
+    <nav class="nav-links">
+      <RouterLink to="/">About</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+      <RouterLink to="/map">Map</RouterLink>
+      <RouterLink to="/update">update</RouterLink>
+      <RouterLink to="/register">register</RouterLink>
+      <RouterLink to="/admin">admin</RouterLink>
+    </nav>
   </div>
+  <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
 </template>
 
 <script setup>
@@ -31,10 +29,20 @@ const logout = () => {
 </script>
 
 <style scoped>
+/* Navigation and logout button container */
+.header-container {
+  display: flex;
+  justify-content: space-between; /* 양쪽 끝에 요소 배치 */
+  align-items: center;
+  margin-top: 2rem;
+  padding: 0 1rem; /* 좌우 여백 추가 */
+}
+
+/* Navigation bar */
 nav {
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
+  flex: 1; /* 네비게이션 바가 왼쪽 영역을 차지하도록 */
 }
 
 nav a.router-link-exact-active {
@@ -78,5 +86,35 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: #81e6b3; /* Green color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition:
+    background-color 0.3s,
+    transform 0.3s;
+  display: inline-block;
+  margin-left: 20px; /* 버튼과 네비게이션 사이 여백 */
+}
+
+.logout-btn:hover {
+  background-color: #2dda83; /* Darker green when hovered */
+  transform: translateY(-2px); /* Slightly lift the button */
+}
+
+.logout-btn:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.logout-btn:active {
+  background-color: #2dda83; /* Darker green when clicked */
+  transform: translateY(1px); /* Push the button down when clicked */
 }
 </style>

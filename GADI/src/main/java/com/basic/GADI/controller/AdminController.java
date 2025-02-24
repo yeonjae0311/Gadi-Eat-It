@@ -5,6 +5,7 @@ import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,9 @@ public class AdminController {
     }*/
 
     @GetMapping("/res_list")
-    public PageResponseDto<ResDetailResponseDto> resList(Pageable pageable) {
+    public PageResponseDto<ResDetailResponseDto> resList( @RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return adminService.findResList(pageable);
     }
 

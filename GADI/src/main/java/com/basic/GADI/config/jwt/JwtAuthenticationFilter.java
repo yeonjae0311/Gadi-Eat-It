@@ -36,7 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             role = jwtUtil.extractRole(token);
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            System.out.println(456);
             response.getWriter().write("토큰이 필요합니다.");
             return;
         }
