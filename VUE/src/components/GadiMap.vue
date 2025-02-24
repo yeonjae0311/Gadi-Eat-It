@@ -26,41 +26,13 @@ let markerCluster = null
 const store = useMapstore()
 const { resList } = storeToRefs(store)
 
-onMounted(() => {
-  if (window.naver && window.naver.maps) {
-    // 맵 객체 생성
-    const mapOptions = {
-      center: new window.naver.maps.LatLng(37.481008, 126.8825988), // 지도 중심 좌표
-      zoom: 16
-    }
-    map.value = new window.naver.maps.Map(mapRef.value, mapOptions)
-    console.log('맵 로드 완료!', map.value)
-
-    // ✅ 마커 클러스터링 객체 생성 (많은 마커를 효율적으로 관리)
-    markerCluster = new MarkerClustering({
-      minClusterSize: 2, // 최소 2개부터 클러스터링
-      maxZoom: 17, // 줌 18 이상에서는 개별 마커 표시
-      map: map.value,
-      markers: [], // 초기 마커 없음
-      disableClickZoom: false, // 클릭 시 줌 확대 가능
-      gridSize: 80 // 클러스터 간 거리
-    })
-
-    window.naver.maps.Event.addListener(map.value, 'bounds_changed', updateMarkers)
-
-    fetchResList()
-  } else {
-    console.error('네이버 맵 API가 로드되지 않았습니다.')
-  }
-})
-
-const fetchResList = async () => {
-  try {
-    // 비동기적으로 데이터 로딩
-    await store.loadResList()
-    updateMarkers()
-  } catch (error) {
-    console.error('리스트 로딩 중 오류 발생:', error)
+const debounce = (func, delay) => {
+  let timer
+  return (...args) => {
+    clearTimeout(timer) // 기존 타이머 초기화
+    timer = setTimeout(() => {
+      func(...args) // delay 후 함수 실행
+    }, delay)
   }
 }
 
@@ -97,6 +69,46 @@ const updateMarkers = () => {
   })
 
   markerCluster.setMarkers([...markers.value.values()])
+}
+
+const debouncedUpdateMarkers = debounce(updateMarkers, 200)
+
+onMounted(() => {
+  if (window.naver && window.naver.maps) {
+    // 맵 객체 생성
+    const mapOptions = {
+      center: new window.naver.maps.LatLng(37.481008, 126.8825988), // 지도 중심 좌표
+      zoom: 16
+    }
+    map.value = new window.naver.maps.Map(mapRef.value, mapOptions)
+    console.log('맵 로드 완료!', map.value)
+
+    // ✅ 마커 클러스터링 객체 생성 (많은 마커를 효율적으로 관리)
+    markerCluster = new MarkerClustering({
+      minClusterSize: 2, // 최소 2개부터 클러스터링
+      maxZoom: 17,
+      map: map.value,
+      markers: [], // 초기 마커 없음
+      disableClickZoom: false, // 클릭 시 줌 확대 가능
+      gridSize: 80 // 클러스터 간 거리
+    })
+
+    window.naver.maps.Event.addListener(map.value, 'bounds_changed', debouncedUpdateMarkers)
+
+    fetchResList()
+  } else {
+    console.error('네이버 맵 API가 로드되지 않았습니다.')
+  }
+})
+
+const fetchResList = async () => {
+  try {
+    // 비동기적으로 데이터 로딩
+    await store.loadResList()
+    updateMarkers()
+  } catch (error) {
+    console.error('리스트 로딩 중 오류 발생:', error)
+  }
 }
 </script>
 
