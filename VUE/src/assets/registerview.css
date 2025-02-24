@@ -90,3 +90,25 @@
     font-size: 0.8em;
     display: none;
 }
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-field {
+    width: 100%;
+    padding-right: 40px; 
+}
+
+.show-pw {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.show-pw img {
+    width: 25px;
+    height: 35px;
+}
