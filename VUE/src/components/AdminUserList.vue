@@ -4,7 +4,7 @@
     <table class="user-table">
       <thead>
         <tr>
-          <th>no</th>
+          <th>No</th>
           <th>이름</th>
           <th>이메일</th>
           <th>전화 번호</th>

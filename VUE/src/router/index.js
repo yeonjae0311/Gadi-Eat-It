@@ -7,6 +7,7 @@ import AdminView from '@/views/AdminView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AdminUserList from '@/components/AdminUserList.vue'
 import AdminResList from '@/components/AdminResList.vue'
+import AdminResDetail from '@/components/AdminResDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +60,11 @@ const router = createRouter({
         {
           path: 'res_list',
           component: AdminResList
+        },
+        {
+          path: 'res_list/:resId',
+          component: AdminResDetail,
+          props: true
         }
       ]
     }
