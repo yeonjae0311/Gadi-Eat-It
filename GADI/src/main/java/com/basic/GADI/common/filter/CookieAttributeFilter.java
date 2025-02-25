@@ -1,4 +1,4 @@
-package com.basic.GADI.config;
+package com.basic.GADI.common.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;

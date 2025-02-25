@@ -4,7 +4,7 @@
     <button @click="onSearch">검색</button>
   </div>
   <div class="map-container">
-    <div ref="mapRef" style="width: 80%; height: 400px" @load="onMapLoad" class="map">
+    <div ref="mapRef" style="width: 80%; height: 100%" @load="onMapLoad" class="map">
       <div
         v-for="data in resList"
         :key="data.id"
@@ -125,7 +125,7 @@ onMounted(() => {
     // 맵 객체 생성
     const mapOptions = {
       center: new window.naver.maps.LatLng(37.481008, 126.8825988), // 지도 중심 좌표
-      zoom: 16
+      zoom: 17
     }
     map.value = new window.naver.maps.Map(mapRef.value, mapOptions)
     console.log('맵 로드 완료!', map.value)
