@@ -113,12 +113,10 @@ const updateMyInfo = async () => {
   }
 
   try {
-    const res = await http.patch('/user/my_info/update', formData, {
-      headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('access_token'),
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    const res = await http.patch('/user/my_info/update', 
+                                  formData, 
+                                  { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token'),
+                                               'Content-Type': 'multipart/form-data'}})
     console.log(res.data)
   } catch (error) {
     console.error('내정보 수정 실패 ! ', error)
