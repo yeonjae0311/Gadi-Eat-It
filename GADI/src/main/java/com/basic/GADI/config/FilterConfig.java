@@ -37,8 +37,17 @@ public class FilterConfig {
 
         config.setAllowCredentials(true); // 쿠키 허용
         config.addAllowedOrigin(DEVELOP_FRONT_ADDRESS); // 허용할 도메인
-        config.addAllowedHeader("*"); // 모든 헤더 허용
-        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+
+        config.addAllowedHeader("Content-Type");
+        config.addAllowedHeader("Authorization");
+        config.addAllowedHeader("X-Custom-Header");
+        // 허용할 HTTP 메서드
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("PATCH");
+        config.addAllowedMethod("DELETE");
+
 
         source.registerCorsConfiguration("/**", config);
 

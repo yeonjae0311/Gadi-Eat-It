@@ -62,8 +62,7 @@ const searchRestaurants = () => {
     const latlng = new window.naver.maps.LatLng(res.latitude, res.longitude)
     const marker = new window.naver.maps.Marker({
       position: latlng,
-      map: map.value,
-      title: res.resName // 마커에 식당 이름 추가
+      map: map.value
     })
 
     // 마커 클릭 시 사이드바 표시
@@ -86,7 +85,7 @@ const updateMarkers = () => {
   const bounds = map.value.getBounds()
   const newMarkers = new Map() // 업데이트된 마커 저장
 
-  resList.value.forEach((res) => {
+  for (const res of resList.value) {
     const latlng = new window.naver.maps.LatLng(res.latitude, res.longitude)
     if (bounds.hasLatLng(latlng)) {
       if (!markers.value.has(res.resId)) {
@@ -94,6 +93,7 @@ const updateMarkers = () => {
         const marker = new window.naver.maps.Marker({
           position: latlng,
           map: map.value,
+          title: res.resName,
           icon: {
             url: 'https://map.pstatic.net/resource/api/v2/image/maps/selected-marker/222870@2x.png?version=12&mapping=marker-111',
             scaledSize: new window.naver.maps.Size(15, 20)
@@ -106,7 +106,7 @@ const updateMarkers = () => {
       }
       newMarkers.set(res.resId, markers.value.get(res.resId)) // 현재 필요한 마커만 저장
     }
-  })
+  }
 
   markers.value.forEach((marker, id) => {
     if (!newMarkers.has(id)) {

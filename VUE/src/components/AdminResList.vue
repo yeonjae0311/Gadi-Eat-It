@@ -79,7 +79,7 @@ onMounted(getResList)
 <style scoped>
 .content {
   flex: 1;
-  overflow-y: auto;
+  height: 100%;
   margin-left: 250px;
 }
 
@@ -124,6 +124,7 @@ onMounted(getResList)
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
+  padding-bottom: 30px;
 }
 
 button {

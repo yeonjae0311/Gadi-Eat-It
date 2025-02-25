@@ -1,9 +1,21 @@
 <template>
-  <div v-if="res">
+  <div v-if="res" class="res-detail">
     <h2>{{ res.resName }}</h2>
     <p>주소: {{ res.resAddress }}</p>
     <p>전화번호: {{ res.resPhone }}</p>
-    <p>평점: {{ res.resRating }}</p>
+    <div>
+      평점: {{ res.resRating }}
+      <div class="rating">
+        <span
+          v-for="(star, index) in stars"
+          :key="index"
+          :class="['star', { full: index < rating }]"
+        >
+          &#9733;
+          <!-- 별 아이콘 -->
+        </span>
+      </div>
+    </div>
   </div>
   <div v-else>
     <p>로딩 중...</p>
@@ -18,6 +30,8 @@ import { onMounted, ref } from 'vue'
 const route = useRoute()
 const resId = route.params.resId
 const res = ref()
+const rating = ref(3)
+const stars = ref([0, 1, 2, 3, 4])
 
 const getResDetail = async () => {
   try {
@@ -30,6 +44,7 @@ const getResDetail = async () => {
       }
     })
     res.value = response.data
+    rating.value = res.value.rating
   } catch (error) {
     console.error('식당 정보 조회 실패', error)
   }
@@ -40,7 +55,7 @@ onMounted(getResDetail)
 
 <style scoped>
 /* 전체 컨테이너 스타일 */
-div {
+.res-detail {
   margin: 40px auto;
   max-width: 900px;
   padding: 20px;
@@ -92,5 +107,18 @@ p:last-of-type {
   color: #a0aec0;
   font-weight: 500;
   padding: 50px 0;
+}
+/* 별 아이콘 스타일 */
+.star {
+  font-size: 30px;
+  color: gray; /* 기본 색 */
+}
+
+.star.full {
+  color: gold; /* 꽉 찬 별은 금색 */
+}
+
+.rating {
+  display: flex;
 }
 </style>
