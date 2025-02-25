@@ -56,6 +56,7 @@ public class AuthController {
 
         String authCode = (String)session.getAttribute("authCode");
         String sendEmail = (String)session.getAttribute("sendEmail");
+
         if (authCode != null && authCode.equals(inputAuthCode) && email.equals(sendEmail)) {
             session.removeAttribute("authCode");
             session.removeAttribute("sendEmail");
