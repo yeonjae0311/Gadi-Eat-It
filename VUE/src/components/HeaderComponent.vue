@@ -8,8 +8,8 @@
       <RouterLink to="/register">register</RouterLink>
       <RouterLink to="/admin">admin</RouterLink>
     </nav>
+    <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
   </div>
-  <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
 </template>
 
 <script setup>
@@ -92,8 +92,8 @@ nav a:first-of-type {
   background-color: #81e6b3; /* Green color */
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 13px;
   cursor: pointer;
   border-radius: 5px;
   transition:
@@ -101,6 +101,7 @@ nav a:first-of-type {
     transform 0.3s;
   display: inline-block;
   margin-left: 20px; /* 버튼과 네비게이션 사이 여백 */
+  margin-top: 10px;
 }
 
 .logout-btn:hover {
