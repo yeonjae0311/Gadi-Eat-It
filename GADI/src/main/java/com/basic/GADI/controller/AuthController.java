@@ -15,8 +15,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,17 +42,24 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body("회원가입이 완료되었습니다.");
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<String> requestEmailAuth(@PathVariable("email") String email, HttpSession session) throws MessagingException {
+    @PostMapping("/send/email")
+    public ResponseEntity<String> sendEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) throws MessagingException {
+        String email = requestData.get("email");
         boolean isSend = authService.sendAuthMail(email, session);
         return ResponseEntity.ok().body(isSend ? "인증번호가 전송되었습니다." : "인증번호 전송에 실패하였습니다.");
     }
 
-    @PostMapping("/email")
-    public ResponseEntity<String> verifyEmailAuth(@RequestParam String email,
-                                                  @RequestParam String inputAuthCode, HttpSession session) {
+    @PostMapping("/verify/email")
+    public ResponseEntity<String> verifyEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) {
+        String email = requestData.get("email");
+        String inputAuthCode = requestData.get("inputAuthCode");
+        System.out.println(email);
+        System.out.println(inputAuthCode);
+
         String authCode = (String)session.getAttribute("authCode");
         String sendEmail = (String)session.getAttribute("sendEmail");
+        System.out.println(authCode);
+        System.out.println(sendEmail);
         if (authCode != null && authCode.equals(inputAuthCode) && email.equals(sendEmail)) {
             session.removeAttribute("authCode");
             session.removeAttribute("sendEmail");

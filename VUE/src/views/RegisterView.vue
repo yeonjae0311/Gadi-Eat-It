@@ -8,11 +8,23 @@
                 <label for="email">이메일</label>
                 <div class="email-check">
                     <input class="email-field" id="email" v-model="user_email" placeholder="이메일을 입력해주세요." @keyup="validateField('user_email', user_email)" />
-                    <button class="email-btn">이메일 인증</button>
+                    <button class="email-btn" @click="sendEmail">이메일 인증</button>
                 </div>
             </div>  
             <div class="check-field" :style="{ color: validationResults.user_email ? 'green' : 'red' }">{{ validationMessages.user_email }}</div>
-            <div>여기는 이메일 인증 버튼 누르면 이메일인증번호 입력하는 곳 -> 만들어야 함</div>
+            <div class="valid-container" v-show="isValidVisible"> 
+                <div class="email-valid">
+                    <input class="valid-field" v-model="inputAuthCode" placeholder="인증번호를 입력해주세요."> 
+                    <button class="valid-btn" @click="checkAuthcode">확인</button>
+                </div>
+                <div v-if="!isVerified" class="time-container">
+                    <p v-if="countdown > 0" class="countdown">유효시간 : {{ countdown }}초</p>
+                    <p v-else class="expired-time" style="color:gray">인증 시간이 만료되었습니다. 
+                        <button class="resend-btn" @click="sendEmail">재전송</button>
+                    </p>
+                </div>
+                <div v-else class="valid-container">인증이 완료되었습니다.</div>
+            </div>
             <div>
                 <label for="name">이름</label>
                 <input class="input-field" id="name" v-model="user_name" placeholder="이름을 입력해주세요." @keyup="validateField('user_name', user_name)" />
@@ -145,10 +157,66 @@ const register = async() => {
     }
 }; 
 
+// 비밀번호 입력란 ** <-> 보여지도록
 const isPwVisible = ref(false)
 const togglePw = () => {
     isPwVisible.value = !isPwVisible.value
 }
+
+// 이메일 인증번호 전송 처리
+const isValidVisible = ref(false) 
+const countdown = ref(0) 
+
+const sendEmail = async () => {
+    if (validationResults.value.user_email) { 
+        isValidVisible.value = true;
+        countdown.value = 180;   
+
+        try { 
+            const res = await http.post('/auth/send/email',  { email: user_email.value });  
+            if (res.status === 200) {
+                alert('이메일을 발송하였습니다. 확인 후 인증 완료해주세요.');
+            }  
+ 
+            const timer = setInterval(() => {
+                if (countdown.value > 0) {
+                    countdown.value--;  
+                } else {
+                    clearInterval(timer); 
+                }
+            }, 1000);
+        } catch (error) {
+            console.error('이메일 전송 중 오류 발생:', error);
+            alert('이메일 전송에 실패하였습니다. 다시 요청해주세요.');
+        } 
+    } else { 
+        isValidVisible.value = false;
+        alert('이메일을 정확히 입력해주세요.');
+    }
+};
+
+// 이메일 인증번호 확인 처리 
+const inputAuthCode = ref('');
+const isVerified = ref(false);
+
+const checkAuthcode = async() => {
+    console.log(user_email.value);
+    console.log(inputAuthCode.value);
+
+    try {
+        const res = await http.post('/auth/verify/email',  { email: user_email.value, inputAuthCode : inputAuthCode.value }
+            , { withCredentials: true }
+        ); 
+        if (res.status === 200) {
+            console.log('이메일 인증코드 확인 완료 !');
+            isVerified.value = true;
+        }
+    } catch (error) {
+        console.error('이메일 인증코드 확인 실패 ! : ', error);
+        alert('이메일 인증코드를 정확하게 입력해주세요.');
+    }
+}
+
 
 </script>
 

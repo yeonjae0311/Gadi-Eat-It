@@ -23,7 +23,7 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtAuthenticationFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        List<String> excludedUrls = Arrays.asList("/api/auth/login", "/api/auth/register", "/api/main/list");
+        List<String> excludedUrls = Arrays.asList("/api/auth/login", "/api/auth/register", "/api/main/list", "/api/auth/send/email", "/api/auth/verify/email");
         registrationBean.setFilter(new JwtAuthenticationFilter(jwtUtil, excludedUrls));
         registrationBean.addUrlPatterns("/api/*");  // 필터를 적용할 URL 패턴 지정
         registrationBean.addInitParameter("excludedUrls", "/api/auth/login,/api/auth/register,/api/main/list");
@@ -44,6 +44,13 @@ public class FilterConfig {
 
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(0); // 필터 순서 설정 (0이면 가장 먼저 실행)
+        return bean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<CookieAttributeFilter> cookieAttributeFilter() {
+        FilterRegistrationBean<CookieAttributeFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(new CookieAttributeFilter());
         return bean;
     }
 }

@@ -110,5 +110,54 @@
 
 .show-pw img {
     width: 25px;
-    height: 35px;
+    height: 30px;
 }
+
+.valid-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.email-valid {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .valid-field {
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .valid-btn {
+    position: absolute;
+    right: 10px; 
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #000203a1; 
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .valid-btn:hover {
+    color: #000307; 
+  } 
+
+  .time-container {
+    font-size: 13px;
+  }
+
+  .resend-btn { 
+    border: solid lightgrey 1px;
+    border-radius: 10%;
+    padding: 5px;
+    margin-left: 10px;
+    background-color: white; 
+  }
