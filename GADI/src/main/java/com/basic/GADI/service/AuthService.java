@@ -120,8 +120,6 @@ public class AuthService {
             session.setAttribute("sendEmail", sendEmail);
             session.setAttribute("authCode", authCode);
             session.setMaxInactiveInterval(180);
-            System.out.println(session.getAttribute("sendEmail"));
-            System.out.println(session.getAttribute("authCode"));
             return true;
         } catch (MailException e) {
             return false;

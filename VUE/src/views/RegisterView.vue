@@ -173,7 +173,9 @@ const sendEmail = async () => {
         countdown.value = 180;   
 
         try { 
-            const res = await http.post('/auth/send/email',  { email: user_email.value });  
+            const res = await http.post('/auth/send/email',  
+                                        { email: user_email.value },
+                                        { withCredentials: true });  
             if (res.status === 200) {
                 alert('이메일을 발송하였습니다. 확인 후 인증 완료해주세요.');
             }  
@@ -204,9 +206,9 @@ const checkAuthcode = async() => {
     console.log(inputAuthCode.value);
 
     try {
-        const res = await http.post('/auth/verify/email',  { email: user_email.value, inputAuthCode : inputAuthCode.value }
-            , { withCredentials: true }
-        ); 
+        const res = await http.post('/auth/verify/email',  
+                                    { email: user_email.value, inputAuthCode : inputAuthCode.value }, 
+                                    { withCredentials: true }); 
         if (res.status === 200) {
             console.log('이메일 인증코드 확인 완료 !');
             isVerified.value = true;

@@ -53,13 +53,9 @@ public class AuthController {
     public ResponseEntity<String> verifyEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) {
         String email = requestData.get("email");
         String inputAuthCode = requestData.get("inputAuthCode");
-        System.out.println(email);
-        System.out.println(inputAuthCode);
 
         String authCode = (String)session.getAttribute("authCode");
         String sendEmail = (String)session.getAttribute("sendEmail");
-        System.out.println(authCode);
-        System.out.println(sendEmail);
         if (authCode != null && authCode.equals(inputAuthCode) && email.equals(sendEmail)) {
             session.removeAttribute("authCode");
             session.removeAttribute("sendEmail");
