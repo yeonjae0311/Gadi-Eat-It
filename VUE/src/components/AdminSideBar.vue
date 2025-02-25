@@ -23,6 +23,7 @@ const goTo = (menu) => {
 
 <style scoped>
 .sidebar {
+  margin-top:70px;
   width: 250px;
   background-color: #81e6b3;
   color: white;
