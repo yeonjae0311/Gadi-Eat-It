@@ -32,17 +32,16 @@ const logout = () => {
 /* Navigation and logout button container */
 .header-container {
   display: flex;
-  justify-content: space-between; /* 양쪽 끝에 요소 배치 */
+  justify-content: flex-end;
   align-items: center;
-  margin-top: 2rem;
+  margin: auto;
   padding: 0 1rem; /* 좌우 여백 추가 */
 }
 
 /* Navigation bar */
-nav {
-  font-size: 12px;
-  text-align: center;
-  flex: 1; /* 네비게이션 바가 왼쪽 영역을 차지하도록 */
+.nav-links {
+  font-size: 15px;
+  text-align: center; 
 }
 
 nav a.router-link-exact-active {

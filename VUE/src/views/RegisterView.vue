@@ -133,6 +133,7 @@ const validateAllFields = () => {
   return Object.values(validationResults.value).every((result) => result === true);
 };
 
+// 회원가입 처리
 const register = async() => {
     const userInfo = {
       userEmail: user_email.value,
@@ -142,15 +143,21 @@ const register = async() => {
       userPhone: user_phone.value,
     };  
 
-    if (validateAllFields()) { 
+    if (validateAllFields()) {
+        const isAuthcodeValid = await checkAuthcode();
+
+        if (!isAuthcodeValid) { 
+            return; 
+        }
+
         try {
-            const res = await http.post('/auth/register', userInfo)
+            const res = await http.post('/auth/register', userInfo);
             if (res.status === 200) {
                 alert('회원가입 성공!');
                 router.push('/login');
             }
         } catch (error) {
-            console.error('회원가입 실패 ! ', error)
+            console.error('회원가입 실패 ! ', error);
         }
     } else {
         alert('모든 항목을 올바르게 입력해주세요.');
@@ -199,12 +206,9 @@ const sendEmail = async () => {
 
 // 이메일 인증번호 확인 처리 
 const inputAuthCode = ref('');
-const isVerified = ref(false);
+const isVerified = ref(false); 
 
-const checkAuthcode = async() => {
-    console.log(user_email.value);
-    console.log(inputAuthCode.value);
-
+const checkAuthcode = async() => {   
     try {
         const res = await http.post('/auth/verify/email',  
                                     { email: user_email.value, inputAuthCode : inputAuthCode.value }, 
@@ -215,8 +219,8 @@ const checkAuthcode = async() => {
         }
     } catch (error) {
         console.error('이메일 인증코드 확인 실패 ! : ', error);
-        alert('이메일 인증코드를 정확하게 입력해주세요.');
-    }
+        alert('이메일 인증이 완료되지 않았습니다. 인증 완료해주세요!');
+    }  
 }
 
 
