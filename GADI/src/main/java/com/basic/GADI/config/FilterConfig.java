@@ -1,5 +1,6 @@
 package com.basic.GADI.config;
 
+import com.basic.GADI.common.filter.CookieAttributeFilter;
 import com.basic.GADI.config.jwt.JwtAuthenticationFilter;
 import com.basic.GADI.config.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
