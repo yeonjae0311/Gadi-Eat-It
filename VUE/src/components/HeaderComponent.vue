@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <nav class="nav-links">
-      <RouterLink to="/">About</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
       <RouterLink to="/login">Login</RouterLink>
       <RouterLink to="/map">Map</RouterLink>
       <RouterLink to="/update">update</RouterLink>

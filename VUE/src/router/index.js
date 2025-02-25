@@ -25,7 +25,7 @@ const router = createRouter({
       component: LayoutView,
       children: [
         {
-          path: '/',
+          path: '/about',
           name: 'about',
           component: AboutView
         },
