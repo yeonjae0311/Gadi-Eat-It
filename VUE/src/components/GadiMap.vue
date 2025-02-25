@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <input type="text" v-model="searchQuery" placeholder="식당 이름을 검색하세요" />
-    <button @click="onSearch">검색</button>
+  <div class="search">
+    <input class="search-field" type="text" v-model="searchQuery" placeholder="식당 이름을 검색하세요" />
+    <button class="search-btn" @click="onSearch">검색</button>
   </div>
   <div class="map-container">
     <div ref="mapRef" style="width: 80%; height: 100%" @load="onMapLoad" class="map">
@@ -166,12 +166,42 @@ img {
 }
 
 .map-container {
-  display: flex;
+  display: flex; 
   position: relative;
-  height: 100vh;
+  height: 100%;
+  padding: 10px
 }
 
 .map {
   flex: 1;
 }
+
+.search { 
+  display: flex; 
+  align-items: center;
+  padding: 10px;  
+}
+
+.search-field {
+    width: 95%;
+    padding: 10px 40px 10px 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .search-btn { 
+    width: 5%;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #000203a1; 
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .search-btn:hover {
+    color: #000307; 
+  } 
+
 </style>

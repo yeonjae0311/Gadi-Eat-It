@@ -4,8 +4,7 @@
       <RouterLink to="/about">About</RouterLink>
       <RouterLink to="/login">Login</RouterLink>
       <RouterLink to="/map">Map</RouterLink>
-      <RouterLink to="/update">update</RouterLink>
-      <RouterLink to="/register">register</RouterLink>
+      <RouterLink to="/myInfo">myInfo</RouterLink> 
       <RouterLink to="/admin">admin</RouterLink>
     </nav>
     <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>

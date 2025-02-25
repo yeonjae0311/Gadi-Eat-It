@@ -40,8 +40,8 @@ const router = createRouter({
           component: MapView
         },
         {
-          path: '/update',
-          name: 'update',
+          path: '/myInfo',
+          name: 'myinfo',
           component: UpdateMyInfoView,
           meta: { requiresLogin: true }
         },

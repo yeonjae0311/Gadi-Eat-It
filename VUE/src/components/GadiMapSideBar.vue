@@ -1,15 +1,22 @@
 <template>
-  <div class="sidebar" :class="{ open: res }">
-    <div v-if="res" class="sidebar-content">
+  <div v-if="res" class="sidebar" :class="{ open: res }">
+    <div class="sidebar-content">
       <h2>{{ res.resName }}</h2>
-      <p>주소: {{ res.resAddress }}</p>
-      <p>전화번호: {{ res.resPhone }}</p>
-      <p>평점: {{ res.resRating }}</p>
+      <div><img class="img" src="/images/restaurant.png"></div>
+      <div class="div-container">
+        <div>주소</div> 
+        <p>{{ res.resAddress }}</p>
+      </div>
+      <div class="div-container">
+        <div>전화번호</div> 
+        <p>{{ res.resPhone }}</p>
+      </div>
+      <div class="div-container">
+        <div>평점</div> 
+        <p>{{ res.resRating }}</p>
+      </div>
       <button @click="$emit('close')">닫기</button>
-    </div>
-    <div v-else class="sidebar-content">
-      <p>식당 정보를 보려면 마커를 클릭하세요.</p>
-    </div>
+    </div> 
   </div>
 </template>
 
@@ -23,7 +30,7 @@ defineEmits(['close']) // 닫기 이벤트 전송
 
 <style scoped>
 .sidebar {
-  width: 300px;
+  width: 400px;
   background-color: #f9f9f9;
   border-left: 1px solid #ccc;
   padding: 20px;
@@ -45,23 +52,48 @@ defineEmits(['close']) // 닫기 이벤트 전송
 
 h2 {
   font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
-p {
-  margin: 5px 0;
+div {
+  margin: 10px 0;
 }
 
-button {
+.div-container {
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: 3px;
+}
+
+.div-container div {
+  width: 25%; 
+}
+
+.div-container p {
+  width: 75%;
+}
+
+
+button { 
+  position: absolute;
+  right: 15px;
   padding: 10px 15px;
   background-color: #ff5a5a;
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: pointer; 
 }
 
 button:hover {
   background-color: #ff3d3d;
+}
+
+.img {
+  width: 100%;
+  height: 300px;
 }
 </style>

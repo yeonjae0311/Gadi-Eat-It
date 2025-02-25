@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="gadi-map">
     <GadiMap></GadiMap>
   </div>
 </template>
@@ -8,4 +8,8 @@
 import GadiMap from '@/components/GadiMap.vue'
 </script>
 
-<style scoped></style>
+<style scoped>
+.gadi-map {
+  height: 700px;
+}
+</style>
