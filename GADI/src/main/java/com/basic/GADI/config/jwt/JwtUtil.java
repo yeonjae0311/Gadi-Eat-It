@@ -25,7 +25,7 @@ public class JwtUtil {
                 .claim("userId", user.getUserId())
                 .claim("role", user.getRole())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 2L))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15 * 2L))
                 .signWith(Keys.hmacShaKeyFor(signatureKey.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }

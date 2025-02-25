@@ -7,7 +7,8 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: {},
     user: {},
-    loginState: false
+    loginState: false,
+    formattedTime: '0분 00초'
   }),
   actions: {
     async login(payload) {
@@ -24,6 +25,7 @@ export const useAuthStore = defineStore('auth', {
         sessionStorage.setItem('refresh_token', refreshtoken) // 토큰을 저장함
         this.loginState = true
         sessionStorage.setItem('login', true)
+        this.startLogoutTimer(1800)
         alert('로그인 성공')
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -32,6 +34,28 @@ export const useAuthStore = defineStore('auth', {
           console.error(error)
         }
       }
+    },
+    startLogoutTimer(duration) {
+      this.clearTimer()
+      this.remainingTime = duration
+      this.timerId = setInterval(() => {
+        this.remainingTime--
+        this.updateFormattedTime()
+        if (this.remainingTime <= 0) {
+          this.logout()
+        }
+      }, 1000) // 1초마다 감소
+    },
+    clearTimer() {
+      if (this.timerId) {
+        clearInterval(this.timerId)
+        this.timerId = null
+      }
+    },
+    updateFormattedTime() {
+      const minutes = Math.floor(this.remainingTime / 60)
+      const seconds = this.remainingTime % 60
+      this.formattedTime = `${minutes}분 ${String(seconds).padStart(2, '0')}초`
     },
     loadLoginState() {
       const login = sessionStorage.getItem('login')
@@ -43,6 +67,8 @@ export const useAuthStore = defineStore('auth', {
       sessionStorage.clear()
       this.state = {}
       this.loginState = false
+      this.clearTimer()
+      alert('로그아웃되었습니다.')
     }
   },
   getters: {

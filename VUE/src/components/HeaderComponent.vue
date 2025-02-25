@@ -8,6 +8,7 @@
       <RouterLink to="/register">register</RouterLink>
       <RouterLink to="/admin">admin</RouterLink>
     </nav>
+    <p v-if="store.isLogIn">남은 시간: {{ store.formattedTime }}</p>
     <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
   </div>
 </template>
@@ -23,7 +24,6 @@ store.loadLoginState()
 
 const logout = () => {
   store.logout()
-  alert('로그아웃되었습니다.')
   router.push('/login')
 }
 </script>
