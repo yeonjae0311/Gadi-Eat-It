@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MapView from '@/views/MapView.vue' 
+import MapView from '@/views/MapView.vue'
 import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AdminUserList from '@/components/AdminUserList.vue'
 import AdminResList from '@/components/AdminResList.vue'
-import AdminResDetail from '@/components/AdminResDetail.vue' 
+import AdminResDetail from '@/components/AdminResDetail.vue'
 import LayoutView from '@/views/layout/LayoutView.vue'
 import AboutView from '@/views/AboutView.vue'
 import MainView from '@/views/MainView.vue'
@@ -15,9 +15,9 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path:'/',
-      name:'main',
-      component:MainView
+      path: '/',
+      name: 'main',
+      component: MainView
     },
     {
       path: '/gadi',
@@ -81,7 +81,7 @@ const router = createRouter({
           ]
         }
       ]
-    } 
+    }
   ]
 })
 router.beforeEach((to, from, next) => {
