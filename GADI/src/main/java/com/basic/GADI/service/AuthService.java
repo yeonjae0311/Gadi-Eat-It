@@ -47,7 +47,7 @@ public class AuthService {
     private String signatureKey;
 
     @Transactional
-    public void register(RegisterRequestDto registerRequestDto)  {
+    public void register(RegisterRequestDto registerRequestDto) {
         if (userRepository.existsByUserEmail(registerRequestDto.getUserEmail())) {
             throw new BusinessException("이미 존재하는 아이디입니다.", HttpStatus.NOT_FOUND);
         }
@@ -70,7 +70,7 @@ public class AuthService {
         String accessToken = "";
         String refreshToken = "";
 
-        accessToken =  jwtUtil.createAccessToken(user);
+        accessToken = jwtUtil.createAccessToken(user);
         refreshToken = jwtUtil.createRefreshToken(user);
 
         return TokenResponseDto.builder()
@@ -86,8 +86,8 @@ public class AuthService {
         for (int i = 0; i < 6; i++) {
             int number = random.nextInt(2);
 
-            if(random.nextBoolean()) {
-                key.append((char)(random.nextInt(26) + 65));
+            if (random.nextBoolean()) {
+                key.append((char) (random.nextInt(26) + 65));
             } else {
                 key.append(random.nextInt(10));
             }
@@ -180,7 +180,26 @@ public class AuthService {
             updateUser.resetUserPw(passwordEncoder.encode(newPassword));
             userRepository.save(updateUser);
         } else {
-            throw new BusinessException("등록되지 않은 사용자 입니다.",  HttpStatus.NOT_FOUND);
+            throw new BusinessException("등록되지 않은 사용자 입니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Transactional
+    public TokenResponseDto refreshLogin(String token) {
+        System.out.println(token);
+        if (jwtUtil.validateToken(token)) {
+            Long userId = jwtUtil.extractUserId(token);
+            User user = userRepository.findByUserId(userId)
+                    .orElseThrow(() -> new BusinessException("사용자를 찾을 수 없습니다."));
+            String accessToken = jwtUtil.createAccessToken(user);
+            String refreshToken = jwtUtil.createRefreshToken(user);
+
+            return TokenResponseDto.builder()
+                    .AccessToken(accessToken)
+                    .RefreshToken(refreshToken)
+                    .build();
+        } else {
+            throw new BusinessException("유효하지 않은 토큰입니다.", HttpStatus.FORBIDDEN);
         }
     }
 }

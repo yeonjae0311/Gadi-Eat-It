@@ -19,14 +19,13 @@ export const useAuthStore = defineStore('auth', {
         this.user.userId = jwtDecode(this.token.access_token).userId
         this.user.role = jwtDecode(this.token.access_token).role
         sessionStorage.setItem('role', this.user.role)
-        const accesstoken = res.data.accessToken
-        sessionStorage.setItem('access_token', accesstoken) // 토큰을 저장함
-        const refreshtoken = res.data.refreshToken
-        sessionStorage.setItem('refresh_token', refreshtoken) // 토큰을 저장함
+        sessionStorage.setItem('access_token', res.data.accessToken) // 토큰을 저장함
+        sessionStorage.setItem('refresh_token', res.data.refreshToken) // 토큰을 저장함
         this.loginState = true
         sessionStorage.setItem('login', true)
-        this.startLogoutTimer(1800)
+        sessionStorage.setItem('timerStart', Date.now())
         alert('로그인 성공')
+        window.location.reload()
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error?.response.status + ':' + error.response.data.message)
@@ -35,27 +34,34 @@ export const useAuthStore = defineStore('auth', {
         }
       }
     },
-    startLogoutTimer(duration) {
-      this.clearTimer()
-      this.remainingTime = duration
-      this.timerId = setInterval(() => {
-        this.remainingTime--
-        this.updateFormattedTime()
-        if (this.remainingTime <= 0) {
-          this.logout()
+    async refreshLogin() {
+      try {
+        const res = await http.post(
+          '/auth/refreshLogin',
+          {},
+          {
+            headers: { Authorization: 'Bearer ' + sessionStorage.getItem('refresh_token') }
+          }
+        )
+        const data = await res.data
+        this.token = { access_token: data.accessToken, refresh_token: data.refreshToken }
+        this.user.userId = jwtDecode(this.token.access_token).userId
+        this.user.role = jwtDecode(this.token.access_token).role
+        sessionStorage.setItem('role', this.user.role)
+        sessionStorage.setItem('access_token', res.data.accessToken) // 토큰을 저장함
+        sessionStorage.setItem('refresh_token', res.data.refreshToken) // 토큰을 저장함
+        this.loginState = true
+        sessionStorage.setItem('login', true)
+        sessionStorage.setItem('timerStart', Date.now())
+        alert('로그인 연장')
+        window.location.reload()
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error?.response.status + ':' + error.response.data.message)
+        } else {
+          console.error(error)
         }
-      }, 1000) // 1초마다 감소
-    },
-    clearTimer() {
-      if (this.timerId) {
-        clearInterval(this.timerId)
-        this.timerId = null
       }
-    },
-    updateFormattedTime() {
-      const minutes = Math.floor(this.remainingTime / 60)
-      const seconds = this.remainingTime % 60
-      this.formattedTime = `${minutes}분 ${String(seconds).padStart(2, '0')}초`
     },
     loadLoginState() {
       const login = sessionStorage.getItem('login')
@@ -67,7 +73,6 @@ export const useAuthStore = defineStore('auth', {
       sessionStorage.clear()
       this.state = {}
       this.loginState = false
-      this.clearTimer()
       alert('로그아웃되었습니다.')
     }
   },

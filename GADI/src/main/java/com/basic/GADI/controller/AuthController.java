@@ -10,6 +10,8 @@ import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.entity.User;
 import com.basic.GADI.service.AuthService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,20 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> login (@RequestBody @Valid LoginRequestDto loginRequestDto) {
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequestDto));
+    }
+
+    @PostMapping("/refreshLogin")
+    public ResponseEntity<TokenResponseDto> login (HttpServletRequest request, HttpServletResponse response) {
+        String authorizationHeader = request.getHeader("Authorization");
+        System.out.println(authorizationHeader);
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            // "Bearer " 뒤에 오는 토큰 부분만 추출
+            token = authorizationHeader.substring(7);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(authService.refreshLogin(token));
     }
 
     @PostMapping(value = "/register", produces = "application/json")
