@@ -4,12 +4,13 @@
       <RouterLink to="/about">About</RouterLink>
       <RouterLink to="/login">Login</RouterLink>
       <RouterLink to="/map">Map</RouterLink>
-      <RouterLink to="/myInfo">myInfo</RouterLink>
+      <RouterLink v-if="store.isLogIn" to="/myInfo">myInfo</RouterLink>
       <RouterLink to="/admin">admin</RouterLink>
     </nav>
     <p v-if="store.isLogIn">{{ sessionTimer }}</p>
     <button v-if="store.isLogIn" @click="refresh">연장</button>
     <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
+    <button v-else @click="toLogin" class="logout-btn">Login</button>
   </div>
 </template>
 
@@ -53,6 +54,10 @@ onMounted(() => {
 const logout = () => {
   clearInterval(interval)
   store.logout()
+  router.push('/login')
+}
+
+const toLogin = () => {
   router.push('/login')
 }
 

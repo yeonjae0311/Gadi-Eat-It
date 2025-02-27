@@ -2,21 +2,22 @@
   <div v-if="res" class="sidebar" :class="{ open: res }">
     <div class="sidebar-content">
       <h2>{{ res.resName }}</h2>
-      <div><img class="img" src="/images/restaurant.png"></div>
+      <div><img class="img" src="/images/restaurant.png" /></div>
       <div class="div-container">
-        <div>주소</div> 
+        <div>주소</div>
         <p>{{ res.resAddress }}</p>
       </div>
       <div class="div-container">
-        <div>전화번호</div> 
+        <div>전화번호</div>
         <p>{{ res.resPhone }}</p>
       </div>
       <div class="div-container">
-        <div>평점</div> 
+        <div>평점</div>
         <p>{{ res.resRating }}</p>
+        <button class="ratingBtn" @click="$emit('modal')">점수 주기</button>
       </div>
       <button @click="$emit('close')">닫기</button>
-    </div> 
+    </div>
   </div>
 </template>
 
@@ -25,7 +26,7 @@ defineProps({
   res: Object // 부모로부터 식당 정보를 받음
 })
 
-defineEmits(['close']) // 닫기 이벤트 전송
+defineEmits(['close', 'modal']) // 닫기 이벤트 전송
 </script>
 
 <style scoped>
@@ -69,15 +70,14 @@ div {
 }
 
 .div-container div {
-  width: 25%; 
+  width: 25%;
 }
 
 .div-container p {
   width: 75%;
 }
 
-
-button { 
+button {
   position: absolute;
   right: 15px;
   padding: 10px 15px;
@@ -85,7 +85,15 @@ button {
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer; 
+  cursor: pointer;
+}
+
+.ratingBtn {
+  background-color: blue;
+}
+
+.ratingBtn:hover {
+  background-color: rgb(135, 135, 248);
 }
 
 button:hover {
