@@ -25,12 +25,14 @@ export const useAuthStore = defineStore('auth', {
         sessionStorage.setItem('login', true)
         sessionStorage.setItem('timerStart', Date.now())
         alert('로그인 성공')
-        window.location.reload()
+        return true
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error?.response.status + ':' + error.response.data.message)
+          return false
         } else {
           console.error(error)
+          return false
         }
       }
     },

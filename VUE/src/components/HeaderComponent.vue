@@ -2,7 +2,6 @@
   <div class="header-container">
     <nav class="nav-links">
       <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
       <RouterLink to="/map">Map</RouterLink>
       <RouterLink to="/myPage">myPage</RouterLink>
       <RouterLink to="/admin">admin</RouterLink>
@@ -16,7 +15,7 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/useAuthStore'
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -47,9 +46,12 @@ const timer = () => {
 
 store.loadLoginState()
 
-onMounted(() => {
-  timer()
-})
+watch(
+  () => store.isLogIn,
+  () => {
+    timer()
+  }
+)
 
 const logout = () => {
   clearInterval(interval)

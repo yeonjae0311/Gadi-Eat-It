@@ -1,12 +1,11 @@
 <template>
-    <div class="main">
-        <div class="title">GADI EAT IT !</div>
-        <div class="btns">
-            <button @click="goLoginView">로그인</button>
-            <button @click="goMapView">지도보기</button>
-        </div>
-        <div class="join-us" @click="goRegisterView">GADI EAT IT 의 회원이 되어보세요 ! </div>
+  <div class="main">
+    <div class="title">GADI EAT IT !</div>
+    <div class="btns">
+      <button @click="goLoginView">로그인</button>
+      <button @click="goMapView">지도보기</button>
     </div>
+    <div class="join-us" @click="goRegisterView">GADI EAT IT 의 회원이 되어보세요 !</div>
   </div>
 </template>
 
@@ -14,7 +13,7 @@
 import router from '@/router'
 
 const goLoginView = () => {
-    router.push('/login');
+  router.push('/login')
 }
 
 const goMapView = () => {
@@ -22,7 +21,7 @@ const goMapView = () => {
 }
 
 const goRegisterView = () => {
-    router.push('/register');
+  router.push('/register')
 }
 </script>
 
@@ -48,15 +47,15 @@ const goRegisterView = () => {
 }
 
 button {
-    width: 230px;
-    padding: 40px 60px;
-    font-size: 1.5rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-    background-color:  #fa4949;
-    color: white;
+  width: 230px;
+  padding: 40px 60px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: #fa4949;
+  color: white;
 }
 
 button:hover {
@@ -79,11 +78,11 @@ button:hover {
 }
 
 .join-us {
-    margin-top: 15px;
-    color: black;
-    font-size: 15px;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
+  margin-top: 15px;
+  color: black;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
