@@ -2,13 +2,11 @@ package com.basic.GADI.controller;
 
 import com.basic.GADI.dto.request.RatingUpdateRequestDto;
 import com.basic.GADI.dto.response.MarkerListResponseDto;
+import com.basic.GADI.entity.Ratings;
 import com.basic.GADI.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,9 +22,10 @@ public class MainController {
         return ResponseEntity.ok(mainService.selectMarkerList());
     }
 
-    @PostMapping("updateRating")
-    public ResponseEntity<Object> updateRating(RatingUpdateRequestDto ratingUpdateRequestDto) {
-        return ResponseEntity.ok().build();
+    @PostMapping("/updateRating")
+    public ResponseEntity<Ratings> updateRating(@RequestBody RatingUpdateRequestDto ratingUpdateRequestDto) {
+
+        return ResponseEntity.ok(mainService.updateRating(ratingUpdateRequestDto));
     }
 
 }

@@ -7,4 +7,5 @@ public class RatingUpdateRequestDto {
     private Double score;
     private Long userId;
     private Long resId;
+
 }

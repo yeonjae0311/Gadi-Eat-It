@@ -15,7 +15,7 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/useAuthStore'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -45,6 +45,8 @@ const timer = () => {
 }
 
 store.loadLoginState()
+
+onMounted(() => timer())
 
 watch(
   () => store.isLogIn,

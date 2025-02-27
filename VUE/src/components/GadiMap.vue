@@ -20,6 +20,7 @@
     </div>
     <RatingModal
       :isOpened="isOpened"
+      :res="selectedRes"
       @close="closeModal"
       @submit-rating="ratingSubmit"
     ></RatingModal>
@@ -35,6 +36,7 @@ import GadiMapSideBar from './GadiMapSideBar.vue'
 import RatingModal from './RatingModal.vue'
 import http from '@/common/http-common'
 import axios from 'axios'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const mapRef = ref(null)
 const markers = ref(new Map())
@@ -64,15 +66,13 @@ const ratingSubmit = (rating) => {
 }
 
 const updateRating = (rating) => {
+  const userId = sessionStorage.getItem('userId')
+  const payload = { resId: rating.resId, userId: userId, score: rating.rating }
   try {
-    const res = http.post(
-      '/main/updateRating',
-      { rating: rating },
-      {
-        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token') }
-      }
-    )
-    const data = res.data
+    const response = http.post('/main/updateRating', payload, {
+      headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token') }
+    })
+    const data = response.data
     console.log(data)
   } catch (error) {
     if (axios.isAxiosError(error)) {

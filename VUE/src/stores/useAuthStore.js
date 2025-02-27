@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', {
         this.token = { access_token: data.accessToken, refresh_token: data.refreshToken }
         this.user.userId = jwtDecode(this.token.access_token).userId
         this.user.role = jwtDecode(this.token.access_token).role
+        sessionStorage.setItem('userId', this.user.userId)
         sessionStorage.setItem('role', this.user.role)
         sessionStorage.setItem('access_token', res.data.accessToken) // 토큰을 저장함
         sessionStorage.setItem('refresh_token', res.data.refreshToken) // 토큰을 저장함

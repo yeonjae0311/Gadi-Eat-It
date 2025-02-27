@@ -33,8 +33,10 @@
 <script setup>
 import { ref } from 'vue'
 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
-  isOpened: Boolean
+  isOpened: Boolean,
+  res: Object
 })
 
 const emit = defineEmits(['close', 'submit-rating'])
@@ -59,7 +61,7 @@ const clearHoverRating = () => {
 }
 
 const submitRating = () => {
-  emit('submit-rating', rating.value)
+  emit('submit-rating', { rating: rating.value, resId: props.res.resId })
   emit('close')
 }
 </script>

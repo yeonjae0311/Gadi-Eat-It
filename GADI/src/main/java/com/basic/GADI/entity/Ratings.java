@@ -2,14 +2,13 @@ package com.basic.GADI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
+@Data
+@Builder
 public class Ratings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
