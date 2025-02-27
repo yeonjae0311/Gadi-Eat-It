@@ -1,7 +1,7 @@
 <template>  
   <div class="myInfo-form">
     <div class="form-title">
-      <h2 v-if="isUpdateMode">MyInfo update !</h2>
+      <h2 v-if="isUpdateMode">내 정보 수정</h2>
       <h2 v-else>내 정보</h2>
     </div>
     <div class="form-contents">

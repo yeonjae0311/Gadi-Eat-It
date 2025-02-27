@@ -195,8 +195,8 @@ const sendEmail = async () => {
                 }
             }, 1000);
         } catch (error) {
-            console.error('이메일 전송 중 오류 발생:', error);
-            alert('이메일 전송에 실패하였습니다. 다시 요청해주세요.');
+            console.error('이메일 발송송 중 오류 발생 :', error);
+            alert('이메일 발송에 실패하였습니다. 다시 요청해주세요.');
         } 
     } else { 
         isValidVisible.value = false;

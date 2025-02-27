@@ -1,6 +1,7 @@
 .myInfo-form {
     width: 100%;
     max-width: 700px;
+    max-height: 600px; overflow: auto;
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
@@ -11,8 +12,9 @@
 
 .form-title h2 {
     color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: 20px; 
+    font-weight: bold;
+    padding: 0px 20px;
 }
 
 
@@ -69,13 +71,14 @@
 .upload-btn {
     width: 55%;
     padding: 10px;
-    background-color: #fa5656;
+    background-color: white;
     color: rgb(5, 0, 0);
-    border: none;
+    border: none; 
     border-radius: 4px;
     font-size: 12px;
     cursor: pointer;
     margin-top: 20px;
+    text-decoration: underline;
 }
 
 .form-btn {

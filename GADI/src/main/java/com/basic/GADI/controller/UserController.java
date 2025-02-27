@@ -1,5 +1,6 @@
 package com.basic.GADI.controller;
 
+import com.basic.GADI.dto.request.CheckMyPwRequestDto;
 import com.basic.GADI.dto.request.MyInfoRequestDto;
 import com.basic.GADI.dto.response.MyInfoResponseDto;
 import com.basic.GADI.dto.response.PageResponseDto;
@@ -41,5 +42,12 @@ public class UserController {
         Long userId = (Long) request.getAttribute("userId");
         userService.updateMyInfo(userId, requestDto, file);
         return ResponseEntity.ok().body("내 정보가 수정되었습니다.");
+    }
+
+    @PostMapping("/check/my_pw")
+    public ResponseEntity<String> checkMyPw(HttpServletRequest request, @RequestBody CheckMyPwRequestDto checkMyPwRequestDto) {
+        Long userId = (Long) request.getAttribute("userId");
+        userService.checkMyPw(userId, checkMyPwRequestDto.getUserPw());
+        return ResponseEntity.ok().body("기존 비밀번호와 일치합니다.");
     }
 }

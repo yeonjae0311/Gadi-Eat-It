@@ -119,4 +119,13 @@ public class UserService {
     }
 
 
+    public void checkMyPw(Long userId, String userPw) {
+        // userId로 해당 유저 찾아오기
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
+        // 찾아온 유저 정보의 비밀번호와 userPw가 일치하는지 확인
+        String savedPw = user.getUserPw();
+        if (!userPw.equals(savedPw)) {
+            throw new BusinessException("기존 비밀번호가 일치하지 않습니다.");
+        }
+    }
 }

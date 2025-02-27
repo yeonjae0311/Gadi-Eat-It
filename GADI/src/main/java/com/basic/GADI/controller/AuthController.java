@@ -82,9 +82,10 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/email/password_link")
+    @PostMapping("send/email/password_link")
     public ResponseEntity<String> requestResetPasswordLink(@RequestBody @Valid PasswordLinkRequestDto passwordLinkRequestDto) throws MessagingException {
         String sendEmail = passwordLinkRequestDto.getUserEmail();
+        System.out.println(sendEmail);
         Optional<User> user = authService.findByEmail(sendEmail);
 
         if (user.isPresent()) {

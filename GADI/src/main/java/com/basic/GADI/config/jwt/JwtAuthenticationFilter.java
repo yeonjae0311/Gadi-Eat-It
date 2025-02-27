@@ -20,9 +20,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        if (excludedUrls != null && excludedUrls.contains(requestURI)) {
-            filterChain.doFilter(request, response);
-            return;
+        System.out.println(requestURI);
+        for(String excludedUrl : excludedUrls) {
+            if(requestURI.matches(excludedUrl)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
         String authHeader = request.getHeader("Authorization");

@@ -133,7 +133,7 @@ onMounted(getResList)
 
 button {
   background-color: #fa5656; 
-  color: white;
+  color: rgb(15, 6, 6);
   border: none;
   padding: 8px 16px;
   font-size: 16px;

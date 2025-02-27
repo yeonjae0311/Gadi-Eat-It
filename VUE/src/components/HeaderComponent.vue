@@ -1,15 +1,20 @@
 <template>
   <div class="header-container">
-    <nav class="nav-links">
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
-      <RouterLink to="/map">Map</RouterLink>
-      <RouterLink to="/myPage">myPage</RouterLink>
-      <RouterLink to="/admin">admin</RouterLink>
-    </nav>
-    <p v-if="store.isLogIn">{{ sessionTimer }}</p>
-    <button v-if="store.isLogIn" @click="refresh" class="refesh-btn">연장</button>
-    <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
+    <div class="logo">
+        <img src="/images/logo.png"> 
+    </div> 
+    <div class="nav-wrap">
+      <nav class="nav-links">
+        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/map">Map</RouterLink>
+        <RouterLink to="/myPage">myPage</RouterLink>
+        <RouterLink to="/admin">admin</RouterLink>
+      </nav>
+      <p v-if="store.isLogIn">{{ sessionTimer }}</p>
+      <button v-if="store.isLogIn" @click="refresh" class="refesh-btn">연장</button>
+      <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
+    </div>
   </div>
 </template>
 
@@ -65,10 +70,25 @@ const refresh = () => {
 /* Navigation and logout button container */
 .header-container {
   display: flex;
-  justify-content: flex-end;
+  padding: 0 2rem; 
+  align-items: center;
+}
+
+.nav-wrap {
+  display: flex; 
   align-items: center;
   margin: auto;
-  padding: 0 2rem; /* 좌우 여백 추가 */
+  width: 80%;
+  justify-content: flex-end;
+}
+
+.logo {
+  width: 20%; 
+}
+
+.logo img {
+  width: 60px;
+  height: 100%; 
 }
 
 /* Navigation bar */

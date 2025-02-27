@@ -17,8 +17,8 @@
         </p>
         <button @click="loginSubmit()" class="login-btn">로그인</button>
         <div class="btns">
-          <button class="register-btn" @click="goRegisterView">회원가입</button>
-          <button class="resetPw-btn">비밀번호 재설정</button>
+          <button class="register-btn" type="button" @click="goRegisterView">회원가입</button>
+          <button class="resetPw-btn" type="button" @click="goResetPwView">비밀번호 재설정</button>
         </div>
       </form>
     </div>
@@ -45,6 +45,10 @@ const loginSubmit = async () => {
 
 const goRegisterView = () => {
   router.push('/register');
+}
+
+const goResetPwView = () => {
+  router.push('/resetPw')
 }
 </script>
 

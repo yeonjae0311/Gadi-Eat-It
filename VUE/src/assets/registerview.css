@@ -1,6 +1,6 @@
 .register-form {
     width: 100%;
-    max-width: 600px;
+    max-width: 650px;
     margin: 50px auto;
     padding: 20px;
     background: white;
@@ -31,7 +31,7 @@
     width: 76%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 2px solid #83e688;
+    border: 2px solid #fa5656; 
     border-radius: 5px;
     font-size: 16px;
     outline: none;
@@ -42,7 +42,7 @@
     width: 22%;
     padding: 13px;
     margin-bottom: 10px;
-    background-color: #aef7d2;
+    background-color: #fc8d8d; 
     color: rgb(5, 0, 0);
     border: none;
     border-radius: 4px;
@@ -55,7 +55,7 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 2px solid #83e688;
+    border: 2px solid #fa5656; 
     border-radius: 5px;
     font-size: 16px;
     outline: none;
@@ -63,8 +63,8 @@
 }
 
 .input-field:focus {
-    border-color: #5bc76f;
-    box-shadow: 0 0 8px rgba(91, 199, 111, 0.6);
+    border-color: #fa5656; 
+    box-shadow: 0 0 8px rgba(245, 156, 156, 0.6);
 }
 
 .check-field {
@@ -74,7 +74,7 @@
 .register-btn {
     width: 100%;
     padding: 12px;
-    background: #83e688;
+    background: #fa5656; 
     color: white;
     font-size: 14px;
     border: none;
