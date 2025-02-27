@@ -16,6 +16,7 @@ public class MarkerListResponseDto {
     private String resPhone;
     private double latitude;
     private double longitude;
+    private double average;
 
     public MarkerListResponseDto(Restaurants restaurants) {
         this.resId = restaurants.getResId();

@@ -31,20 +31,23 @@ import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const store = useAuthStore()
-const router = useRouter();
+const router = useRouter()
 
 const user_email = ref()
 const user_pw = ref('')
 
 const loginSubmit = async () => {
   const loginInfo = { userEmail: user_email.value, userPw: user_pw.value }
-  await store.login(loginInfo)
+  const login = await store.login(loginInfo)
+  if (login) {
+    router.push('/map')
+  }
 
   await nextTick
 }
 
 const goRegisterView = () => {
-  router.push('/register');
+  router.push('/register')
 }
 
 const goResetPwView = () => {

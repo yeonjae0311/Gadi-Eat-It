@@ -1,23 +1,30 @@
 <template>
   <div class="search">
-    <input class="search-field" type="text" v-model="searchQuery" placeholder="식당 이름을 검색하세요" />
+    <input
+      class="search-field"
+      type="text"
+      v-model="searchQuery"
+      placeholder="식당 이름을 검색하세요"
+    />
     <button class="search-btn" @click="onSearch">검색</button>
   </div>
   <div class="map-container">
-    <div ref="mapRef" style="width: 80%; height: 100%" @load="onMapLoad" class="map">
+    <div class="map" ref="mapRef" style="width: 80%; height: 100%" @load="onMapLoad">
       <div
         v-for="data in resList"
         :key="data.id"
         :latitude="data.latitude"
         :longitude="data.longitude"
         @click="moveResDetail"
-      >
-        <div>
-          {{ data.name }}
-        </div>
-      </div>
+      ></div>
     </div>
-    <GadiMapSideBar :res="selectedRes" @close="selectedRes = null" />
+    <RatingModal
+      :isOpened="isOpened"
+      :res="selectedRes"
+      @close="closeModal"
+      @submit-rating="ratingSubmit"
+    ></RatingModal>
+    <GadiMapSideBar :res="selectedRes" @close="selectedRes = null" @modal="openModal" />
   </div>
 </template>
 
@@ -26,17 +33,55 @@ import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMapstore } from '@/stores/useMapstore'
 import GadiMapSideBar from './GadiMapSideBar.vue'
+import RatingModal from './RatingModal.vue'
+import http from '@/common/http-common'
+import axios from 'axios'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const mapRef = ref(null)
 const markers = ref(new Map())
 const map = ref(null)
 const selectedRes = ref(null)
 const searchQuery = ref('')
+const isOpened = ref(false)
+const selectedRating = ref(0)
 
 let markerCluster = null
 
 const store = useMapstore()
 const { resList } = storeToRefs(store)
+
+const openModal = () => {
+  isOpened.value = true
+}
+
+const closeModal = () => {
+  isOpened.value = false
+}
+
+const ratingSubmit = (rating) => {
+  selectedRating.value = rating
+  console.log('제출된 별점:', rating)
+  updateRating(rating)
+}
+
+const updateRating = (rating) => {
+  const userId = sessionStorage.getItem('userId')
+  const payload = { resId: rating.resId, userId: userId, score: rating.rating }
+  try {
+    const response = http.post('/main/updateRating', payload, {
+      headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token') }
+    })
+    const data = response.data
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error?.response.status + ':' + error.message)
+    } else {
+      console.error('평점 업데이트 실패', error)
+    }
+  }
+}
 
 const debounce = (func, delay) => {
   let timer
@@ -166,42 +211,52 @@ img {
 }
 
 .map-container {
-  display: flex; 
+  display: flex;
   position: relative;
   height: 100%;
-  padding: 10px
+  padding: 10px;
 }
 
 .map {
   flex: 1;
 }
 
-.search { 
-  display: flex; 
+.search {
+  display: flex;
   align-items: center;
-  padding: 10px;  
+  padding: 10px;
 }
 
 .search-field {
-    width: 95%;
-    padding: 10px 40px 10px 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  .search-btn { 
-    width: 5%;
-    background: transparent;
-    border: none;
-    font-size: 14px;
-    color: #000203a1; 
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .search-btn:hover {
-    color: #000307; 
-  } 
+  width: 95%;
+  padding: 10px 40px 10px 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
 
+.search-btn {
+  width: 5%;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: #000203a1;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-btn:hover {
+  color: #000307;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}
 </style>

@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', {
         this.token = { access_token: data.accessToken, refresh_token: data.refreshToken }
         this.user.userId = jwtDecode(this.token.access_token).userId
         this.user.role = jwtDecode(this.token.access_token).role
+        sessionStorage.setItem('userId', this.user.userId)
         sessionStorage.setItem('role', this.user.role)
         sessionStorage.setItem('access_token', res.data.accessToken) // 토큰을 저장함
         sessionStorage.setItem('refresh_token', res.data.refreshToken) // 토큰을 저장함
@@ -25,12 +26,14 @@ export const useAuthStore = defineStore('auth', {
         sessionStorage.setItem('login', true)
         sessionStorage.setItem('timerStart', Date.now())
         alert('로그인 성공')
-        window.location.reload()
+        return true
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error?.response.status + ':' + error.response.data.message)
+          return false
         } else {
           console.error(error)
+          return false
         }
       }
     },

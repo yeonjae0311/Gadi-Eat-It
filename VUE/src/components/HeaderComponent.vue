@@ -1,8 +1,8 @@
 <template>
   <div class="header-container">
     <div class="logo">
-        <img src="/images/logo.png"> 
-    </div> 
+        <img src="/images/logo.png">
+    </div>
     <div class="nav-wrap">
       <nav class="nav-links">
         <RouterLink to="/about">About</RouterLink>
@@ -20,7 +20,7 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/useAuthStore'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -51,13 +51,22 @@ const timer = () => {
 
 store.loadLoginState()
 
-onMounted(() => {
-  timer()
-})
+onMounted(() => timer())
+
+watch(
+  () => store.isLogIn,
+  () => {
+    timer()
+  }
+)
 
 const logout = () => {
   clearInterval(interval)
   store.logout()
+  router.push('/login')
+}
+
+const toLogin = () => {
   router.push('/login')
 }
 
@@ -70,12 +79,12 @@ const refresh = () => {
 /* Navigation and logout button container */
 .header-container {
   display: flex;
-  padding: 0 2rem; 
+  padding: 0 2rem;
   align-items: center;
 }
 
 .nav-wrap {
-  display: flex; 
+  display: flex;
   align-items: center;
   margin: auto;
   width: 80%;
@@ -83,12 +92,12 @@ const refresh = () => {
 }
 
 .logo {
-  width: 20%; 
+  width: 20%;
 }
 
 .logo img {
   width: 60px;
-  height: 100%; 
+  height: 100%;
 }
 
 /* Navigation bar */
@@ -150,10 +159,10 @@ nav a:first-of-type {
   margin-top: 10px;
   padding: 8px 15px;
   margin-left: 10px;
-  border: 1px solid #fa4949; 
+  border: 1px solid #fa4949;
   border-radius: 3px;
   background-color: white;
-  cursor: pointer; 
+  cursor: pointer;
   transition:
     background-color 0.3s,
     transform 0.3s;
@@ -163,7 +172,7 @@ nav a:first-of-type {
 
 /* Logout button */
 .logout-btn {
-  background-color:  #fa4949;
+  background-color: #fa4949;
   color: white;
   border: none;
   padding: 10px;
@@ -174,7 +183,7 @@ nav a:first-of-type {
     background-color 0.3s,
     transform 0.3s;
   display: inline-block;
-  margin-left: 20px; 
+  margin-left: 20px;
   margin-top: 10px;
 }
 
@@ -188,7 +197,7 @@ nav a:first-of-type {
 }
 
 .logout-btn:active {
-  background-color:  #fa4949;
+  background-color: #fa4949;
   transform: translateY(1px); /* Push the button down when clicked */
 }
 </style>

@@ -1,12 +1,12 @@
 package com.basic.GADI.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Set;
 
-@Getter
+@Data
 @Entity
 @NamedEntityGraph(name = "Restaurants.FavoritesAndRatings", attributeNodes = {
         @NamedAttributeNode("favorites"),
