@@ -48,6 +48,7 @@ const goRegisterView = () => {
 }
 
 button {
+    width: 230px;
     padding: 40px 60px;
     font-size: 1.5rem;
     border: none;

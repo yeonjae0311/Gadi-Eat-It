@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MapView from '@/views/MapView.vue'
-import UpdateMyInfoView from '@/views/MyPage/UpdateMyInfoView.vue'
+import UpdateMyInfoView from '@/views/MyPage/MyPageView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import LoginView from '@/views/LoginView.vue'
@@ -10,6 +10,8 @@ import AdminResDetail from '@/components/AdminResDetail.vue'
 import LayoutView from '@/views/layout/LayoutView.vue'
 import AboutView from '@/views/AboutView.vue'
 import MainView from '@/views/MainView.vue'
+import MyPageView from '@/views/MyPage/MyPageView.vue'
+import MyInfoForm from '@/components/MyInfoForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,10 +42,16 @@ const router = createRouter({
           component: MapView
         },
         {
-          path: '/myInfo',
-          name: 'myinfo',
-          component: UpdateMyInfoView,
-          meta: { requiresLogin: true }
+          path: '/myPage',
+          name: 'myPage',
+          component: MyPageView,
+          meta: { requiresLogin: true },
+          children: [
+            {
+              path: 'myInfo',
+              component: MyInfoForm
+            }
+          ]
         },
         {
           path: '/register',

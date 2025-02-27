@@ -1,8 +1,8 @@
-<template>
+<template>  
   <div class="myInfo-form">
     <div class="form-title">
       <h2 v-if="isUpdateMode">MyInfo update !</h2>
-      <h2 v-else>MyInfo</h2>
+      <h2 v-else>내 정보</h2>
     </div>
     <div class="form-contents">
       <div class="profile-img">
@@ -62,7 +62,7 @@
 import { useMyInfoStore } from '@/stores/useMyInfoStore'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import http from '@/common/http-common'
+import http from '@/common/http-common' 
 
 const store = useMyInfoStore()
 const { myInfos } = storeToRefs(store)

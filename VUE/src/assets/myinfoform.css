@@ -1,6 +1,6 @@
 .myInfo-form {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
@@ -69,7 +69,7 @@
 .upload-btn {
     width: 55%;
     padding: 10px;
-    background-color: #aef7d2;
+    background-color: #fa5656;
     color: rgb(5, 0, 0);
     border: none;
     border-radius: 4px;
@@ -87,7 +87,7 @@
  .form-btn button {
     width: 100%; 
     padding: 10px;
-    background-color: #81e6b3;
+    background-color: #fa4949;
     color: white;
     border: none;
     border-radius: 4px;
@@ -98,5 +98,5 @@
 
 
 .form-btn button:hover {
-    background-color: #83e688;
+    background-color: rgb(207, 69, 69);
 }
