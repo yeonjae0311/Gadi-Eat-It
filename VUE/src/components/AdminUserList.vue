@@ -75,7 +75,7 @@ onMounted(getUserList)
 }
 
 .user-table th {
-  background-color: #81e6b3;
+  background-color: #fa5656; 
   color: white;
   font-size: 1.1rem;
 }

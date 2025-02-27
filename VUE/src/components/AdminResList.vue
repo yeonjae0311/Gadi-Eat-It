@@ -14,7 +14,7 @@
         <tr v-for="res in resList.content" :key="res.id">
           <td>{{ res.resId }}</td>
           <td>
-            <RouterLink :to="'res_list/' + res.resId">{{ res.resName }}</RouterLink>
+            <RouterLink :to="'res_list/' + res.resId" class="router-link">{{ res.resName }}</RouterLink>
           </td>
           <td>{{ res.resAddress }}</td>
           <td>{{ res.resPhone }}</td>
@@ -104,13 +104,13 @@ onMounted(getResList)
 }
 
 .res-table th {
-  background-color: #81e6b3;
+  background-color: #fa5656; 
   color: white;
   font-size: 1.1rem;
 }
 
 .res-table tr:hover {
-  background-color: #e2f7f3;
+  background-color: #ffe5e1;
 }
 
 .res-table td {
@@ -127,8 +127,12 @@ onMounted(getResList)
   padding-bottom: 30px;
 }
 
+.router-link {
+  color: black;
+}
+
 button {
-  background-color: #81e6b3;
+  background-color: #fa5656; 
   color: white;
   border: none;
   padding: 8px 16px;
@@ -144,7 +148,7 @@ button:disabled {
 }
 
 button:hover:enabled {
-  background-color: #81e6b3;
+  background-color: rgb(207, 69, 69);
 }
 
 .page-info {

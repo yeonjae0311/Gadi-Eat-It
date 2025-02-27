@@ -25,7 +25,7 @@ const goTo = (menu) => {
 .sidebar {
   margin-top:70px;
   width: 250px;
-  background-color: #81e6b3;
+  background-color: #fa5656; 
   color: white;
   height: 100vh;
   padding: 20px;
