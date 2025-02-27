@@ -2,21 +2,26 @@
     <div class="main">
         <div class="title">GADI EAT IT !</div>
         <div class="btns">
-            <button @click="goRegisterView">회원가입</button>
+            <button @click="goLoginView">로그인</button>
             <button @click="goMapView">지도보기</button>
         </div>
+        <div class="join-us" @click="goRegisterView">GADI EAT IT 의 회원이 되어보세요 ! </div>
     </div>
 </template>
 
 <script setup>
 import router from '@/router';
 
-const goRegisterView = () => {
-    router.push('/register');
+const goLoginView = () => {
+    router.push('/login');
 }
 
 const goMapView = () => {
     router.push('/map');
+}
+
+const goRegisterView = () => {
+    router.push('/register');
 }
 </script>
 
@@ -70,5 +75,14 @@ button:hover {
     background-position: center;
     opacity: 0.65; /* 투명도 조절 */
     z-index: -1;
+}
+
+.join-us {
+    margin-top: 15px;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
 }
 </style>
