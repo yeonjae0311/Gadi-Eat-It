@@ -19,6 +19,7 @@ public class MainController {
 
     @GetMapping("/list")
     public ResponseEntity<List<MarkerListResponseDto>> markerList () {
+
         return ResponseEntity.ok(mainService.selectMarkerList());
     }
 

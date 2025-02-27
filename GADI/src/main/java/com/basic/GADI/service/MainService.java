@@ -40,8 +40,8 @@ public class MainService {
         Restaurants restaurants = new Restaurants();
         restaurants.setResId(ratingUpdateRequestDto.getResId());
 
-        System.out.println(ratingUpdateRequestDto.getScore());
-        Ratings ratings = new Ratings();
+        Ratings ratings = ratingsRepository.findByUserAndRestaurants(user, restaurants);
+
         ratings.setUser(user);
         ratings.setRestaurants(restaurants);
         ratings.setScore(ratingUpdateRequestDto.getScore());
