@@ -46,7 +46,6 @@ public class UserController {
 
     @PostMapping("/my_pw/check")
     public ResponseEntity<String> checkMyPw(HttpServletRequest request, @RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto) {
-        System.out.println(passwordResetRequestDto.getUserPw());
         Long userId = (Long) request.getAttribute("userId");
         userService.checkMyPw(userId, passwordResetRequestDto.getUserPw());
         return ResponseEntity.ok().body("기존 비밀번호와 일치합니다.");

@@ -1,6 +1,6 @@
 <template>
   <main class="content">
-    <h1 class="page-title">식당 목록</h1>
+    <h2 class="page-title">식당 목록</h2>
     <table class="res-table">
       <thead>
         <tr>
@@ -77,17 +77,24 @@ onMounted(getResList)
 </script>
 
 <style scoped>
-.content {
-  flex: 1;
-  height: 100%;
-  margin-left: 250px;
+.content { 
+  padding: 40px;
+  width: 100%; 
+  max-width: 1200px;
+  height: 100%; 
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  font-family: Arial, sans-serif;
 }
 
-.page-title {
-  text-align: center;
-  font-size: 2rem;
-  color: #2d3748;
+.page-title { 
+  color: #333;
   margin-bottom: 20px;
+  font-weight: bold;
+  padding: 0px 20px;
 }
 
 .res-table {

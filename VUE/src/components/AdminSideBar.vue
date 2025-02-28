@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="sidebar-header">
-      <h3>관리자 메뉴</h3>
+      <h2>관리자 메뉴</h2>
     </div>
     <ul class="sidebar-menu">
       <li @click="goTo('user_list')">회원 목록</li>
@@ -23,21 +23,12 @@ const goTo = (menu) => {
 
 <style scoped>
 .sidebar {
-  margin-top:70px;
-  width: 250px;
-  background-color: #fa5656; 
-  color: white;
-  height: 100vh;
-  padding: 20px;
-  position: fixed; /* 사이드바를 고정 위치로 설정 */
-  top: 0;
-  left: 0;
+  padding: 20px;  
 }
 
-.sidebar-header {
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 30px;
+.sidebar-header h2 {
+  color: #fdfdfd;
+  margin-bottom: 20px; 
 }
 
 .sidebar-menu {
@@ -45,12 +36,13 @@ const goTo = (menu) => {
   padding: 0;
 }
 
-.sidebar-menu li {
-  margin: 20px 0;
-  color: white;
-  text-decoration: none;
-  font-size: 1.1rem;
-  transition: color 0.3s;
+.sidebar-menu li { 
+  color: #fdfdfd;
+  font-size: 17px;
+  text-decoration: none; 
+  padding: 10px 0px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar-menu li:hover {
