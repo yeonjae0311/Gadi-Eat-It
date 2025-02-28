@@ -99,9 +99,15 @@ public class AuthController {
 
     @PostMapping("/password/reset")
     public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
-
+        String token = passwordResetRequestDto.getEmailToken();
         String newPassword = passwordResetRequestDto.getUserPw();
 
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
+        }
+
+        // 토큰에서 sendEmail 찾아서 아래에 넣어줘야함 해당 email 로 유저 찾아서 해당 유저의 pw 변경해야하니깐 !
+        //authService.resetUserPw(passwordResetRequestDto.getUserEmail(), newPassword);
         return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }

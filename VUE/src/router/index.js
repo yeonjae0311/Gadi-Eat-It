@@ -10,9 +10,10 @@ import LayoutView from '@/views/layout/LayoutView.vue'
 import AboutView from '@/views/AboutView.vue'
 import MainView from '@/views/MainView.vue'
 import MyPageView from '@/views/MyPage/MyPageView.vue'
-import MyInfoForm from '@/components/MyInfoForm.vue' 
-import PasswordResetView from '@/views/MyPage/PasswordResetView.vue'
+import MyInfoForm from '@/components/MyInfoForm.vue'  
 import MyPasswordResetForm from '@/components/MyPasswordResetForm.vue'
+import PasswordLinkView from '@/views/PasswordLinkView.vue'
+import PasswordRestView from '@/views/PasswordRestView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,7 +54,7 @@ const router = createRouter({
               component: MyInfoForm
             },
             {
-              path: 'pwReset',
+              path: 'myPwReset',
               component: MyPasswordResetForm
             }
           ]
@@ -66,7 +67,16 @@ const router = createRouter({
         {
           path: '/resetPw',
           name: 'resetPw',
-          component: PasswordResetView
+          component: PasswordRestView
+          // props: route => ({
+          //   token: route.query.token,
+          //   email: route.query.email
+          // })
+        },
+        {
+          path: '/pwLink',
+          name: 'pwLink',
+          component: PasswordLinkView
         },
         {
           path: '/admin',

@@ -51,7 +51,7 @@ const goRegisterView = () => {
 }
 
 const goResetPwView = () => {
-  router.push('/resetPw')
+  router.push('/pwLink')
 }
 </script>
 
