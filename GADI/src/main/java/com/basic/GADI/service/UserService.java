@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +40,7 @@ public class UserService {
     private final ResRepository resRepository;
 
     private final FavoriteRepository favoriteRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${file.upload.path}")
     private String fileUploadPath;
@@ -124,8 +126,16 @@ public class UserService {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
         // 찾아온 유저 정보의 비밀번호와 userPw가 일치하는지 확인
         String savedPw = user.getUserPw();
-        if (!userPw.equals(savedPw)) {
+        if (!passwordEncoder.matches(userPw, savedPw)) {
             throw new BusinessException("기존 비밀번호가 일치하지 않습니다.");
         }
+    }
+
+
+    @Transactional
+    public void resetUserPw(Long userId, String newPassword) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
+        user.resetUserPw(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

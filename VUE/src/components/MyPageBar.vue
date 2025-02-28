@@ -22,8 +22,7 @@ const goTo = (page) => {
 </script>
 
 <style scoped>
-.sidebar-container { 
-    margin-top: 50px; 
+.sidebar-container {  
     padding: 20px;  
 }
 

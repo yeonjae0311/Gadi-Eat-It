@@ -99,13 +99,9 @@ public class AuthController {
 
     @PostMapping("/password/reset")
     public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
-        String token = passwordResetRequestDto.getToken();
+
         String newPassword = passwordResetRequestDto.getUserPw();
 
-        if (!jwtUtil.validateToken(token)) {
-            return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
-        }
-        authService.resetUserPw(passwordResetRequestDto.getUserEmail(), newPassword);
         return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }

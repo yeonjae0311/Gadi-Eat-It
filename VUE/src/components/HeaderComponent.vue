@@ -96,6 +96,7 @@ const refresh = () => {
 }
 
 .logo img {
+  margin-top: 10px;
   width: 60px;
   height: 100%;
 }

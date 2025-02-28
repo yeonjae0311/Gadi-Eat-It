@@ -30,7 +30,7 @@
                 </div>
             </div>
             <p class="check-field" :style="{ color: validationResults.checkPw ? 'green' : 'red'}">{{ validationMessages.checkPw }}</p>
-            <button>비밀번호 변경</button>
+            <button  @click="resetMyPw">비밀번호 변경</button>
         </div>
     </div>
 </template>
@@ -59,9 +59,11 @@ const validationResults = ref({
     currentPw: false,
     newPw: false,
     checkPw: false 
-});
-const validationMessages = ref({currentPw: '', newPw: '', checkPw: ''})
+})
 
+const validationMessages = ref({currentPw: '', newPw: '', checkPw: ''}) 
+
+// 비밀번호 입력란 공통 유효성 검사
 const validatePw = (field) => {
     const value = field === 'currentPw' ? currentPw.value : field === 'newPw' ? newPw.value : checkPw.value
 
@@ -78,24 +80,64 @@ const validatePw = (field) => {
 
     // 새로운 비밀번호 확인 체크 
     if (field === 'checkPw') {
-    if (!validationResults.value.newPw) { 
-      validationMessages.value.checkPw = '비밀번호는 숫자, 영문자 포함의 6~12자리입니다.';
-      validationResults.value.checkPw = false;
-    } else if (newPw.value !== checkPw.value) { 
-      validationMessages.value.checkPw = '❌ 비밀번호가 일치하지 않습니다.';
-      validationResults.value.checkPw = false;
-    } else { 
-      validationMessages.value.checkPw = '✅ 비밀번호가 일치합니다.';
-      validationResults.value.checkPw = true;
+        checkNewPw();
     }
-  }
 }
 
-// 현재 비밀번호가 맞는지 확인
-const checkCurrentPw = async() => { 
-    // 서버로 보내서 해당 유저의 비밀번호 맞는지 확인해야됨
+// 새로운 비밀번호 확인 체크 
+const checkNewPw = () => {
+    if (!validationResults.value.newPw) {
+        validationMessages.value.checkPw = '비밀번호는 숫자, 영문자 포함의 6~12자리입니다.';
+        validationResults.value.checkPw = false;
+    } else if (newPw.value !== checkPw.value) {
+        validationMessages.value.checkPw = '❌ 비밀번호가 일치하지 않습니다.';
+        validationResults.value.checkPw = false;
+    } else {
+        validationMessages.value.checkPw = '✅ 비밀번호가 일치합니다.';
+        validationResults.value.checkPw = true;
+    }
+}
 
- 
+// 사용자의 현재 비밀번호 일치여부 확인
+const checkCurrentPw = async() => {  
+    try {
+        const res = await http.post('/user/my_pw/check', 
+                                    { userPw : currentPw.value },
+                                    { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
+        if (res.status === 200 ) {
+            console.log('현재 비밀번호 일치 확인 !')
+            validationMessages.value.currentPw = '✅ 현재 비밀번호 일치여부가 확인되었습니다. 새로운 비밀번호를 설정해주세요.';
+            validationResults.value.currentPw = true; 
+        }
+    } catch (error) {
+        console.log('현재 비밀번호 일치여부 확인 실패 ', error)
+        validationMessages.value.currentPw = '❌ 현재 비밀번호 일치여부가 실패하였습니다. 다시 입력해주세요.';
+        validationResults.value.currentPw = false;
+    } 
+}
+
+// 비밀번호 변경 요청
+const resetMyPw = async() => {
+    // 모든 필드 유효성 검사 확인 
+    if (!validationResults.value.currentPw || !validationResults.value.newPw || !validationResults.value.checkPw) { 
+        alert('모든 항목을 올바르게 입력해주세요.');
+        return; 
+    }
+
+    try {
+        const res = await http.patch('/user/my_pw/reset',
+                                     { userPw : checkPw.value },
+                                     { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
+            if (res.status === 200) {
+            console.log('비밀번호 변경 완료 !');
+            alert("비밀번호 변경 성공 ! ")
+            // confirm으로 확인 누르면 로그아웃되고 다시 로그인 창으로 이동하도록?  변경 후에 어떤식으로 처리할지 
+            
+        }                     
+    } catch (error) {
+        console.log('비밀번호 변경 실패 ', error)
+        alert('비밀번호 변경에 실패하였습니다. 다시 시도해주세요!');
+    }
 }
 
 </script>

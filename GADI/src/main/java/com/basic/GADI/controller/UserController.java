@@ -1,11 +1,11 @@
 package com.basic.GADI.controller;
 
-import com.basic.GADI.dto.request.CheckMyPwRequestDto;
+import com.basic.GADI.config.jwt.JwtUtil;
 import com.basic.GADI.dto.request.MyInfoRequestDto;
+import com.basic.GADI.dto.request.PasswordResetRequestDto;
 import com.basic.GADI.dto.response.MyInfoResponseDto;
 import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
-import com.basic.GADI.repository.ResRepository;
 import com.basic.GADI.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -20,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final ResRepository resRepository;
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping("/favorites")
     public ResponseEntity<PageResponseDto<ResDetailResponseDto>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {
@@ -44,10 +44,25 @@ public class UserController {
         return ResponseEntity.ok().body("내 정보가 수정되었습니다.");
     }
 
-    @PostMapping("/check/my_pw")
-    public ResponseEntity<String> checkMyPw(HttpServletRequest request, @RequestBody CheckMyPwRequestDto checkMyPwRequestDto) {
+    @PostMapping("/my_pw/check")
+    public ResponseEntity<String> checkMyPw(HttpServletRequest request, @RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto) {
+        System.out.println(passwordResetRequestDto.getUserPw());
         Long userId = (Long) request.getAttribute("userId");
-        userService.checkMyPw(userId, checkMyPwRequestDto.getUserPw());
+        userService.checkMyPw(userId, passwordResetRequestDto.getUserPw());
         return ResponseEntity.ok().body("기존 비밀번호와 일치합니다.");
+    }
+
+    @PatchMapping("/my_pw/reset")
+    public ResponseEntity<String> resetPassword(HttpServletRequest request, @RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
+        String token = request.getHeader("Authorization").substring(7);
+        Long userId = (Long) request.getAttribute("userId");
+        String newPassword = passwordResetRequestDto.getUserPw();
+
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
+        }
+        System.out.println("token: " + token);
+        userService.resetUserPw(userId, newPassword);
+        return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }
