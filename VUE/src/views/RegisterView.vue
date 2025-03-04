@@ -219,7 +219,12 @@ const checkAuthcode = async() => {
         }
     } catch (error) {
         console.error('이메일 인증코드 확인 실패 ! : ', error);
-        alert('이메일 인증이 완료되지 않았습니다. 인증 완료해주세요!');
+        if (error.response && error.response.status === 400) {
+            alert('이메일 인증번호가 다릅니다. 다시 시도해주세요!');
+            inputAuthCode.value = ''; 
+        } else {
+            alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        }
     }  
 }
 
