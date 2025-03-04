@@ -96,20 +96,32 @@ const debounce = (func, delay) => {
 }
 
 const searchRestaurants = () => {
-  const filteredResList = resList.value.filter((res) =>
-    res.resName.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
+  const bounds = map.value.getBounds()
+
+  const filteredResList = resList.value.filter((res) => {
+    const matchesSearchQuery = res.resName.toLowerCase().includes(searchQuery.value.toLowerCase())
+
+    const position = new window.naver.maps.LatLng(res.latitude, res.longitude)
+    const isInBounds = bounds.hasLatLng(position)
+
+    return matchesSearchQuery && isInBounds
+  })
 
   // 마커 초기화 (기존 마커 제거)
   markers.value.forEach((marker) => marker.setMap(null))
-  markers.value.clear()
+  markers.value = new Map()
 
   // 필터링된 마커만 추가
   filteredResList.forEach((res) => {
     const latlng = new window.naver.maps.LatLng(res.latitude, res.longitude)
     const marker = new window.naver.maps.Marker({
       position: latlng,
-      map: map.value
+      map: map.value,
+      title: res.resName,
+      icon: {
+        url: '/images/marker2.png',
+        scaledSize: new window.naver.maps.Size(30, 30)
+      }
     })
 
     // 마커 클릭 시 사이드바 표시
@@ -161,18 +173,21 @@ const updateMarkers = () => {
             console.error('Failed to fetch rating:', error)
           }
         })
+        newMarkers.set(res.resId, marker) // 새 마커 추가
+      } else {
+        newMarkers.set(res.resId, markers.value.get(res.resId))
       }
     }
-
-    markers.value.forEach((marker, id) => {
-      if (!newMarkers.has(id)) {
-        marker.setMap(null)
-        markers.value.delete(id) // 메모리에서 삭제
-      }
-    })
-
-    markerCluster.setMarkers([...markers.value.values()])
   }
+  markers.value.forEach((marker, id) => {
+    if (!newMarkers.has(id)) {
+      marker.setMap(null)
+      markers.value.delete(id) // 메모리에서 삭제
+    }
+  })
+  markers.value = newMarkers
+
+  markerCluster.setMarkers([...markers.value.values()])
 }
 
 const debouncedUpdateMarkers = debounce(updateMarkers, 200)
@@ -190,11 +205,14 @@ onMounted(() => {
     // ✅ 마커 클러스터링 객체 생성 (많은 마커를 효율적으로 관리)
     markerCluster = new MarkerClustering({
       minClusterSize: 2, // 최소 2개부터 클러스터링
-      maxZoom: 17,
+      maxZoom: 16,
       map: map.value,
       markers: [], // 초기 마커 없음
       disableClickZoom: false, // 클릭 시 줌 확대 가능
-      gridSize: 80 // 클러스터 간 거리
+      gridSize: 80, // 클러스터 간 거리
+      stylingFunction: (clusterMarker, count) => {
+        markerCluster.getElement().textContent = count
+      }
     })
 
     window.naver.maps.Event.addListener(map.value, 'bounds_changed', debouncedUpdateMarkers)
