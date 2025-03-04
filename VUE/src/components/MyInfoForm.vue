@@ -118,6 +118,7 @@ const updateMyInfo = async () => {
                                   { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token'),
                                                'Content-Type': 'multipart/form-data'}})
     console.log(res.data)
+    alert('내정보 수정 완료 !')
   } catch (error) {
     console.error('내정보 수정 실패 ! ', error)
   }

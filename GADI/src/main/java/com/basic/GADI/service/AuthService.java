@@ -158,7 +158,8 @@ public class AuthService {
     private String createResetPasswordLink(String sendEmail, Long userId) {
         Duration tokenTime = Duration.ofMinutes(5);
         String linkToken = createLinkToken(sendEmail, userId, tokenTime);
-        return "http://localhost:8080/api/user/resetPassword?token=" + linkToken + "&email=" + sendEmail;
+
+        return "http://localhost:5173/resetPw?token=" + linkToken + "&email=" + sendEmail;
     }
 
     private String createLinkToken(String sendEmail, Long userId, Duration tokenTime) {
@@ -174,14 +175,9 @@ public class AuthService {
 
     @Transactional
     public void resetUserPw(String userEmail, String newPassword) {
-        Optional<User> user = userRepository.findByUserEmail(userEmail);
-        if (user.isPresent()) {
-            User updateUser = user.get();
-            updateUser.resetUserPw(passwordEncoder.encode(newPassword));
-            userRepository.save(updateUser);
-        } else {
-            throw new BusinessException("등록되지 않은 사용자 입니다.", HttpStatus.NOT_FOUND);
-        }
+        User user = userRepository.findByUserEmail(userEmail).orElseThrow(()-> new BusinessException("해당 사용자를 찾을 수 없습니다."));
+        user.resetUserPw(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     @Transactional

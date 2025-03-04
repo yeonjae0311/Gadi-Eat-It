@@ -25,7 +25,8 @@ public class FilterConfig {
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtAuthenticationFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         List<String> excludedUrls = Arrays.asList("/api/auth/login", "/api/auth/register", "/api/main/list", "/api/auth/send.*",
-                                                  "/api/auth/verify/email", "/api/auth/refreshLogin");
+                                                  "/api/auth/verify/email", "/api/auth/refreshLogin", "/api/auth/password/reset",
+                                                  "/api/auth/email_token/check");
         registrationBean.setFilter(new JwtAuthenticationFilter(jwtUtil, excludedUrls));
         registrationBean.addUrlPatterns("/api/*");  // 필터를 적용할 URL 패턴 지정
         registrationBean.addInitParameter("excludedUrls", "/api/auth/login,/api/auth/register,/api/main/list");

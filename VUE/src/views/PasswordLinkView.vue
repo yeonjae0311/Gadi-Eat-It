@@ -36,55 +36,5 @@ const sendEmail = async() => {
 </script>
 
 <style scoped>
-.pw-reset-form {
-    width: 100%;
-    max-width: 600px;
-    max-height: 300px; overflow: auto;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-    font-family: Arial, sans-serif;
-}
-
-.pw-reset-title h2 {
-    color: #333;
-    margin-bottom: 20px;
-    font-weight: bold;
-    padding: 0px 20px;
-}
-
-.pw-reset-content {
-    padding: 0px 20px;
-}
-
-.pw-reset-content p{
-   font-size: 15px;
-   font-weight: 300;
-}
-
-.pw-reset-content div {
-    display: flex;
-    flex-direction: column; 
-}
-
-.pw-reset-content div input {
-    margin-top: 20px;
-    padding: 10px;
-    border: 2px solid #fa5656; 
-} 
-
-.pw-reset-content div button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #fa5656;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 13px;
-    cursor: pointer; 
-}
-
-
+  @import '@/assets/passwordLinkView.css';
 </style>

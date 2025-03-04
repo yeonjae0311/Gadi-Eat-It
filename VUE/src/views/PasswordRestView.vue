@@ -1,13 +1,13 @@
 <template>
     <div class="pw-reset-form">
-        <div class="mypw-reset-title">
-            <h2>비밀번호 재설정</h2>
+        <div class="pw-reset-title">
+            <h2>비밀번호 재설정</h2> 
         </div>
         <div class="pw-reset-content"> 
             <div class="input-container">   
                 <input :type="isPwVisible1? 'text' : 'password'" class="input-field" v-model="newPw" 
                         placeholder="변경할 비밀번호를 입력해주세요. 비밀번호는 숫자, 영문자 포함의 6~12자리입니다."  @keyup="validatePw('newPw')"/>
-                <div class="show-pw" @click="togglePw(2)">
+                <div class="show-pw" @click="togglePw(1)">
                     <img src="/images/eyes.png">
                 </div>
             </div>
@@ -16,23 +16,46 @@
             <div class="input-container">  
                 <input :type="isPwVisible2? 'text' : 'password'" class="input-field" v-model="checkPw" 
                         placeholder="변경할 비밀번호를 다시 입력해주세요. 비밀번호는 숫자, 영문자 포함의 6~12자리입니다." @keyup="validatePw('checkPw')"/>
-                <div class="show-pw" @click="togglePw(3)">
+                <div class="show-pw" @click="togglePw(2)">
                     <img src="/images/eyes.png">
                 </div>
             </div>
             <p class="check-field" :style="{ color: validationResults.checkPw ? 'green' : 'red'}">{{ validationMessages.checkPw }}</p>
-            <button  @click="resetMyPw">비밀번호 변경</button>
+            <button  @click="resetPw">비밀번호 변경</button>
         </div>
     </div>
 </template>
 
 <script setup>
 import http from '@/common/http-common'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const currentPw = ref('')
+const router = useRouter();
+ 
 const newPw = ref('')
 const checkPw = ref('') 
+
+
+// url에 포함된 값 사용 
+const route = useRoute();
+const token = route.query.token
+const email = route.query.email
+
+onMounted(async() => {
+    try {
+        const res = await http.get('/auth/email_token/check', { params : { token : token }})
+        if (res.status === 401) {
+            alert (res.data);
+            router.push('/pwLink')
+        }
+    } catch (error) {
+        console.error('비밀번호 재설정 페이지 접근 실패 ', error);
+        alert(error.response.data)
+        router.push('/pwLink')
+    }
+})
+
 
 // 비밀번호 입력란 ** <-> 보여지도록
 const isPwVisible1 = ref(false)
@@ -44,17 +67,16 @@ const togglePw = (index) => {
 
 // 비밀번호 입력란 유효성 검사
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/
-const validationResults = ref({
-    currentPw: false,
+const validationResults = ref({ 
     newPw: false,
     checkPw: false 
 })
 
-const validationMessages = ref({currentPw: '', newPw: '', checkPw: ''}) 
+const validationMessages = ref({newPw: '', checkPw: ''}) 
 
 // 비밀번호 입력란 공통 유효성 검사
 const validatePw = (field) => {
-    const value = field === 'currentPw' ? currentPw.value : field === 'newPw' ? newPw.value : checkPw.value
+    const value = field === 'newPw' ? newPw.value : checkPw.value
 
     if (!value) {
         validationMessages.value[field] = '❌ 비밀번호를 입력해주세요.'
@@ -86,84 +108,31 @@ const checkNewPw = () => {
         validationResults.value.checkPw = true;
     }
 }
+ 
+// 비밀번호 변경 요청 
+const resetPw = async() => { 
+    if (!validationResults.value.newPw || !validationResults.value.checkPw) {
+        alert('모든 항목을 올바르게 입력해주세요');
+        return;
+    }
+
+    try {
+        const res = await http.patch('/auth/password/reset', 
+                                    { userEmail : email, userPw : checkPw.value })
+        if (res.status === 200) {
+            console.log('비밀번호 변경 완료 !');
+            alert("비밀번호 변경 성공 ! 로그인 페이지로 이동합니다.")
+            router.push('/login');
+        }                            
+    } catch (error) {
+        console.log('비밀번호 변경 실패 ', error)
+        alert('비밀번호 변경에 실패하였습니다. 다시 시도해주세요!');
+    }  
+   
+}
+
 </script>
 
 <style scoped>
-.pw-reset-form {
-    width: 100%;
-    max-width: 700px;
-    max-height: 500px; overflow: auto;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-    font-family: Arial, sans-serif;
-}
-
-.pw-reset-title h2 {
-    color: #333;
-    margin-bottom: 20px;
-    font-weight: bold;
-    padding: 0px 20px;
-}
-
-.pw-reset-content {
-    padding: 0px 20px;
-} 
-
-.pw-reset-content div {
-    display: flex;
-    flex-direction: column; 
-}
-
-.pw-reset-content div input {
-    margin-top: 20px;
-    padding: 10px;
-    border: 2px solid #fa5656; 
-} 
-
-.pw-reset-content button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #fa5656;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 13px;
-    cursor: pointer; 
-    width: 100%;
-}
-
-.input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-field {
-    width: 100%;
-    padding-right: 40px; 
-}
-
-.show-pw {
-    position: absolute;
-    right: 10px;
-    cursor: pointer;
-}
-
-.show-pw img {
-    margin-top: 22px;
-    width: 25px;
-    height: 30px;
-}
-
-.check-field {
-    margin-left: 5px;
-    margin-top: 5px;
-    font-size: 13px;
-}
-
-
-
+  @import '@/assets/passwordResetView.css';
 </style>

@@ -8,6 +8,7 @@ import com.basic.GADI.dto.request.PasswordResetRequestDto;
 import com.basic.GADI.dto.request.RegisterRequestDto;
 import com.basic.GADI.dto.response.TokenResponseDto;
 import com.basic.GADI.entity.User;
+import com.basic.GADI.exception.BusinessException;
 import com.basic.GADI.service.AuthService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,13 +18,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -85,29 +82,25 @@ public class AuthController {
     @PostMapping("send/email/password_link")
     public ResponseEntity<String> requestResetPasswordLink(@RequestBody @Valid PasswordLinkRequestDto passwordLinkRequestDto) throws MessagingException {
         String sendEmail = passwordLinkRequestDto.getUserEmail();
-        System.out.println(sendEmail);
-        Optional<User> user = authService.findByEmail(sendEmail);
+        User user = authService.findByEmail(sendEmail).orElseThrow(()->new BusinessException("가입되지 않은 이메일입니다."));
 
-        if (user.isPresent()) {
-            Long userId = user.get().getUserId();
-            String tokenLink = authService.sendPasswordMail(sendEmail, userId);
-            return ResponseEntity.ok(tokenLink);
-        } else {
-            return ResponseEntity.badRequest().body("가입되지 않은 이메일입니다.");
-        }
+        String tokenLink = authService.sendPasswordMail(sendEmail, user.getUserId());
+        return ResponseEntity.ok(tokenLink);
+
     }
 
-    @PostMapping("/password/reset")
-    public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
-        String token = passwordResetRequestDto.getEmailToken();
-        String newPassword = passwordResetRequestDto.getUserPw();
-
+    @GetMapping("/email_token/check")
+    public ResponseEntity<String> emailToken(@RequestParam String token) {
         if (!jwtUtil.validateToken(token)) {
-            return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않거나 만료된 페이지입니다. 다시 요청해주세요.");
         }
+        return ResponseEntity.ok().body("이메일 토큰 검증 완료");
+    }
 
-        // 토큰에서 sendEmail 찾아서 아래에 넣어줘야함 해당 email 로 유저 찾아서 해당 유저의 pw 변경해야하니깐 !
-        //authService.resetUserPw(passwordResetRequestDto.getUserEmail(), newPassword);
+    @PatchMapping("/password/reset")
+    public ResponseEntity<String> resetPassword(@RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
+
+        authService.resetUserPw(passwordResetRequestDto.getUserEmail(), passwordResetRequestDto.getUserPw());
         return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }

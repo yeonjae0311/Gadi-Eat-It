@@ -24,6 +24,15 @@ const router = createRouter({
       component: MainView
     },
     {
+      path: '/resetPw',
+      name: 'resetPw',
+      component: PasswordRestView,
+      props: route => ({
+        token: route.query.token,
+        email: route.query.email
+      })
+    },
+    {
       path: '/gadi',
       name: 'layout',
       component: LayoutView,
@@ -63,15 +72,6 @@ const router = createRouter({
           path: '/register',
           name: 'register',
           component: RegisterView
-        },
-        {
-          path: '/resetPw',
-          name: 'resetPw',
-          component: PasswordRestView
-          // props: route => ({
-          //   token: route.query.token,
-          //   email: route.query.email
-          // })
         },
         {
           path: '/pwLink',

@@ -55,13 +55,11 @@ public class UserController {
     public ResponseEntity<String> resetPassword(HttpServletRequest request, @RequestBody @Valid PasswordResetRequestDto passwordResetRequestDto)  {
         String token = request.getHeader("Authorization").substring(7);
         Long userId = (Long) request.getAttribute("userId");
-        String newPassword = passwordResetRequestDto.getUserPw();
 
         if (!jwtUtil.validateToken(token)) {
             return ResponseEntity.badRequest().body("토큰이 유효하지 않거나 만료되었습니다.");
         }
-        System.out.println("token: " + token);
-        userService.resetUserPw(userId, newPassword);
+        userService.resetUserPw(userId, passwordResetRequestDto.getUserPw());
         return ResponseEntity.ok().body("비밀번호가 재설정되었습니다.");
     }
 }

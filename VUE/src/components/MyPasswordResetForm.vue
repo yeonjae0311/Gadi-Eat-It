@@ -130,9 +130,7 @@ const resetMyPw = async() => {
                                      { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
             if (res.status === 200) {
             console.log('비밀번호 변경 완료 !');
-            alert("비밀번호 변경 성공 ! ")
-            // confirm으로 확인 누르면 로그아웃되고 다시 로그인 창으로 이동하도록?  변경 후에 어떤식으로 처리할지 
-            
+            alert("비밀번호 변경 성공 ! ")            
         }                     
     } catch (error) {
         console.log('비밀번호 변경 실패 ', error)
