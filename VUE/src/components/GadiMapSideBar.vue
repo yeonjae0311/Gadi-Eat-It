@@ -12,9 +12,22 @@
         <p>{{ res.resPhone }}</p>
       </div>
       <div class="div-container">
-        <div>평점</div>
-        <p>{{ res.resRating }}</p>
-        <button class="ratingBtn" @click="$emit('modal')">점수 주기</button>
+        <div>별점</div>
+        <p v-if="rating == null"></p>
+        <p v-else-if="rating.average == 0">등록된 별점이 없습니다.</p>
+        <div v-else>
+          <span v-for="star in 5" :key="star" class="star">
+            <!-- 꽉 찬 별 -->
+            <span v-if="rating.average >= star" class="full-star">★</span>
+
+            <!-- 반쪽 별 -->
+            <span v-else-if="rating.average >= star - 0.5" class="half-star">★</span>
+
+            <!-- 빈 별 -->
+            <span v-else class="empty-star">★</span>
+          </span>
+        </div>
+        <button v-if="loginState" class="ratingBtn" @click="$emit('modal')">점수 주기</button>
       </div>
       <button @click="$emit('close')">닫기</button>
     </div>
@@ -23,10 +36,13 @@
 
 <script setup>
 defineProps({
-  res: Object // 부모로부터 식당 정보를 받음
+  res: Object,
+  rating: Object
 })
 
 defineEmits(['close', 'modal']) // 닫기 이벤트 전송
+
+const loginState = sessionStorage.getItem('login')
 </script>
 
 <style scoped>
@@ -103,5 +119,27 @@ button:hover {
 .img {
   width: 100%;
   height: 300px;
+}
+
+.star {
+  font-size: 30px;
+}
+
+.full-star {
+  color: gold;
+}
+
+.half-star {
+  background: linear-gradient(
+    to right,
+    gold 50%,
+    #ccc 50%
+  ); /* 왼쪽 50%는 gold, 오른쪽 50%는 회색 */
+  -webkit-background-clip: text; /* 텍스트의 배경을 클리핑하여 반별 효과 */
+  color: transparent; /* 글자는 투명하게 */
+}
+
+.empty-star {
+  color: #ccc;
 }
 </style>

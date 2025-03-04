@@ -40,19 +40,23 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close', 'submit-rating'])
-const rating = ref(0)
+const rating = ref(5)
 const hoverRating = ref(0)
 const isHovering = ref(false) // 호버 상태 체크
 
 const setRating = (event, star) => {
   const isHalf = event.offsetX < event.target.clientWidth / 2
-  rating.value = isHalf ? star - 0.5 : star
+  if (star - 0.5 >= 0.5) {
+    rating.value = isHalf ? star - 0.5 : star
+  }
 }
 
 const setHoverRating = (event, star) => {
   isHovering.value = true
   const isHalf = event.offsetX < event.target.clientWidth / 2
-  hoverRating.value = isHalf ? star - 0.5 : star
+  if (star - 0.5 >= 0.5) {
+    hoverRating.value = isHalf ? star - 0.5 : star
+  }
 }
 
 const clearHoverRating = () => {

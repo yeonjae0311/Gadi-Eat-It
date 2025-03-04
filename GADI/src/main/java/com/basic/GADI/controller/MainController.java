@@ -2,6 +2,7 @@ package com.basic.GADI.controller;
 
 import com.basic.GADI.dto.request.RatingUpdateRequestDto;
 import com.basic.GADI.dto.response.MarkerListResponseDto;
+import com.basic.GADI.dto.response.RatingResponseDto;
 import com.basic.GADI.entity.Ratings;
 import com.basic.GADI.service.MainService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class MainController {
     private final MainService mainService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<MarkerListResponseDto>> markerList () {
+    public ResponseEntity<List<MarkerListResponseDto>> markerList() {
 
         return ResponseEntity.ok(mainService.selectMarkerList());
     }
@@ -29,4 +30,8 @@ public class MainController {
         return ResponseEntity.ok(mainService.updateRating(ratingUpdateRequestDto));
     }
 
+    @GetMapping("/getRatings/{resId}")
+    public ResponseEntity<RatingResponseDto> getRating(@PathVariable Long resId) {
+        return ResponseEntity.ok(mainService.getRating(resId));
+    }
 }
