@@ -24,7 +24,12 @@
       @close="closeModal"
       @submit-rating="ratingSubmit"
     ></RatingModal>
-    <GadiMapSideBar :res="selectedRes" @close="selectedRes = null" @modal="openModal" />
+    <GadiMapSideBar
+      :res="selectedRes"
+      :rating="rating"
+      @close="selectedRes = null"
+      @modal="openModal"
+    />
   </div>
 </template>
 
@@ -36,7 +41,6 @@ import GadiMapSideBar from './GadiMapSideBar.vue'
 import RatingModal from './RatingModal.vue'
 import http from '@/common/http-common'
 import axios from 'axios'
-import { useAuthStore } from '@/stores/useAuthStore'
 
 const mapRef = ref(null)
 const markers = ref(new Map())
@@ -45,6 +49,7 @@ const selectedRes = ref(null)
 const searchQuery = ref('')
 const isOpened = ref(false)
 const selectedRating = ref(0)
+const rating = ref(null)
 
 let markerCluster = null
 
@@ -61,7 +66,6 @@ const closeModal = () => {
 
 const ratingSubmit = (rating) => {
   selectedRating.value = rating
-  console.log('제출된 별점:', rating)
   updateRating(rating)
 }
 
@@ -69,11 +73,9 @@ const updateRating = (rating) => {
   const userId = sessionStorage.getItem('userId')
   const payload = { resId: rating.resId, userId: userId, score: rating.rating }
   try {
-    const response = http.post('/main/updateRating', payload, {
+    http.post('/main/updateRating', payload, {
       headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token') }
     })
-    const data = response.data
-    console.log(data)
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error?.response.status + ':' + error.message)
@@ -111,8 +113,14 @@ const searchRestaurants = () => {
     })
 
     // 마커 클릭 시 사이드바 표시
-    window.naver.maps.Event.addListener(marker, 'click', () => {
+    window.naver.maps.Event.addListener(marker, 'click', async () => {
       selectedRes.value = res // 사이드바 토글
+      try {
+        const response = await http.get(`/main/getRatings/${selectedRes.value.resId}`)
+        rating.value = response.data
+      } catch (error) {
+        console.error('Failed to fetch rating:', error)
+      }
     })
 
     markers.value.set(res.resId, marker)
@@ -140,27 +148,31 @@ const updateMarkers = () => {
           map: map.value,
           title: res.resName,
           icon: {
-            url: 'https://map.pstatic.net/resource/api/v2/image/maps/selected-marker/222870@2x.png?version=12&mapping=marker-111',
-            scaledSize: new window.naver.maps.Size(15, 20)
+            url: '/images/marker2.png',
+            scaledSize: new window.naver.maps.Size(30, 30)
           }
         })
-        window.naver.maps.Event.addListener(marker, 'click', () => {
-          selectedRes.value = res // 마커 클릭 시 데이터 전달
+        window.naver.maps.Event.addListener(marker, 'click', async () => {
+          selectedRes.value = res // 사이드바 토글
+          try {
+            const response = await http.get(`/main/getRatings/${selectedRes.value.resId}`)
+            rating.value = response.data
+          } catch (error) {
+            console.error('Failed to fetch rating:', error)
+          }
         })
-        markers.value.set(res.resId, marker) // 마커 저장
       }
-      newMarkers.set(res.resId, markers.value.get(res.resId)) // 현재 필요한 마커만 저장
     }
+
+    markers.value.forEach((marker, id) => {
+      if (!newMarkers.has(id)) {
+        marker.setMap(null)
+        markers.value.delete(id) // 메모리에서 삭제
+      }
+    })
+
+    markerCluster.setMarkers([...markers.value.values()])
   }
-
-  markers.value.forEach((marker, id) => {
-    if (!newMarkers.has(id)) {
-      marker.setMap(null)
-      markers.value.delete(id) // 메모리에서 삭제
-    }
-  })
-
-  markerCluster.setMarkers([...markers.value.values()])
 }
 
 const debouncedUpdateMarkers = debounce(updateMarkers, 200)

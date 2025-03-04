@@ -1,5 +1,6 @@
 package com.basic.GADI.config.jwt;
 
+import com.basic.GADI.exception.BusinessException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        System.out.println(requestURI);
         for(String excludedUrl : excludedUrls) {
             if(requestURI.matches(excludedUrl)) {
                 filterChain.doFilter(request, response);
@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("토큰이 필요합니다.");
-            return;
+            throw new BusinessException("토큰이 필요합니다.");
         }
 
         try {

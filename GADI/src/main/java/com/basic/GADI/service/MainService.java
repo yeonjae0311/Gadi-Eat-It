@@ -2,6 +2,7 @@ package com.basic.GADI.service;
 
 import com.basic.GADI.dto.request.RatingUpdateRequestDto;
 import com.basic.GADI.dto.response.MarkerListResponseDto;
+import com.basic.GADI.dto.response.RatingResponseDto;
 import com.basic.GADI.entity.Ratings;
 import com.basic.GADI.entity.Restaurants;
 import com.basic.GADI.entity.User;
@@ -29,6 +30,7 @@ public class MainService {
         for(Restaurants r : res) {
             list.add(new MarkerListResponseDto(r));
         }
+
         return list;
     }
 
@@ -42,10 +44,26 @@ public class MainService {
 
         Ratings ratings = ratingsRepository.findByUserAndRestaurants(user, restaurants);
 
-        ratings.setUser(user);
-        ratings.setRestaurants(restaurants);
-        ratings.setScore(ratingUpdateRequestDto.getScore());
+        if(ratings == null) {
+            ratings = new Ratings();
+            ratings.setUser(user);
+            ratings.setRestaurants(restaurants);
+            ratings.setScore(ratingUpdateRequestDto.getScore());
+        } else {
+            ratings.setUser(user);
+            ratings.setRestaurants(restaurants);
+            ratings.setScore(ratingUpdateRequestDto.getScore());
+        }
+
         return ratingsRepository.save(ratings);
+    }
+
+    @Transactional
+    public RatingResponseDto getRating(Long resId) {
+       double average = ratingsRepository.findAverageScoreByResId(resId);
+       RatingResponseDto ratingResponseDto = new RatingResponseDto();
+       ratingResponseDto.setAverage(average);
+       return ratingResponseDto;
     }
 
 }
