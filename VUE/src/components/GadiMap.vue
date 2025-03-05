@@ -18,6 +18,10 @@
         @click="moveResDetail"
       ></div>
     </div>
+    <button v-if="showSearchingBtn" class="reset-btn" @click="searchRestaurants">
+      이 지도에서 다시 검색
+    </button>
+    <button v-if="showSearchingBtn" @click="resetMap" class="circle-btn">⟳</button>
     <RatingModal
       :isOpened="isOpened"
       :res="selectedRes"
@@ -39,6 +43,7 @@ import { storeToRefs } from 'pinia'
 import { useMapstore } from '@/stores/useMapstore'
 import GadiMapSideBar from './GadiMapSideBar.vue'
 import RatingModal from './RatingModal.vue'
+import MarkerClustering from '@/MarkerClustering'
 import http from '@/common/http-common'
 import axios from 'axios'
 
@@ -50,6 +55,8 @@ const searchQuery = ref('')
 const isOpened = ref(false)
 const selectedRating = ref(0)
 const rating = ref(null)
+const isSearching = ref(false)
+const showSearchingBtn = ref(false)
 
 let markerCluster = null
 
@@ -85,6 +92,12 @@ const updateRating = (rating) => {
   }
 }
 
+const resetMap = () => {
+  showSearchingBtn.value = false
+  isSearching.value = false
+  updateMarkers()
+}
+
 const debounce = (func, delay) => {
   let timer
   return (...args) => {
@@ -96,6 +109,7 @@ const debounce = (func, delay) => {
 }
 
 const searchRestaurants = () => {
+  isSearching.value = true
   const bounds = map.value.getBounds()
 
   const filteredResList = resList.value.filter((res) => {
@@ -145,8 +159,10 @@ const onSearch = () => {
 }
 
 const updateMarkers = () => {
-  if (!map.value) return
-
+  if (isSearching.value || !map.value) {
+    console.log('hi')
+    return
+  }
   const bounds = map.value.getBounds()
   const newMarkers = new Map() // 업데이트된 마커 저장
 
@@ -187,7 +203,7 @@ const updateMarkers = () => {
   })
   markers.value = newMarkers
 
-  markerCluster.setMarkers([...markers.value.values()])
+  // markerCluster.setMarkers([...markers.value.values()])
 }
 
 const debouncedUpdateMarkers = debounce(updateMarkers, 200)
@@ -205,17 +221,20 @@ onMounted(() => {
     // ✅ 마커 클러스터링 객체 생성 (많은 마커를 효율적으로 관리)
     markerCluster = new MarkerClustering({
       minClusterSize: 2, // 최소 2개부터 클러스터링
-      maxZoom: 16,
+      maxZoom: 15,
       map: map.value,
       markers: [], // 초기 마커 없음
       disableClickZoom: false, // 클릭 시 줌 확대 가능
-      gridSize: 80, // 클러스터 간 거리
-      stylingFunction: (clusterMarker, count) => {
-        markerCluster.getElement().textContent = count
-      }
+      gridSize: 100 // 클러스터 간 거리
     })
 
-    window.naver.maps.Event.addListener(map.value, 'bounds_changed', debouncedUpdateMarkers)
+    window.naver.maps.Event.addListener(map.value, 'bounds_changed', () => {
+      if (!isSearching.value) {
+        debouncedUpdateMarkers()
+      } else {
+        showSearchingBtn.value = true
+      }
+    })
 
     fetchResList()
   } else {
@@ -288,5 +307,44 @@ img {
   background-color: white;
   border: 1px solid #ccc;
   z-index: 1000;
+}
+
+.reset-btn {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* 지도 위로 띄우기 */
+  background-color: #fa4949;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.circle-btn {
+  position: absolute;
+  top: 20px;
+  left: 56%;
+  z-index: 1000;
+  background-color: white;
+  color: #fa4949;
+  border: 2px solid #fa4949;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.circle-btn:hover {
+  background-color: #fa4949;
+  color: white;
 }
 </style>
