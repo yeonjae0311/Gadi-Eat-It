@@ -6,9 +6,8 @@
           <h2>{{ res.resName }}</h2>
         </div>
         <div class="like">
-          <img v-if="myFavorite == null " src="/images/heart.png" />
+          <img v-if="myFavorite == null " src="/images/heart.png" @click="addMyRes"/>
           <img v-else :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
-
         </div>
       </div>
       <div><img class="img" src="/images/img2.png" /></div>
