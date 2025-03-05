@@ -1,7 +1,9 @@
 package com.basic.GADI.service;
 
 import com.basic.GADI.dto.request.MyInfoRequestDto;
+import com.basic.GADI.dto.request.MyRestaurantRequestDto;
 import com.basic.GADI.dto.response.MyInfoResponseDto;
+import com.basic.GADI.dto.response.MyRestaurantResponseDto;
 import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.entity.Favorites;
@@ -36,9 +38,7 @@ public class UserService {
 
 
     private final UserRepository userRepository;
-
     private final ResRepository resRepository;
-
     private final FavoriteRepository favoriteRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -137,5 +137,31 @@ public class UserService {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
         user.resetUserPw(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+
+    @Transactional
+    public void addMyRestaurant(Long userId, Long resId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new BusinessException("해당 사용자를 찾을 수 없습니다."));
+        Restaurants restaurants = resRepository.findByResId(resId).orElseThrow(()-> new BusinessException("해당 식당을 찾을 수 없습니다."));
+
+        if (favoriteRepository.existsByUserAndRestaurants(user, restaurants)) {
+            throw new BusinessException("이미 즐겨찾기에 추가된 식당입니다 !");
+        }
+
+        Favorites favorites = MyRestaurantRequestDto.toEntity(user, restaurants);
+        favoriteRepository.save(favorites);
+
+    }
+
+    public MyRestaurantResponseDto getMyRestaurant(Long userId) {
+
+        List<Favorites> myFavorites = favoriteRepository.findByUser_UserId(userId);
+        List<Long> myFavoriteResIds = new ArrayList<>();
+        for (Favorites favorite : myFavorites) {
+            myFavoriteResIds.add(favorite.getRestaurants().getResId());
+        }
+
+        return new MyRestaurantResponseDto(myFavoriteResIds);
     }
 }

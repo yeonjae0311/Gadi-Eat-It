@@ -2,10 +2,13 @@ package com.basic.GADI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Favorites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,7 +6,7 @@
           <h2>{{ res.resName }}</h2>
         </div>
         <div class="like">
-          <img src="/images/heart.png" @click="addMyRes"/>
+          <img :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
         </div>
       </div>
       <div><img class="img" src="/images/img2.png" /></div>
@@ -46,14 +46,48 @@
 </template>
 
 <script setup>
-defineProps({
+import http from '@/common/http-common'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+
+const props = defineProps({
   res: Object,
   rating: Object
 })
 
+const isFavorited = ref(false);
+
+
 defineEmits(['close', 'modal']) // 닫기 이벤트 전송
 
 const loginState = sessionStorage.getItem('login')
+const router = useRouter();
+
+const addMyRes = async() => {  
+  if (!loginState || loginState === "null" || loginState === "false") {
+    const goToLogin = confirm('로그인이 필요합니다! 로그인 창으로 이동하시겠습니까?')
+    if (goToLogin) {
+      router.push('/login')
+    }
+    return
+  }
+
+  try {
+    const res = await http.post('/user/my_res/add', 
+                                { resId : props.res.resId }, 
+                                { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
+    if (res.status === 200 ) {
+      console.log('즐겨찾기 추가 성공 !')
+      alert(res.data);
+
+      isFavorited.value = !isFavorited.value;
+    }                          
+  } catch (error) {
+    console.log('즐겨찾기 등록 실패 !', error);
+    alert(error.response.data.message)
+  } 
+
+}
 </script>
 
 <style scoped>
@@ -78,6 +112,7 @@ const loginState = sessionStorage.getItem('login')
 
 .sidebar-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 } 
 
@@ -87,7 +122,7 @@ const loginState = sessionStorage.getItem('login')
 }
 
 .sidebar-content {
-  padding: 15px;
+  padding: 0 15px;
 }
 
 h2 {
@@ -168,6 +203,7 @@ div {
 }
 
 .rating-title {
+  font-weight: bold;
   width: 20%;
 }
 
