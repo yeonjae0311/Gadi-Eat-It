@@ -3,20 +3,31 @@
     <h2>{{ res.resName }}</h2>
     <div class="res-img">
       <img class="img" src="/images/img2.png" alt="가게 이미지" />
-      <p>주소: {{ res.resAddress }}</p>
-      <p>전화번호: {{ res.resPhone }}</p>
-      <div>
-        <div class="rating">
-          <span
-            v-for="(star, index) in stars"
-            :key="index"
-            :class="['star', { full: index < rating }]"
-          >
-            &#9733;
-            <!-- 별 아이콘 -->
-          </span>
-        </div>
+    </div>
+    <div class="res-form">
+      <label for="address">주소: </label>
+      <input v-if="isUpdateMode" v-model="res.resAddress" type="text" id="address" />
+      <span v-else>{{ res.resAddress }}</span>
+    </div>
+    <div class="res-form">
+      <label for="phone">전화번호: </label>
+      <input v-if="isUpdateMode" v-model="res.resPhone" type="text" id="phone" />
+      <span v-else>{{ res.resPhone }}</span>
+    </div>
+    <div>
+      <div class="rating">
+        <span
+          v-for="(star, index) in stars"
+          :key="index"
+          :class="['star', { full: index < rating }]"
+        >
+          &#9733;
+          <!-- 별 아이콘 -->
+        </span>
       </div>
+    </div>
+    <div>
+      <button class="form-btn" @click="toggleUpdate">{{ isUpdateMode ? '취소' : '수정' }}</button>
     </div>
   </div>
   <div v-else>
@@ -34,6 +45,11 @@ const resId = route.params.resId
 const res = ref()
 const rating = ref(3)
 const stars = ref([0, 1, 2, 3, 4])
+const isUpdateMode = ref(false)
+
+const toggleUpdate = () => {
+  isUpdateMode.value = !isUpdateMode.value
+}
 
 const getResDetail = async () => {
   try {
@@ -79,13 +95,14 @@ h2 {
 }
 
 /* 각 항목 스타일 */
-p {
+.res-form {
   font-size: 1.1rem;
   color: #555;
   margin: 12px 0;
   line-height: 1.8;
   padding-left: 12px;
   border-left: 4px solid #fa4949;
+  display: flex;
 }
 
 /* 로딩 중 메시지 스타일 */
@@ -112,5 +129,31 @@ p {
 
 .img {
   width: 35%;
+}
+
+input {
+  font-size: 16px;
+  padding: 8px;
+  width: 90%;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.form-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #fa4949;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 5px;
+  margin-top: 20px;
+}
+
+.res-form label {
+  width: 10%;
 }
 </style>
