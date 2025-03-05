@@ -1,8 +1,15 @@
 <template>
   <div v-if="res" class="sidebar" :class="{ open: res }">
     <div class="sidebar-content">
-      <h2>{{ res.resName }}</h2>
-      <div><img class="img" src="/images/restaurant.png" /></div>
+      <div class="sidebar-header">
+        <div class="res-name">
+          <h2>{{ res.resName }}</h2>
+        </div>
+        <div class="like">
+          <img src="/images/heart.png" @click="addMyRes"/>
+        </div>
+      </div>
+      <div><img class="img" src="/images/img2.png" /></div>
       <div class="div-container">
         <div>주소</div>
         <p>{{ res.resAddress }}</p>
@@ -69,14 +76,23 @@ const loginState = sessionStorage.getItem('login')
   transform: translateX(0);
 }
 
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+} 
+
+.sidebar-header img {
+  width: 30px;
+  height: 27px;
+}
+
 .sidebar-content {
   padding: 15px;
 }
 
 h2 {
   font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px; 
+  font-weight: bold; 
 }
 
 div {
