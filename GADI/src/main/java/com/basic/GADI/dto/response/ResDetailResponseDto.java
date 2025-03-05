@@ -1,14 +1,10 @@
 package com.basic.GADI.dto.response;
 
-import com.basic.GADI.entity.Ratings;
 import com.basic.GADI.entity.Restaurants;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -21,18 +17,18 @@ public class ResDetailResponseDto {
     private String resPhoto;
     private String resPhone;
     private String resSector;
-    private List<Ratings> ratings;
+    private Double average;
 
     @Builder
     public ResDetailResponseDto(Long resId, String resName, String resAddress, String resPhoto,
-                                String resPhone, String resSector, List<Ratings> ratings) {
+                                String resPhone, String resSector, Double average) {
         this.resId = resId;
         this.resName = resName;
         this.resAddress = resAddress;
         this.resPhoto = resPhoto;
         this.resPhone = resPhone;
         this.resSector = resSector;
-        this.ratings = ratings;
+        this.average = average;
     }
 
     public ResDetailResponseDto(Restaurants restaurants) {
@@ -42,9 +38,6 @@ public class ResDetailResponseDto {
         this.resPhoto = restaurants.getResPhoto();
         this.resPhone = restaurants.getResPhone();
         this.resSector = restaurants.getResSector();
-        this.ratings = restaurants.getRatings().stream()
-                .map(Ratings::new)
-                .collect(Collectors.toList());
     }
 
 }

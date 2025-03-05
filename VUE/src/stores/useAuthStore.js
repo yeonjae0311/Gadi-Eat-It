@@ -68,14 +68,17 @@ export const useAuthStore = defineStore('auth', {
     },
     loadLoginState() {
       const login = sessionStorage.getItem('login')
+      const role = sessionStorage.getItem('role')
       if (login) {
         this.loginState = login === 'true' // 로그인 상태 설정
+        this.user.role = role
       }
     },
     logout() {
       sessionStorage.clear()
       this.state = {}
       this.loginState = false
+      this.user = {}
       alert('로그아웃되었습니다.')
     }
   },

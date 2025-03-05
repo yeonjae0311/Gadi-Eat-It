@@ -61,7 +61,10 @@ public class AdminService {
     public ResDetailResponseDto findResDetail(Long resId) {
         Restaurants resDetail =  resRepository.findByResDeleteAndResId("N", resId)
                 .orElseThrow(()-> new BusinessException("해당하는 음식점을 찾을 수 없습니다."));
-        return new ResDetailResponseDto(resDetail);
+        Double average = ratingsRepository.findAverageScoreByResId(resId);
+        ResDetailResponseDto resDetailResponseDto = new ResDetailResponseDto(resDetail);
+        resDetailResponseDto.setAverage(average);
+        return resDetailResponseDto;
     }
 
     @Transactional

@@ -47,31 +47,32 @@ onMounted(getUserList)
 </script>
 
 <style scoped>
-.content { 
+.content {
   padding: 40px;
   overflow-y: auto;
-  width: 100%; 
+  width: 100%;
   max-width: 1200px;
-  max-height: 700px; overflow: auto;
+  max-height: 700px;
+  overflow: auto;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
 
-.page-title { 
+.page-title {
   color: #333;
   margin-bottom: 20px;
   font-weight: bold;
-  padding: 0px 20px;
+  padding: 10px 0px 0px 20px;
 }
 
 .user-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .user-table th,
@@ -82,7 +83,7 @@ onMounted(getUserList)
 }
 
 .user-table th {
-  background-color: #fa5656; 
+  background-color: #fa5656;
   color: white;
   font-size: 1.1rem;
 }
