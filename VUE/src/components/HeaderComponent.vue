@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <div class="logo">
-        <img src="/images/logo3.png" alt="로고 이미지">
+      <img src="/images/logo3.png" alt="로고 이미지" />
     </div>
     <div class="nav-wrap">
       <nav class="nav-links">
@@ -152,7 +152,6 @@ nav a:first-of-type {
   p {
     margin-top: 1rem;
   }
-
 }
 
 .refesh-btn {

@@ -95,6 +95,7 @@ const updateRating = (rating) => {
 const resetMap = () => {
   showSearchingBtn.value = false
   isSearching.value = false
+  selectedRes.value = null
   updateMarkers()
 }
 
@@ -109,6 +110,7 @@ const debounce = (func, delay) => {
 }
 
 const searchRestaurants = () => {
+  selectedRes.value = null
   isSearching.value = true
   const bounds = map.value.getBounds()
 
