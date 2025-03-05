@@ -82,8 +82,6 @@ public class AuthService {
         StringBuilder key = new StringBuilder();
 
         for (int i = 0; i < 6; i++) {
-            int number = random.nextInt(2);
-
             if (random.nextBoolean()) {
                 key.append((char) (random.nextInt(26) + 65));
             } else {

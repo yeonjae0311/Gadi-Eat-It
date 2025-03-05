@@ -38,7 +38,9 @@
 <script setup>
 import http from '@/common/http-common'
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const currentPw = ref('')
 const newPw = ref('')
 const checkPw = ref('') 
@@ -130,7 +132,8 @@ const resetMyPw = async() => {
                                      { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
             if (res.status === 200) {
             console.log('비밀번호 변경 완료 !');
-            alert("비밀번호 변경 성공 ! ")            
+            alert("비밀번호 변경 성공 ! ")           
+            router.push('/myPage/myInfo') 
         }                     
     } catch (error) {
         console.log('비밀번호 변경 실패 ', error)
