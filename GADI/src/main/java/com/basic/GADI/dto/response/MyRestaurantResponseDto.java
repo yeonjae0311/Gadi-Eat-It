@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MyRestaurantResponseDto {
 
-    private Long myFavoriteResId;
+    private Long myFavoriteId;
 }
