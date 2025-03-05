@@ -10,27 +10,31 @@
       <div class="div-container">
         <div>전화번호</div>
         <p>{{ res.resPhone }}</p>
-      </div>
-      <div class="div-container">
-        <div>별점</div>
-        <p v-if="rating == null"></p>
-        <p v-else-if="rating.average == 0">등록된 별점이 없습니다.</p>
-        <div v-else>
-          <span v-for="star in 5" :key="star" class="star">
-            <!-- 꽉 찬 별 -->
-            <span v-if="rating.average >= star" class="full-star">★</span>
+      </div> 
+      <div class="rating-container">
+        <div class="rating-display">
+          <div class="rating-title">별점</div>
+          <div class="rating-content">
+            <p v-if="rating == null"></p>
+            <p v-else-if="rating.average == 0">등록된 별점이 없습니다.</p>
+            <div v-else>
+              <span v-for="star in 5" :key="star" class="star">
+                <!-- 꽉 찬 별 -->
+                <span v-if="rating.average >= star" class="full-star">★</span>
 
-            <!-- 반쪽 별 -->
-            <span v-else-if="rating.average >= star - 0.5" class="half-star">★</span>
+                <!-- 반쪽 별 -->
+                <span v-else-if="rating.average >= star - 0.5" class="half-star">★</span>
 
-            <!-- 빈 별 -->
-            <span v-else class="empty-star">★</span>
-          </span>
-        </div>
-        <button v-if="loginState" class="ratingBtn" @click="$emit('modal')">점수 주기</button>
+                <!-- 빈 별 -->
+                <span v-else class="empty-star">★</span>
+              </span>
+            </div>
+            <button v-if="loginState" class="rating-btn" @click="$emit('modal')">점수 주기</button> 
+          </div>  
+        </div>  
+      </div>  
+      <button class="close-btn" @click="$emit('close')">닫기</button>
       </div>
-      <button @click="$emit('close')">닫기</button>
-    </div>
   </div>
 </template>
 
@@ -57,6 +61,8 @@ const loginState = sessionStorage.getItem('login')
   right: 0;
   top: 0;
   height: 100%;
+  background: rgba(255, 255, 255, 0.9); /* 반투명 효과 */
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.open {
@@ -64,14 +70,13 @@ const loginState = sessionStorage.getItem('login')
 }
 
 .sidebar-content {
-  font-size: 1rem;
+  padding: 15px;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 15px;
-  text-align: center;
+  margin-bottom: 15px; 
 }
 
 div {
@@ -80,22 +85,25 @@ div {
 
 .div-container {
   display: flex;
-  position: relative;
+  justify-content: space-between;
   align-items: center;
-  padding: 3px;
+  margin-bottom: 12px;
 }
 
 .div-container div {
-  width: 25%;
+  font-weight: bold;
+  color: #555;
+  width: 20%;
 }
 
 .div-container p {
-  width: 75%;
+  width: 70%; 
+  color: #333;
 }
 
-button {
+.close-btn {
   position: absolute;
-  right: 15px;
+  right: 30px;
   padding: 10px 15px;
   background-color: #ff5a5a;
   color: white;
@@ -104,21 +112,16 @@ button {
   cursor: pointer;
 }
 
-.ratingBtn {
-  background-color: blue;
-}
-
-.ratingBtn:hover {
-  background-color: rgb(135, 135, 248);
-}
-
-button:hover {
+.close-btn:hover {
   background-color: #ff3d3d;
 }
 
 .img {
   width: 100%;
   height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
 
 .star {
@@ -142,4 +145,43 @@ button:hover {
 .empty-star {
   color: #ccc;
 }
+ 
+.rating-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rating-title {
+  width: 20%;
+}
+
+.rating-content {
+  width: 70%; 
+}
+
+.rating-content p,
+.rating-content .rating-btn {
+  display: inline-block;
+  vertical-align: middle; 
+}
+
+.rating-btn {
+  margin-top: 5px;
+  padding: 7px 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.rating-btn:hover {
+  background: #0056b3;
+}
+
+
+
+
+
 </style>
