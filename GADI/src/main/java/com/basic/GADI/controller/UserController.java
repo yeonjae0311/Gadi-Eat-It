@@ -5,7 +5,6 @@ import com.basic.GADI.dto.request.MyInfoRequestDto;
 import com.basic.GADI.dto.request.MyRestaurantRequestDto;
 import com.basic.GADI.dto.request.PasswordResetRequestDto;
 import com.basic.GADI.dto.response.MyInfoResponseDto;
-import com.basic.GADI.dto.response.MyRestaurantResponseDto;
 import com.basic.GADI.dto.response.PageResponseDto;
 import com.basic.GADI.dto.response.ResDetailResponseDto;
 import com.basic.GADI.service.UserService;
@@ -70,11 +69,5 @@ public class UserController {
         Long userId = (Long) request.getAttribute("userId");
         userService.addMyRestaurant(userId, myRestaurantRequestDto.getResId());
         return ResponseEntity.ok().body("해당 식당이 즐겨찾기 목록에 추가되었습니다.");
-    }
-
-    @GetMapping("/my_res")
-    public ResponseEntity<MyRestaurantResponseDto> getMyRestaurant(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        return ResponseEntity.ok().body(userService.getMyRestaurant(userId));
     }
 }

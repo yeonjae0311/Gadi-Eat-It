@@ -131,18 +131,38 @@ const searchRestaurants = () => {
 
     // 마커 클릭 시 사이드바 표시
     window.naver.maps.Event.addListener(marker, 'click', async () => {
-      selectedRes.value = res // 사이드바 토글
-      try {
-        const response = await http.get(`/main/getRatings/${selectedRes.value.resId}`)
-        rating.value = response.data
-      } catch (error) {
-        console.error('Failed to fetch rating:', error)
-      }
+      selectedRes.value = res // 사이드바 토글 
+      getRating() 
+      getMyFavorite()
     })
 
     markers.value.set(res.resId, marker)
   })
 }
+
+// 별점 가져오기
+const getRating = async() => {
+  try {
+        const response = await http.get(`/main/getRatings/${selectedRes.value.resId}`)
+        rating.value = response.data
+      } catch (error) {
+        console.error('Failed to fetch rating:', error)
+      }
+}
+
+// 즐겨찾기 식당 가져오기기
+const getMyFavorite = async() => {
+  try {
+    const res = await http.get('/main/my_favorite', 
+                              { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
+    console.log(res.data)                          
+  } catch (error) {
+    console.error('내 즐겨찾기 조회 실패 ! ', error)
+  }
+}
+
+
+
 
 // 검색 필드가 바뀔 때마다 마커 업데이트
 const onSearch = () => {
@@ -192,12 +212,8 @@ const updateMarkers = () => {
         })
         window.naver.maps.Event.addListener(marker, 'click', async () => {
           selectedRes.value = res // 사이드바 토글
-          try {
-            const response = await http.get(`/main/getRatings/${selectedRes.value.resId}`)
-            rating.value = response.data
-          } catch (error) {
-            console.error('Failed to fetch rating:', error)
-          }
+          getRating() 
+          getMyFavorite()
         })
         newMarkers.set(res.resId, marker) // 새 마커 추가
       } else {
