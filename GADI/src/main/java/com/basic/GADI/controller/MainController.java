@@ -41,7 +41,6 @@ public class MainController {
 
     @GetMapping("/my_favorite/{resId}")
     public ResponseEntity<MyRestaurantResponseDto> getMyRestaurant(HttpServletRequest request, @PathVariable Long resId) {
-        System.out.println(resId);
         Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.ok().body(userService.getMyRestaurant(userId, resId));
     }

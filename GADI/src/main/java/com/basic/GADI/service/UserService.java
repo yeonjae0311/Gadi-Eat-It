@@ -155,9 +155,7 @@ public class UserService {
     }
 
     public MyRestaurantResponseDto getMyRestaurant(Long userId, Long resId) {
-
-        Favorites myFavoriteResId = favoriteRepository.findByUser_UserIdAndRestaurants_resId(userId, resId);
-
-        return new MyRestaurantResponseDto(myFavoriteResId.getFavId());
+        Favorites myFavorite = favoriteRepository.findByUser_UserIdAndRestaurants_resId(userId, resId);
+        return new MyRestaurantResponseDto(myFavorite.getFavId());
     }
 }

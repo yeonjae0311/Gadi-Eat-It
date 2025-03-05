@@ -33,7 +33,8 @@
     <GadiMapSideBar
       :res="selectedRes"
       :rating="rating"
-      :myFavorites="myFavorites"
+      :myFavorite="myFavorite"
+      :isFavorited="isFavorited"
       @close="selectedRes = null"
       @modal="openModal"
     />
@@ -60,7 +61,8 @@ const selectedRating = ref(0)
 const rating = ref(null)
 const isSearching = ref(false)
 const showSearchingBtn = ref(false)
-const myFavorites = ref(null)
+const myFavorite = ref(null)
+const isFavorited = ref(false)
 
 let markerCluster = null
 
@@ -157,10 +159,18 @@ const getMyFavorite = async() => {
   try {
     const response = await http.get(`/main/my_favorite/${selectedRes.value.resId}`,  
                               { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})    
-    myFavorites.value = response.data        
+    // 응답 데이터가 없을 때 처리
+    if (response.data) {
+      myFavorite.value = response.data;
+      isFavorited.value = true
+    } else {
+      myFavorite.value = null;  
+      isFavorited.value = false
+    }   
     console.log(response.data)         
   } catch (error) {
-    console.error('내 즐겨찾기 조회 실패 ! ', error)
+    console.error('내 즐겨찾기 조회 실패 ! ', error) 
+    isFavorited.value = false
   }
 }
 

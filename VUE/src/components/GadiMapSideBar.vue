@@ -5,8 +5,9 @@
         <div class="res-name">
           <h2>{{ res.resName }}</h2>
         </div>
-        <div class="like">
-          <img :src="isFavorited === res.resId ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
+        <div class="like"> 
+          <img v-if="myFavorite == null " src="/images/heart.png" />
+          <img v-else :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
         </div>
       </div>
       <div><img class="img" src="/images/img2.png" /></div>
@@ -46,16 +47,16 @@
 </template>
 
 <script setup>
-import http from '@/common/http-common' 
+import http from '@/common/http-common'
+import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
   res: Object,
   rating: Object,
-  myFavorites:Object
+  myFavorite:Object,
+  isFavorited:Object
 })
-
-const isFavorited = props.myFavorites.resId;
 
 
 
@@ -80,8 +81,7 @@ const addMyRes = async() => {
     if (res.status === 200 ) {
       console.log('즐겨찾기 추가 성공 !')
       alert(res.data);
-
-      isFavorited.value = !isFavorited.value;
+     
     }                          
   } catch (error) {
     console.log('즐겨찾기 등록 실패 !', error);
