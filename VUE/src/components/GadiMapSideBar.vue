@@ -169,7 +169,7 @@ div {
   margin-top: 5px;
   padding: 7px 10px;
   border: none;
-  background: #007bff;
+  background: #52a5fd;
   color: white;
   border-radius: 5px;
   cursor: pointer;
