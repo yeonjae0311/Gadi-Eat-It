@@ -5,10 +5,10 @@
         <div class="res-name">
           <h2>{{ res.resName }}</h2>
         </div>
-        <div class="like"> 
+        <div class="like">
           <img v-if="myFavorite == null " src="/images/heart.png" />
           <img v-else :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
-          
+
         </div>
       </div>
       <div><img class="img" src="/images/img2.png" /></div>
@@ -19,7 +19,7 @@
       <div class="div-container">
         <div>전화번호</div>
         <p>{{ res.resPhone }}</p>
-      </div> 
+      </div>
       <div class="rating-container">
         <div class="rating-display">
           <div class="rating-title">별점</div>
@@ -38,10 +38,10 @@
                 <span v-else class="empty-star">★</span>
               </span>
             </div>
-            <button v-if="loginState" class="rating-btn" @click="$emit('modal')">점수 주기</button> 
-          </div>  
-        </div>  
-      </div>  
+            <button v-if="loginState" class="rating-btn" @click="$emit('modal')">점수 주기</button>
+          </div>
+        </div>
+      </div>
       <button class="close-btn" @click="$emit('close')">닫기</button>
       </div>
   </div>
@@ -66,7 +66,7 @@ defineEmits(['close', 'modal']) // 닫기 이벤트 전송
 const loginState = sessionStorage.getItem('login')
 const router = useRouter();
 
-const addMyRes = async() => {  
+const addMyRes = async() => {
   if (!loginState || loginState === "null" || loginState === "false") {
     const goToLogin = confirm('로그인이 필요합니다! 로그인 창으로 이동하시겠습니까?')
     if (goToLogin) {
@@ -76,18 +76,18 @@ const addMyRes = async() => {
   }
 
   try {
-    const res = await http.post('/user/my_res/add', 
-                                { resId : props.res.resId }, 
+    const res = await http.post('/user/my_res/add',
+                                { resId : props.res.resId },
                                 { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token')}})
     if (res.status === 200 ) {
       console.log('즐겨찾기 추가 성공 !')
       alert(res.data);
-     
-    }                          
+
+    }
   } catch (error) {
     console.log('즐겨찾기 등록 실패 !', error);
     alert(error.response.data.message)
-  } 
+  }
 
 }
 </script>
@@ -116,7 +116,7 @@ const addMyRes = async() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-} 
+}
 
 .sidebar-header img {
   width: 30px;
@@ -129,7 +129,7 @@ const addMyRes = async() => {
 
 h2 {
   font-size: 20px;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 div {
@@ -150,7 +150,7 @@ div {
 }
 
 .div-container p {
-  width: 70%; 
+  width: 70%;
   color: #333;
 }
 
@@ -198,7 +198,7 @@ div {
 .empty-star {
   color: #ccc;
 }
- 
+
 .rating-display {
   display: flex;
   justify-content: space-between;
@@ -210,13 +210,13 @@ div {
 }
 
 .rating-content {
-  width: 70%; 
+  width: 70%;
 }
 
 .rating-content p,
 .rating-content .rating-btn {
   display: inline-block;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
 
 .rating-btn {
