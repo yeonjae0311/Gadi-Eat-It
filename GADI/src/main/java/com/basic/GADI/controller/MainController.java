@@ -39,12 +39,11 @@ public class MainController {
         return ResponseEntity.ok(mainService.getRating(resId));
     }
 
-    @GetMapping("/my_favorite")
-    public ResponseEntity<MyRestaurantResponseDto> getMyRestaurant(HttpServletRequest request) {
+    @GetMapping("/my_favorite/{resId}")
+    public ResponseEntity<MyRestaurantResponseDto> getMyRestaurant(HttpServletRequest request, @PathVariable Long resId) {
+        System.out.println(resId);
         Long userId = (Long) request.getAttribute("userId");
-        System.out.println(userId);
-        System.out.println(userService.getMyRestaurant(userId));
-        return ResponseEntity.ok().body(userService.getMyRestaurant(userId));
+        return ResponseEntity.ok().body(userService.getMyRestaurant(userId, resId));
     }
 
 }

@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 @org.springframework.stereotype.Repository
 public interface FavoriteRepository extends JpaRepository<Favorites, Long> {
 
@@ -16,7 +14,8 @@ public interface FavoriteRepository extends JpaRepository<Favorites, Long> {
 
     boolean existsByUserAndRestaurants(User user, Restaurants restaurants);
 
-    List<Favorites> findByUser_UserId(Long userId);
 
+
+    Favorites findByUser_UserIdAndRestaurants_resId(Long userId, Long resId);
 }
 

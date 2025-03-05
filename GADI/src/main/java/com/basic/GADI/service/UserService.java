@@ -154,14 +154,10 @@ public class UserService {
 
     }
 
-    public MyRestaurantResponseDto getMyRestaurant(Long userId) {
+    public MyRestaurantResponseDto getMyRestaurant(Long userId, Long resId) {
 
-        List<Favorites> myFavorites = favoriteRepository.findByUser_UserId(userId);
-        List<Long> myFavoriteResIds = new ArrayList<>();
-        for (Favorites favorite : myFavorites) {
-            myFavoriteResIds.add(favorite.getRestaurants().getResId());
-        }
+        Favorites myFavoriteResId = favoriteRepository.findByUser_UserIdAndRestaurants_resId(userId, resId);
 
-        return new MyRestaurantResponseDto(myFavoriteResIds);
+        return new MyRestaurantResponseDto(myFavoriteResId.getFavId());
     }
 }

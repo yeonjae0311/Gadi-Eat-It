@@ -6,7 +6,7 @@
           <h2>{{ res.resName }}</h2>
         </div>
         <div class="like">
-          <img :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
+          <img :src="isFavorited === res.resId ? '/images/redheart.png' : '/images/heart.png'"  @click="addMyRes"/>
         </div>
       </div>
       <div><img class="img" src="/images/img2.png" /></div>
@@ -46,16 +46,17 @@
 </template>
 
 <script setup>
-import http from '@/common/http-common'
-import { ref } from 'vue';
+import http from '@/common/http-common' 
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
   res: Object,
-  rating: Object
+  rating: Object,
+  myFavorites:Object
 })
 
-const isFavorited = ref(false);
+const isFavorited = props.myFavorites.resId;
+
 
 
 defineEmits(['close', 'modal']) // 닫기 이벤트 전송
