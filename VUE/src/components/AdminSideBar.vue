@@ -6,7 +6,6 @@
     <ul class="sidebar-menu">
       <li @click="goTo('user_list')">회원 목록</li>
       <li @click="goTo('res_list')">식당 목록</li>
-      <li>보고서</li>
     </ul>
   </aside>
 </template>
@@ -23,12 +22,12 @@ const goTo = (menu) => {
 
 <style scoped>
 .sidebar {
-  padding: 20px;  
+  padding: 20px;
 }
 
 .sidebar-header h2 {
   color: #fdfdfd;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 .sidebar-menu {
@@ -36,13 +35,15 @@ const goTo = (menu) => {
   padding: 0;
 }
 
-.sidebar-menu li { 
+.sidebar-menu li {
   color: #fdfdfd;
   font-size: 17px;
-  text-decoration: none; 
-  padding: 10px 0px; 
+  text-decoration: none;
+  padding: 10px 0px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .sidebar-menu li:hover {

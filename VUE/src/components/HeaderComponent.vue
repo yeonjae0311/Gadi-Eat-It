@@ -6,14 +6,14 @@
     <div class="nav-wrap">
       <nav class="nav-links">
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/map">Map</RouterLink>
-        <RouterLink to="/myPage">myPage</RouterLink>
-        <RouterLink to="/admin">admin</RouterLink>
+        <RouterLink v-if="store.isLogIn" to="/myPage">MyPage</RouterLink>
+        <RouterLink v-if="store.user.role === 'ADMIN'" to="/admin">Admin</RouterLink>
       </nav>
       <p v-if="store.isLogIn">{{ sessionTimer }}</p>
       <button v-if="store.isLogIn" @click="refresh" class="refesh-btn">연장</button>
       <button v-if="store.isLogIn" @click="logout" class="logout-btn">Logout</button>
+      <button v-else @click="login" class="logout-btn">Login</button>
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ const logout = () => {
   router.push('/login')
 }
 
-const toLogin = () => {
+const login = () => {
   router.push('/login')
 }
 

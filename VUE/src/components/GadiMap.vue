@@ -63,6 +63,8 @@ let markerCluster = null
 const store = useMapstore()
 const { resList } = storeToRefs(store)
 
+//-------------------------------------------------
+
 const openModal = () => {
   isOpened.value = true
 }
@@ -92,22 +94,7 @@ const updateRating = (rating) => {
   }
 }
 
-const resetMap = () => {
-  showSearchingBtn.value = false
-  isSearching.value = false
-  selectedRes.value = null
-  updateMarkers()
-}
-
-const debounce = (func, delay) => {
-  let timer
-  return (...args) => {
-    clearTimeout(timer) // 기존 타이머 초기화
-    timer = setTimeout(() => {
-      func(...args) // delay 후 함수 실행
-    }, delay)
-  }
-}
+//-------------------------------------------------
 
 const searchRestaurants = () => {
   selectedRes.value = null
@@ -160,6 +147,25 @@ const onSearch = () => {
   searchRestaurants()
 }
 
+const resetMap = () => {
+  showSearchingBtn.value = false
+  isSearching.value = false
+  selectedRes.value = null
+  updateMarkers()
+}
+
+//-------------------------------------------------
+
+const debounce = (func, delay) => {
+  let timer
+  return (...args) => {
+    clearTimeout(timer) // 기존 타이머 초기화
+    timer = setTimeout(() => {
+      func(...args) // delay 후 함수 실행
+    }, delay)
+  }
+}
+
 const updateMarkers = () => {
   if (isSearching.value || !map.value) {
     console.log('hi')
@@ -209,6 +215,8 @@ const updateMarkers = () => {
 }
 
 const debouncedUpdateMarkers = debounce(updateMarkers, 200)
+
+//-------------------------------------------------
 
 onMounted(() => {
   if (window.naver && window.naver.maps) {
