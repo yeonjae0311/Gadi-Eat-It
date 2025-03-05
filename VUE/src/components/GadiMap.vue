@@ -18,10 +18,12 @@
         @click="moveResDetail"
       ></div>
     </div>
-    <button v-if="showSearchingBtn" class="reset-btn" @click="searchRestaurants">
-      이 지도에서 다시 검색
-    </button>
-    <button v-if="showSearchingBtn" @click="resetMap" class="circle-btn">⟳</button>
+    <div class="btn">
+      <button v-if="showSearchingBtn" class="reset-btn" @click="searchRestaurants">
+        이 지도에서 다시 검색
+      </button>
+      <button v-if="showSearchingBtn" @click="resetMap" class="circle-btn">⟳</button>
+    </div>
     <RatingModal
       :isOpened="isOpened"
       :res="selectedRes"
@@ -319,12 +321,16 @@ img {
   z-index: 1000;
 }
 
-.reset-btn {
+.btn {
   position: absolute;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000; /* 지도 위로 띄우기 */
+  z-index: 1000;
+  display: flex;
+  left: 45%;
+  gap: 10px;
+}
+
+.reset-btn {
   background-color: #fa4949;
   color: white;
   padding: 10px 20px;
@@ -334,10 +340,6 @@ img {
 }
 
 .circle-btn {
-  position: absolute;
-  top: 20px;
-  left: 56%;
-  z-index: 1000;
   background-color: white;
   color: #fa4949;
   border: 2px solid #fa4949;
@@ -346,7 +348,6 @@ img {
   height: 40px;
   font-size: 20px;
   font-weight: bold;
-  display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;

@@ -14,7 +14,9 @@
         <tr v-for="res in resList.content" :key="res.id">
           <td>{{ res.resId }}</td>
           <td>
-            <RouterLink :to="'res_list/' + res.resId" class="router-link">{{ res.resName }}</RouterLink>
+            <RouterLink :to="'res_list/' + res.resId" class="router-link">{{
+              res.resName
+            }}</RouterLink>
           </td>
           <td>{{ res.resAddress }}</td>
           <td>{{ res.resPhone }}</td>
@@ -47,7 +49,7 @@ import http from '@/common/http-common'
 
 const resList = ref({ content: [], totalPages: 0 })
 const currentPage = ref(0) // 현재 페이지
-const size = ref(10)
+const size = ref(8)
 
 const changePage = async (pageNumber) => {
   if (pageNumber < 0 || pageNumber >= resList.value.totalPages) return // 범위 체크
@@ -77,30 +79,30 @@ onMounted(getResList)
 </script>
 
 <style scoped>
-.content { 
+.content {
   padding: 40px;
-  width: 100%; 
+  width: 100%;
   max-width: 1200px;
-  height: 100%; 
+  height: 88%;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
 
-.page-title { 
+.page-title {
   color: #333;
   margin-bottom: 20px;
   font-weight: bold;
-  padding: 0px 20px;
+  padding: 10px 0px 0px 20px;
 }
 
 .res-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .res-table th,
@@ -111,7 +113,7 @@ onMounted(getResList)
 }
 
 .res-table th {
-  background-color: #fa5656; 
+  background-color: #fa5656;
   color: white;
   font-size: 1.1rem;
 }
@@ -139,7 +141,7 @@ onMounted(getResList)
 }
 
 button {
-  background-color: #fa5656; 
+  background-color: #fa5656;
   color: rgb(15, 6, 6);
   border: none;
   padding: 8px 16px;
