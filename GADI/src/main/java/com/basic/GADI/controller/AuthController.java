@@ -38,7 +38,6 @@ public class AuthController {
     @PostMapping("/refreshLogin")
     public ResponseEntity<TokenResponseDto> login (HttpServletRequest request, HttpServletResponse response) {
         String authorizationHeader = request.getHeader("Authorization");
-        System.out.println(authorizationHeader);
         String token = null;
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             // "Bearer " 뒤에 오는 토큰 부분만 추출

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MapView from '@/views/MapView.vue' 
+import MapView from '@/views/MapView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import LoginView from '@/views/LoginView.vue'
@@ -10,10 +10,11 @@ import LayoutView from '@/views/layout/LayoutView.vue'
 import AboutView from '@/views/AboutView.vue'
 import MainView from '@/views/MainView.vue'
 import MyPageView from '@/views/MyPage/MyPageView.vue'
-import MyInfoForm from '@/components/MyInfoForm.vue'  
+import MyInfoForm from '@/components/MyInfoForm.vue'
 import MyPasswordResetForm from '@/components/MyPasswordResetForm.vue'
 import PasswordLinkView from '@/views/PasswordLinkView.vue'
 import PasswordRestView from '@/views/PasswordRestView.vue'
+import TestView from '@/views/TestView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,10 +25,15 @@ const router = createRouter({
       component: MainView
     },
     {
+      path: '/test',
+      name: 'test',
+      component: TestView
+    },
+    {
       path: '/resetPw',
       name: 'resetPw',
       component: PasswordRestView,
-      props: route => ({
+      props: (route) => ({
         token: route.query.token,
         email: route.query.email
       })

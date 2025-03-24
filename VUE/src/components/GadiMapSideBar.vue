@@ -6,7 +6,7 @@
           <h2>{{ res.resName }}</h2>
         </div>
         <div class="like">
-          <img v-if="myFavorite == null" src="/images/heart.png" />
+          <img v-if="myFavorite == null" src="/images/heart.png" @click="addMyRes" />
           <img
             v-else
             :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"
@@ -52,20 +52,23 @@
 
 <script setup>
 import http from '@/common/http-common'
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
   res: Object,
   rating: Object,
   myFavorite: Object,
-  isFavorited: Object
+  isFavorited: Boolean
 })
 
-defineEmits(['close', 'modal']) // 닫기 이벤트 전송
+const emit = defineEmits(['close', 'modal', 'update:isFavorited']) // 닫기 이벤트 전송
 
 const loginState = sessionStorage.getItem('login')
 const router = useRouter()
+
+const toggleFavorite = () => {
+  emit('update:isFavorited', !props.isFavorited) // 부모 컴포넌트에게 값 변경 요청
+}
 
 const addMyRes = async () => {
   if (!loginState || loginState === 'null' || loginState === 'false') {
@@ -75,7 +78,7 @@ const addMyRes = async () => {
     }
     return
   }
-
+  toggleFavorite()
   try {
     const res = await http.post(
       '/user/my_res/add',
@@ -88,6 +91,7 @@ const addMyRes = async () => {
     }
   } catch (error) {
     console.log('즐겨찾기 등록 실패 !', error)
+    toggleFavorite()
     alert(error.response.data.message)
   }
 }
