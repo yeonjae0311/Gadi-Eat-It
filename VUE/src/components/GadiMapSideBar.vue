@@ -6,21 +6,12 @@
           <h2>{{ res.resName }}</h2>
         </div>
         <div class="like">
-          <<<<<<< HEAD
           <img v-if="myFavorite == null" src="/images/heart.png" @click="addMyRes" />
           <img
             v-else
             :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"
             @click="addMyRes"
           />
-          =======
-          <img v-if="myFavorite == null" src="/images/heart.png" @click="addMyRes" />
-          <img
-            v-else
-            :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"
-            @click="addMyRes"
-          />
-          >>>>>>> 299533664e0f958b5d52e9260c119820a8724b30
         </div>
       </div>
       <div><img class="img" src="/images/img2.png" /></div>
