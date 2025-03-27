@@ -163,7 +163,8 @@ public class UserService {
         return new MyRestaurantResponseDto(myFavorite.getFavId());
     }
 
-    public void removeMyRestaurant(Long userId, Long resId) {
+    @Transactional
+    public void deleteMyRestaurant(Long userId, Long resId) {
         favoriteRepository.deleteByUser_UserIdAndRestaurants_resId(userId, resId);
     }
 }

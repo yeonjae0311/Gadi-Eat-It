@@ -13,7 +13,7 @@
         <tr v-for="(favo, index) in myFavoList.content" :key="favo.id">
           <td> {{ index + 1 }} </td>
           <td> {{ favo.resName }} </td>
-          <td><button>삭제</button></td> 
+          <td><button @click="removeMyFavo(favo.resId)">삭제</button></td> 
         </tr>
       </tbody>
     </table>
@@ -46,11 +46,27 @@ const myFavoList = ref({ content: [], totalPages: 0 })
 const currentPage = ref(0) // 현재 페이지
 const size = ref(8)
 
+const removeMyFavo = async(resId) => {
+    console.log(resId)
+    try {
+        const res = await http.post('/user/my_res/remove', 
+                                    { resId: resId },
+                                    { headers: {
+                                        Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
+                                    }})
+        console.log(res.data)
+        alert('삭제 완료 !')
+        await getMyFavorite()  
+    } catch (error) {
+        console.error('나의 즐겨찾기 식당 삭제 실패', error)
+    }
+}
+
 const changePage = async (pageNumber) => {
-  if (pageNumber < 0 || pageNumber >= myFavoList.value.totalPages) return // 범위 체크
+  if (pageNumber < 0 || pageNumber >= myFavoList.value.totalPages) return  
 
   currentPage.value = pageNumber
-  await getMyFavorite() // 데이터 다시 가져오기
+  await getMyFavorite()  
 } 
 
 const getMyFavorite = async() => {
