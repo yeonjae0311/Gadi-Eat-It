@@ -6,11 +6,9 @@
           <h2>{{ res.resName }}</h2>
         </div>
         <div class="like">
-          <img v-if="myFavorite == null" src="/images/heart.png" @click="addMyRes" />
           <img
-            v-else
             :src="isFavorited ? '/images/redheart.png' : '/images/heart.png'"
-            @click="addMyRes"
+            @click="isFavorited ? deleteMyRes() : addMyRes()"
           />
         </div>
       </div>
@@ -93,6 +91,31 @@ const addMyRes = async () => {
     console.log('즐겨찾기 등록 실패 !', error)
     toggleFavorite()
     alert(error.response.data.message)
+  }
+}
+
+const deleteMyRes = async () => {
+  if (!loginState || loginState === 'null' || loginState === 'false') {
+    const goToLogin = confirm('로그인이 필요합니다! 로그인 창으로 이동하시겠습니까?')
+    if (goToLogin) {
+      router.push('/login')
+    }
+    return
+  }
+  toggleFavorite()
+  try {
+    const res = await http.post(
+      '/user/my_res/remove',
+      { resId: props.res.resId },
+      { headers: { Authorization: 'Bearer ' + sessionStorage.getItem('access_token') } }
+    )
+    if (res.status === 200) {
+      console.log('즐겨찾기 취소 성공 !')
+      alert(res.data)
+    }
+  } catch (error) {
+    console.log('즐겨찾기 취소 실패 !', error)
+    toggleFavorite()
   }
 }
 </script>

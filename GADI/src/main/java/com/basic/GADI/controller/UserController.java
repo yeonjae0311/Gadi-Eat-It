@@ -73,13 +73,13 @@ public class UserController {
     public ResponseEntity<String> addMyRestaurant(HttpServletRequest request, @RequestBody @Valid MyRestaurantRequestDto myRestaurantRequestDto) {
         Long userId = (Long) request.getAttribute("userId");
         userService.addMyRestaurant(userId, myRestaurantRequestDto.getResId());
-        return ResponseEntity.ok().body("해당 식당이 즐겨찾기 목록에 추가되었습니다.");
+        return ResponseEntity.ok().body("즐겨찾기 등록 완료 !");
     }
 
     @PostMapping("/my_res/remove")
     public ResponseEntity<String> deleteMyRestaurant(HttpServletRequest request, @RequestBody @Valid MyRestaurantRequestDto myRestaurantRequestDto) {
         Long userId = (Long) request.getAttribute("userId");
         userService.deleteMyRestaurant(userId, myRestaurantRequestDto.getResId());
-        return ResponseEntity.ok().body("해당 식당이 즐겨찾기 목록에서 삭제되었습니다.");
+        return ResponseEntity.ok().body("즐겨찾기 취소 완료 !");
     }
 }
