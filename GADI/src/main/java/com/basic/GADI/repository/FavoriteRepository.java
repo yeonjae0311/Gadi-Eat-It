@@ -17,5 +17,7 @@ public interface FavoriteRepository extends JpaRepository<Favorites, Long> {
 
 
     Favorites findByUser_UserIdAndRestaurants_resId(Long userId, Long resId);
+
+    void deleteByUser_UserIdAndRestaurants_resId(Long userId, Long resId);
 }
 

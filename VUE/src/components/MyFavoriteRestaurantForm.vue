@@ -1,29 +1,23 @@
 <template>
-  <main class="content">
-    <h2 class="page-title">식당 목록</h2>
-    <table class="res-table">
+    <main class="content">
+    <h2 class="page-title">나의 즐겨찾기 목록</h2>
+    <table class="my-favo-table">
       <thead>
         <tr>
-          <th>No</th>
-          <th>이름</th>
-          <th>주소</th>
-          <th>전화 번호</th>
+          <th class="no">No</th>
+          <th class="res-name">식당명</th> 
+          <th class="remove">삭제</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="res in resList.content" :key="res.id">
-          <td>{{ res.resId }}</td>
-          <td>
-            <RouterLink :to="'res_list/' + res.resId" class="router-link">{{
-              res.resName
-            }}</RouterLink>
-          </td>
-          <td>{{ res.resAddress }}</td>
-          <td>{{ res.resPhone }}</td>
+        <tr v-for="(favo, index) in myFavoList.content" :key="favo.id">
+          <td> {{ index + 1 }} </td>
+          <td> {{ favo.resName }} </td>
+          <td><button>삭제</button></td> 
         </tr>
       </tbody>
     </table>
-
+    
     <div class="pagination">
       <button
         @click="changePage(currentPage - 1)"
@@ -32,10 +26,10 @@
       >
         이전
       </button>
-      <span class="page-info">{{ currentPage + 1 }} of {{ resList.totalPages }}</span>
+      <span class="page-info">{{ currentPage + 1 }} of {{ myFavoList.totalPages }}</span>
       <button
         @click="changePage(currentPage + 1)"
-        :disabled="currentPage === resList.totalPages - 1"
+        :disabled="currentPage === myFavoList.totalPages - 1"
         class="next-button"
       >
         다음
@@ -43,40 +37,43 @@
     </div>
   </main>
 </template>
+
 <script setup>
 import { onMounted, ref } from 'vue'
 import http from '@/common/http-common'
 
-const resList = ref({ content: [], totalPages: 0 })
+const myFavoList = ref({ content: [], totalPages: 0 })
 const currentPage = ref(0) // 현재 페이지
 const size = ref(8)
 
 const changePage = async (pageNumber) => {
-  if (pageNumber < 0 || pageNumber >= resList.value.totalPages) return // 범위 체크
+  if (pageNumber < 0 || pageNumber >= myFavoList.value.totalPages) return // 범위 체크
 
   currentPage.value = pageNumber
-  await getResList() // 데이터 다시 가져오기
-}
+  await getMyFavorite() // 데이터 다시 가져오기
+} 
 
-const getResList = async () => {
-  try {
-    const res = await http.get('/admin/res_list', {
-      headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
-      },
+const getMyFavorite = async() => {
+    try {
+        const res = await http.get('/user/my_favorites', {
+            headers: {
+                Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
+            },
       params: {
         page: currentPage.value,
         size: size.value
       }
-    })
-    resList.value = res.data
-    console.log(resList.value)
-  } catch (error) {
-    console.error('식당 목록 조회 실패', error)
-  }
+        }) 
+        
+      console.log(res.config.params)
+        myFavoList.value = res.data
+        console.log(myFavoList.value)
+    } catch (error) {
+        console.error('나의 즐겨찾기 목록 조회 실패', error)
+    }
 }
 
-onMounted(getResList)
+onMounted(getMyFavorite)
 </script>
 
 <style scoped>
@@ -100,33 +97,43 @@ onMounted(getResList)
   padding: 10px 0px 0px 20px;
 }
 
-.res-table {
+.my-favo-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 30px;
 }
 
-.res-table th,
-.res-table td {
-  padding: 12px 15px;
-  text-align: left;
+.my-favo-table th,
+.my-favo-table td {
+  padding: 12px 15px; 
   border-bottom: 1px solid #e2e8f0;
 }
 
-.res-table th {
+.my-favo-table th {
   background-color: #fa5656;
   color: white;
   font-size: 1.1rem;
+  text-align: center;
 }
 
-.res-table tr:hover {
+.my-favo-table tr:hover {
   background-color: #ffe5e1;
 }
 
-.res-table td {
+.my-favo-table td {
   font-size: 0.95rem;
   color: #4a5568;
+  text-align: center;
 }
+
+.no {
+    width: 150px;
+} 
+
+.remove {
+    width: 150px;
+}
+
 
 .pagination {
   display: flex;
@@ -146,7 +153,7 @@ button {
   color: rgb(15, 6, 6);
   border: none;
   padding: 8px 16px;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s;

@@ -6,7 +6,7 @@
         <div class="sidebar-contents">
             <div class="content" @click="goTo('myInfo')">내 정보</div>
             <div class="content" @click="goTo('myPwReset')">비밀번호 재설정</div>
-            <div class="content">나의 식당(즐겨찾기)</div>
+            <div class="content" @click="goTo('myFavo')">나의 식당(즐겨찾기)</div>
             <div class="content">회원탈퇴</div>
         </div>
     </aside>

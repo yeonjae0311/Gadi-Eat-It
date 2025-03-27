@@ -105,17 +105,21 @@ public class UserService {
 
     public PageResponseDto<ResDetailResponseDto> myFavoriteRestaurantsList(Long userId, Pageable pageable) {
         Page<Favorites> myFavoriteList = favoriteRepository.findByUserUserId(userId, pageable);
+
         List<Long> myFavoriteResIds = new ArrayList<>();
-        for (Favorites favorite : myFavoriteList) {
+
+        for (Favorites favorite : myFavoriteList.getContent()) {
             myFavoriteResIds.add(favorite.getRestaurants().getResId());
         }
-        Page<Restaurants> myRestaurants = resRepository.findByResIdIn(myFavoriteResIds, pageable);
+
+        List<Restaurants> myRestaurants = resRepository.findByResIdIn(myFavoriteResIds);
 
         List<ResDetailResponseDto> myRestaurantList = new ArrayList<>();
-        for (Restaurants restaurant : myRestaurants.getContent()) {
+        for (Restaurants restaurant : myRestaurants) {
             myRestaurantList.add(new ResDetailResponseDto(restaurant));
         }
-        Page<ResDetailResponseDto> page = new PageImpl<>(myRestaurantList, pageable, myRestaurants.getTotalElements());
+
+        Page<ResDetailResponseDto> page = new PageImpl<>(myRestaurantList, pageable, myFavoriteList.getTotalElements());
 
         return new PageResponseDto<>(page);
     }
@@ -157,5 +161,9 @@ public class UserService {
     public MyRestaurantResponseDto getMyRestaurant(Long userId, Long resId) {
         Favorites myFavorite = favoriteRepository.findByUser_UserIdAndRestaurants_resId(userId, resId);
         return new MyRestaurantResponseDto(myFavorite.getFavId());
+    }
+
+    public void removeMyRestaurant(Long userId, Long resId) {
+        favoriteRepository.deleteByUser_UserIdAndRestaurants_resId(userId, resId);
     }
 }

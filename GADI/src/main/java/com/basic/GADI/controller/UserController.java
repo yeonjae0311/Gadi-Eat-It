@@ -11,6 +11,7 @@ import com.basic.GADI.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,12 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    @GetMapping("/favorites")
-    public ResponseEntity<PageResponseDto<ResDetailResponseDto>> favoriteRestaurantsList(@RequestParam Long userId, Pageable pageable) {
+    @GetMapping("/my_favorites")
+    public ResponseEntity<PageResponseDto<ResDetailResponseDto>> favoriteRestaurantsList(HttpServletRequest request,
+                                                                                         @RequestParam(defaultValue = "0") int page,
+                                                                                         @RequestParam(defaultValue = "8") int size) {
+        Long userId = (Long) request.getAttribute("userId");
+        Pageable pageable = PageRequest.of(page, size);
         PageResponseDto<ResDetailResponseDto> favoriteRestaurants = userService.myFavoriteRestaurantsList(userId, pageable);
         return ResponseEntity.ok().body(favoriteRestaurants);
     }
@@ -69,5 +74,12 @@ public class UserController {
         Long userId = (Long) request.getAttribute("userId");
         userService.addMyRestaurant(userId, myRestaurantRequestDto.getResId());
         return ResponseEntity.ok().body("해당 식당이 즐겨찾기 목록에 추가되었습니다.");
+    }
+
+    @PostMapping("/my_res/remove")
+    public ResponseEntity<String> removeMyRestaurant(HttpServletRequest request, @RequestBody @Valid MyRestaurantRequestDto myRestaurantRequestDto) {
+        Long userId = (Long) request.getAttribute("userId");
+        userService.removeMyRestaurant(userId, myRestaurantRequestDto.getResId());
+        return ResponseEntity.ok().body("해당 식당이 즐겨찾기 목록에서 삭제되었습니다.");
     }
 }

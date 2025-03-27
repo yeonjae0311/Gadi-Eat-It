@@ -15,6 +15,8 @@ import MyPasswordResetForm from '@/components/MyPasswordResetForm.vue'
 import PasswordLinkView from '@/views/PasswordLinkView.vue'
 import PasswordRestView from '@/views/PasswordRestView.vue'
 import TestView from '@/views/TestView.vue'
+import MyFavoriteRestaurant from '@/components/MyFavoriteRestaurantForm.vue'
+import MyFavoriteRestaurantForm from '@/components/MyFavoriteRestaurantForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,6 +73,10 @@ const router = createRouter({
             {
               path: 'myPwReset',
               component: MyPasswordResetForm
+            },
+            {
+              path: 'myFavo',
+              component: MyFavoriteRestaurantForm
             }
           ]
         },
